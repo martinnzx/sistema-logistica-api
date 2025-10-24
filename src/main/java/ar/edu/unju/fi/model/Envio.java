@@ -34,4 +34,7 @@ public class Envio {
     @Enumerated(EnumType.STRING)
     private EstadoEnvio estado;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Paquete> paquetes;
+
 }
