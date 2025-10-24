@@ -1,17 +1,15 @@
 package ar.edu.unju.fi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +25,6 @@ public class Ruta {
     @NotNull
     private LocalDate fecha;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Envio> envios;
 }

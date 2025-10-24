@@ -33,5 +33,11 @@ public class Envio {
     @NotNull
     private EstadoEnvio estado;
 
+<<<<<<< HEAD
     private String comprobanteEntrega;
+=======
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Paquete> paquetes;
+
+>>>>>>> 2391608d1ae3387b382148ae5464e0ec3e95c49f
 }
