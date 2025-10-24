@@ -2,6 +2,7 @@ package ar.edu.unju.fi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Envio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotBlank
     private String remitente;
@@ -28,10 +29,9 @@ public class Envio {
     @NotBlank
     private String direccionEntrega;
 
-    @NotBlank
-    private String comprobanteEntrega;
-
     @Enumerated(EnumType.STRING)
+    @NotNull
     private EstadoEnvio estado;
 
+    private String comprobanteEntrega;
 }
