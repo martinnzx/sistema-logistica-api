@@ -1,12 +1,8 @@
 package ar.edu.unju.fi.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +20,10 @@ public class Ruta {
 
     @NotNull
     private LocalDate fecha;
+
+    @NotNull
+    @ManyToOne
+    private Vehiculo vehiculo;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Envio> envios;
