@@ -9,7 +9,8 @@ import java.util.List;
 
 @Service
 public class EnvioService {
-    private EnvioRepository envioRepository;
+
+    private final EnvioRepository envioRepository;
 
     public EnvioService(EnvioRepository envioRepository) {
         this.envioRepository = envioRepository;

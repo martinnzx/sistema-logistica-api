@@ -8,7 +8,8 @@ import java.util.List;
 
 @Service
 public class PaqueteService {
-    private PaqueteRepository paqueteRepository;
+
+    private final PaqueteRepository paqueteRepository;
 
     public PaqueteService(PaqueteRepository paqueteRepository) {
         this.paqueteRepository = paqueteRepository;
