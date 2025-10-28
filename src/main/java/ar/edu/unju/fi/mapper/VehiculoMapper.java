@@ -17,4 +17,19 @@ public class VehiculoMapper {
             vehiculo.getRefrigerado()
         );
     }
+
+    public static Vehiculo toEntity(VehiculoDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setPatente(dto.getPatente());
+        vehiculo.setCapacidadMaxPesoKg(dto.getCapacidadMaxPesoKg());
+        vehiculo.setCapacidadMaxVolDm3(dto.getCapacidadMaxVolDm3());
+        vehiculo.setRefrigerado(dto.getRefrigerado());
+
+        return vehiculo;
+    }
+
 }

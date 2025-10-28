@@ -38,4 +38,11 @@ public class VehiculoService {
                 .map(VehiculoMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
+        Vehiculo vehiculo = VehiculoMapper.toEntity(vehiculoDTO);
+        Vehiculo vehiculoGuardado = vehiculoRepository.save(vehiculo);
+        return VehiculoMapper.toDTO(vehiculoGuardado);
+    }
+
 }
