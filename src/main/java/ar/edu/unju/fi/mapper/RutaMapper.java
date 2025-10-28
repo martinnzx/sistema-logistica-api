@@ -25,6 +25,9 @@ public class RutaMapper {
             }
             ruta.setEnvios(envios);
         }
+        if (dto.getVehiculo() != null) {
+            ruta.setVehiculo(VehiculoMapper.toEntity(dto.getVehiculo()));
+        }
         return ruta;
     }
     public static RutaDTO toDto(Ruta ruta) {
@@ -43,6 +46,9 @@ public class RutaMapper {
                 enviosDTO.add(envioDTO);
             }
             dto.setEnvios(enviosDTO);
+        }
+        if (ruta.getVehiculo() != null) {
+            dto.setVehiculo(VehiculoMapper.toDTO(ruta.getVehiculo()));
         }
         return dto;
     }
