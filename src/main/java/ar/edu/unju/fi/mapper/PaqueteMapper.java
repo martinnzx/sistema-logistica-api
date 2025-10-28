@@ -7,39 +7,47 @@ import ar.edu.unju.fi.model.PaqueteRefrigerado;
 
 public class PaqueteMapper {
     public static Paquete toEntity(PaqueteDTO dto){
-        if (dto == null) {
-            return null;
-        }
-        Paquete paquete;
-        if ("Refrigerado".equalsIgnoreCase(dto.getTipo())) {
-            paquete = new PaqueteRefrigerado();
-
+        if (dto.getTipo().equals("Resfrigerado")){
+            PaqueteRefrigerado paquete = new PaqueteRefrigerado();
+            paquete.setId(dto.getId());
+            paquete.setPesoKg(dto.getPesoKg());
+            paquete.setCodigo(dto.getCodigo());
+            paquete.setVolumenDm3(dto.getVolumenDm3());
+            paquete.setTemperaturaObjetivo(dto.getTemperaturaObjetivo());
+            paquete.setRangoMin(dto.getRangoMin());
+            paquete.setRangoMax(dto.getRangoMax());
+            paquete.setHorasMaxFueraDeFrio(dto.getHorasMaxFueraDeFrio());
+            return paquete;
         } else {
-            paquete = new PaqueteFragil();
+            PaqueteFragil paquete = new PaqueteFragil();
+            paquete.setId(dto.getId());
+            paquete.setPesoKg(dto.getPesoKg());
+            paquete.setCodigo(dto.getCodigo());
+            paquete.setVolumenDm3(dto.getVolumenDm3());
+            paquete.setNivelFragilidad(dto.getNivelFragilidad());
+            paquete.setSeguroAdicional(dto.getSeguroAdicional());
+            return paquete;
         }
 
-        paquete.setId(dto.getId());
-        paquete.setPesoKg(dto.getPesoKg());
-        paquete.setVolumenDm3(dto.getVolumenDm3());
-
-        return paquete;
     }
 
-    public static PaqueteDTO toDTO(Paquete paquete) {
-        if (paquete == null) {
-            return null;
+    public static PaqueteDTO toDTO(Paquete paquete){
+        PaqueteDTO p = new PaqueteDTO();
+        p.setId(paquete.getId());
+        p.setPesoKg(paquete.getPesoKg());
+        p.setVolumenDm3(paquete.getVolumenDm3());
+        if(paquete instanceof PaqueteRefrigerado paqueteRefrigerado){
+            p.setTipo("Resfrigerado");
+            p.setRangoMax(paqueteRefrigerado.getRangoMax());
+            p.setRangoMin(paqueteRefrigerado.getRangoMin());
+            p.setTemperaturaObjetivo(paqueteRefrigerado.getTemperaturaObjetivo());
+            p.setHorasMaxFueraDeFrio(paqueteRefrigerado.getHorasMaxFueraDeFrio());
+        }else{
+            PaqueteFragil pf = new PaqueteFragil();
+            p.setTipo("Fragil");
+            p.setNivelFragilidad(pf.getNivelFragilidad());
+            p.setSeguroAdicional(pf.getSeguroAdicional());
         }
-
-        PaqueteDTO dto = new PaqueteDTO();
-        dto.setId(paquete.getId());
-        dto.setPesoKg(paquete.getPesoKg());
-        dto.setVolumenDm3(paquete.getVolumenDm3());
-        if (paquete instanceof PaqueteRefrigerado) {
-            dto.setTipo("Refrigerado");
-
-        } else {
-            dto.setTipo("Fragil");
-        }
-        return dto;
+        return p;
     }
 }

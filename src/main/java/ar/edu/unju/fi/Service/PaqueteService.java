@@ -18,6 +18,12 @@ public class PaqueteService {
         this.paqueteRepository = paqueteRepository;
     }
 
+    public PaqueteDTO crearPaquete(PaqueteDTO dto) {
+        Paquete paquete = PaqueteMapper.toEntity(dto);
+        Paquete guardado = paqueteRepository.save(paquete);
+        return PaqueteMapper.toDTO(guardado);
+    }
+
     public List<PaqueteDTO> listarPorPeso(Double pesoKg, Double pesoKg2) {
         List<Paquete> p = paqueteRepository.findByPesoKgBetween(pesoKg, pesoKg2);
         List<PaqueteDTO> pDTO = new ArrayList<>();
