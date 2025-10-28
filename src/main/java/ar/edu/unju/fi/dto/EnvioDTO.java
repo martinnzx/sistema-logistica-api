@@ -2,13 +2,15 @@ package ar.edu.unju.fi.dto;
 
 import ar.edu.unju.fi.model.EstadoEnvio;
 
+import java.util.List;
+
 public class EnvioDTO {
     private String remitente;
     private String destinatario;
     private String direccionEntrega;
     private EstadoEnvio estado;
     private String comprobanteEntrega;
-    /* FIXME: Incluir private List<PaqueteDTO> paquetes */
+    private List<PaqueteDTO> paquetes;
 
     /* CONSTRUCTOR VACIO */
 
@@ -16,12 +18,13 @@ public class EnvioDTO {
 
     /* CONSTRUCTOR CON TODOS LOS CAMPOS */
 
-    public EnvioDTO(String remitente, String destinatario, String direccionEntrega, EstadoEnvio estado, String comprobanteEntrega) {
+    public EnvioDTO(String remitente, String destinatario, String direccionEntrega, EstadoEnvio estado, String comprobanteEntrega, List<PaqueteDTO> paquetes) {
         this.remitente = remitente;
         this.destinatario = destinatario;
         this.direccionEntrega = direccionEntrega;
         this.estado = estado;
         this.comprobanteEntrega = comprobanteEntrega;
+        this.paquetes = paquetes;
     }
 
     /* GETTERS Y SETTERS */
@@ -64,5 +67,13 @@ public class EnvioDTO {
 
     public void setComprobanteEntrega(String comprobanteEntrega) {
         this.comprobanteEntrega = comprobanteEntrega;
+    }
+
+    public List<PaqueteDTO> getPaquetes() {
+        return paquetes;
+    }
+
+    public void setPaquetes(List<PaqueteDTO> paquetes) {
+        this.paquetes = paquetes;
     }
 }
