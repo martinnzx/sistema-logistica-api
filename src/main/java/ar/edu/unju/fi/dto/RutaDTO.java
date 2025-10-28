@@ -15,4 +15,5 @@ public class RutaDTO {
     private Long id;
     private LocalDate fecha;
     private List<EnvioDTO> envios;
+    private VehiculoDTO vehiculo;
 }

@@ -17,7 +17,6 @@ public class RutaMapper {
         Ruta ruta = new Ruta();
         ruta.setId(dto.getId());
         ruta.setFecha(dto.getFecha());
-        /*
         if (dto.getEnvios() != null) {
             List<Envio> envios = new ArrayList<>();
             for (EnvioDTO envioDTO : dto.getEnvios()) {
@@ -25,8 +24,7 @@ public class RutaMapper {
                 envios.add(envio);
             }
             ruta.setEnvios(envios);
-        }*/ /* FIXME: EnvioMapper falta ToEntity */
-
+        }
         return ruta;
     }
     public static RutaDTO toDto(Ruta ruta) {
@@ -37,16 +35,15 @@ public class RutaMapper {
         RutaDTO dto = new RutaDTO();
         dto.setId(ruta.getId());
         dto.setFecha(ruta.getFecha());
-        /*
+
         if (ruta.getEnvios() != null) {
             List<EnvioDTO> enviosDTO = new ArrayList<>();
             for (Envio envio : ruta.getEnvios()) {
-                EnvioDTO envioDTO = EnvioMapper.toDto(envio);
+                EnvioDTO envioDTO = EnvioMapper.toDTO(envio);
                 enviosDTO.add(envioDTO);
             }
             dto.setEnvios(enviosDTO);
         }
-         */
         return dto;
     }
 }
