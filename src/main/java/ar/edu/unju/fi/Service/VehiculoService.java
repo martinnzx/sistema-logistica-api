@@ -18,6 +18,12 @@ public class VehiculoService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
+    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
+        Vehiculo vehiculo = VehiculoMapper.toEntity(vehiculoDTO);
+        Vehiculo vehiculoGuardado = vehiculoRepository.save(vehiculo);
+        return VehiculoMapper.toDTO(vehiculoGuardado);
+    }
+
     public List<VehiculoDTO> buscarVehiculosRefrigerados(Boolean refrigerado) {
         return vehiculoRepository.findByRefrigerado(refrigerado)
                 .stream()
@@ -39,10 +45,6 @@ public class VehiculoService {
                 .collect(Collectors.toList());
     }
 
-    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
-        Vehiculo vehiculo = VehiculoMapper.toEntity(vehiculoDTO);
-        Vehiculo vehiculoGuardado = vehiculoRepository.save(vehiculo);
-        return VehiculoMapper.toDTO(vehiculoGuardado);
-    }
+
 
 }
