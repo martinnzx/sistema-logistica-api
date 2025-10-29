@@ -30,17 +30,12 @@ public class RutaService {
 
     public RutaDTO crearRuta(RutaDTO dto) {
         if (dto == null) return null;
-
-        // 1️⃣ Obtener vehículo real por patente
         VehiculoDTO vehiculoDTO = dto.getVehiculo();
         if (vehiculoDTO == null || vehiculoDTO.getPatente() == null) {
-            throw new RuntimeException("Vehículo obligatorio");
+            throw new IllegalArgumentException("Vehículo obligatorio");
         }
-
         Vehiculo vehiculo = vehiculoRepository.findByPatente(vehiculoDTO.getPatente())
-                .orElseThrow(() -> new RuntimeException("Vehículo no encontrado"));
-
-        // 2️⃣ Guardar envíos
+                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
         List<Envio> enviosGuardados = new ArrayList<>();
         if (dto.getEnvios() != null) {
             for (EnvioDTO envioDTO : dto.getEnvios()) {
@@ -49,25 +44,14 @@ public class RutaService {
                 enviosGuardados.add(envioGuardado);
             }
         }
-
-        // 3️⃣ Validar compatibilidad y capacidad
         validarCompatibilidad(vehiculo, enviosGuardados);
         validarCapacidad(vehiculo, enviosGuardados);
-
-        // 4️⃣ Mapear DTO a entidad y asociar vehículo y envíos guardados
         Ruta ruta = RutaMapper.toEntity(dto);
         ruta.setVehiculo(vehiculo);
         ruta.setEnvios(enviosGuardados);
-
-        // 5️⃣ Guardar ruta en BD
         Ruta guardada = rutaRepository.save(ruta);
-
-        // 6️⃣ Mapear entidad a DTO
         RutaDTO rutaDTO = RutaMapper.toDto(guardada);
-
-        // 7️⃣ Asegurar que el DTO tenga Vehiculo completo
         rutaDTO.setVehiculo(VehiculoMapper.toDTO(vehiculo));
-
         return rutaDTO;
     }
 

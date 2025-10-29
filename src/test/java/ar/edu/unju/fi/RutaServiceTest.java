@@ -9,7 +9,7 @@ import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.RutaDTO;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.model.EstadoEnvio;
-import ar.edu.unju.fi.model.Vehiculo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +44,19 @@ public class RutaServiceTest {
 
     @BeforeEach
     void setUp() {
-        // 1️⃣ Crear y guardar vehículo usando VehiculoService
+
         vehiculoDTO = new VehiculoDTO("ABC123", 1000.0, 500.0, true);
         vehiculoDTO = vehiculoService.crearVehiculo(vehiculoDTO); // devuelve DTO con ID asignado
     }
 
     @Test
     void crearRuta_guardaCorrectamente() {
-        // 2️⃣ Crear DTO de ruta y asignar vehículo
+
         RutaDTO rutaDTO = new RutaDTO();
         rutaDTO.setFecha(LocalDate.now());
         rutaDTO.setVehiculo(vehiculoDTO);
 
-        // 3️⃣ Crear envíos
+
         EnvioDTO envio1 = new EnvioDTO();
         envio1.setRemitente("Juan");
         envio1.setDestinatario("Pedro");
@@ -73,17 +73,17 @@ public class RutaServiceTest {
 
         rutaDTO.setEnvios(List.of(envio1, envio2));
 
-        // 4️⃣ Llamar al service
+
         RutaDTO guardada = rutaService.crearRuta(rutaDTO);
 
-        // 5️⃣ Verificaciones
+
         assertNotNull(guardada, "La ruta guardada no debe ser nula");
         assertNotNull(guardada.getVehiculo(), "El vehículo del DTO no debe ser null");
         assertEquals("ABC123", guardada.getVehiculo().getPatente(), "El vehículo debe coincidir");
         assertEquals(LocalDate.now(), guardada.getFecha(), "La fecha debe coincidir");
         assertEquals(2, guardada.getEnvios().size(), "Debe tener 2 envíos");
 
-        // 6️⃣ Verificar en BD
+
         assertEquals(1, rutaRepository.count(), "Debe haberse guardado 1 ruta");
         assertEquals(2, envioRepository.count(), "Deben haberse guardado 2 envíos");
         assertEquals(1, vehiculoRepository.count(), "Debe existir 1 vehículo en BD");
@@ -91,12 +91,11 @@ public class RutaServiceTest {
 
     @Test
     void obtenerEnviosPorRutaYFecha_debeRetornarRutasCorrectamente() {
-        // Crear DTO de ruta
+
         RutaDTO rutaDTO = new RutaDTO();
         rutaDTO.setFecha(LocalDate.now());
         rutaDTO.setVehiculo(vehiculoDTO);
 
-        // Crear envíos
         EnvioDTO envio1 = new EnvioDTO();
         envio1.setRemitente("Juan");
         envio1.setDestinatario("Pedro");
