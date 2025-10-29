@@ -19,6 +19,12 @@ public class EnvioService {
         this.envioRepository = envioRepository;
     }
 
+    public EnvioDTO crearEnvio(EnvioDTO dto) {
+        Envio envio = EnvioMapper.toEntity(dto);
+        envio = envioRepository.save(envio);
+        return EnvioMapper.toDTO(envio);
+    }
+
     public List<EnvioDTO> listarPorRemitente(String remitente) {
         return envioRepository.findByRemitenteIgnoreCase(remitente)
                 .stream()
@@ -40,10 +46,6 @@ public class EnvioService {
                 .collect(Collectors.toList());
     }
 
-    public EnvioDTO crearEnvio(EnvioDTO dto) {
-        Envio envio = EnvioMapper.toEntity(dto);
-        envio = envioRepository.save(envio);
-        return EnvioMapper.toDTO(envio);
-    }
+
 
 }

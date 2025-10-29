@@ -5,8 +5,10 @@ import ar.edu.unju.fi.Repository.RutaRepository;
 import ar.edu.unju.fi.Repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.RutaDTO;
+import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.mapper.RutaMapper;
+import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.*;
 import org.springframework.stereotype.Service;
 
@@ -27,28 +29,32 @@ public class RutaService {
     }
 
     public RutaDTO crearRuta(RutaDTO dto) {
-        Vehiculo vehiculo = vehiculoRepository.findByPatente(dto.getVehiculo().getPatente())
-                .orElseThrow(() -> new RuntimeException("Vehículo no encontrado"));
-
-        List<Envio> envios = new ArrayList<>();
-
-        for (EnvioDTO envioDTO : dto.getEnvios()) {
-            Envio envio = EnvioMapper.toEntity(envioDTO);
-            Envio envioGuardado = envioRepository.save(envio);
-            envios.add(envioGuardado);
+        if (dto == null) return null;
+        VehiculoDTO vehiculoDTO = dto.getVehiculo();
+        if (vehiculoDTO == null || vehiculoDTO.getPatente() == null) {
+            throw new IllegalArgumentException("Vehículo obligatorio");
         }
-
-        validarCompatibilidad(vehiculo, envios);
-        validarCapacidad(vehiculo, envios);
-
+        Vehiculo vehiculo = vehiculoRepository.findByPatente(vehiculoDTO.getPatente())
+                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
+        List<Envio> enviosGuardados = new ArrayList<>();
+        if (dto.getEnvios() != null) {
+            for (EnvioDTO envioDTO : dto.getEnvios()) {
+                Envio envio = EnvioMapper.toEntity(envioDTO);
+                Envio envioGuardado = envioRepository.save(envio);
+                enviosGuardados.add(envioGuardado);
+            }
+        }
+        validarCompatibilidad(vehiculo, enviosGuardados);
+        validarCapacidad(vehiculo, enviosGuardados);
         Ruta ruta = RutaMapper.toEntity(dto);
         ruta.setVehiculo(vehiculo);
-        ruta.setEnvios(envios);
-
+        ruta.setEnvios(enviosGuardados);
         Ruta guardada = rutaRepository.save(ruta);
-
-        return RutaMapper.toDto(guardada);
+        RutaDTO rutaDTO = RutaMapper.toDto(guardada);
+        rutaDTO.setVehiculo(VehiculoMapper.toDTO(vehiculo));
+        return rutaDTO;
     }
+
 
     public List<RutaDTO> obtenerEnviosPorRutaYFecha(Long rutaId, LocalDate fecha) {
         List<Ruta> rutas = rutaRepository.findByIdAndFecha(rutaId, fecha);
