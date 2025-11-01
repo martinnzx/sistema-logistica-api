@@ -20,14 +20,20 @@ public class Envio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String remitente;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "remitente_id", nullable = false)
+    private Cliente remitente;
 
-    @NotBlank
-    private String destinatario;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "destinatario_id", nullable = false)
+    private Cliente destinatario;
 
     @NotBlank
     private String direccionEntrega;
+
+    @NotBlank
+    @Column(length = 10, nullable = false)
+    private String codigoPostal;
 
     /*@Enumerated(EnumType.STRING)
     @NotNull
