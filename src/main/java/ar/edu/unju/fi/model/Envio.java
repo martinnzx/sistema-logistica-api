@@ -1,5 +1,6 @@
 package ar.edu.unju.fi.model;
 
+import ar.edu.unju.fi.State.Estado;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -28,13 +29,15 @@ public class Envio {
     @NotBlank
     private String direccionEntrega;
 
-    @Enumerated(EnumType.STRING)
+    /*@Enumerated(EnumType.STRING)
     @NotNull
-    private EstadoEnvio estado;
+    //private EstadoEnvio estado;*/
 
     private String comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Paquete> paquetes;
 
+    @Transient
+    private Estado estadoN;
 }
