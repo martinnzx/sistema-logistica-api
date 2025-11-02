@@ -6,6 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import lombok.Getter;
+
+import lombok.Setter;
+
+@Getter
+@Setter
+
 public class HistorialEnvio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +30,11 @@ public class HistorialEnvio {
         this.observacion = observacion;
         this.fechayHora = fechayHora;
     }
-    public HistorialEnvio(Envio envio,Estado estadoAnterior, Estado estadoNuevo, String observacion) {
+    public HistorialEnvio(Envio envio,Estado estadoAnterior, Estado estadoNuevo, String observacion,String fechayHora) {
         this.envio = envio;
         this.anterior = estadoAnterior;
         this.nuevo = estadoNuevo;
         this.observacion = observacion;
-        this.fechayHora = java.time.LocalDateTime.now().toString();
+        this.fechayHora = fechayHora;
     }
 }
