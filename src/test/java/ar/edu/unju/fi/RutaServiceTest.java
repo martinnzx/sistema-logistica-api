@@ -8,7 +8,7 @@ import ar.edu.unju.fi.Service.VehiculoService;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.RutaDTO;
 import ar.edu.unju.fi.dto.VehiculoDTO;
-import ar.edu.unju.fi.model.EstadoEnvio;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,17 +2,18 @@ package ar.edu.unju.fi.State;
 
 import ar.edu.unju.fi.Repository.HistorialEnvioRepository;
 import ar.edu.unju.fi.model.Envio;
+import ar.edu.unju.fi.model.HistorialEnvio;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
 
+@Entity
+@DiscriminatorValue("Devuelto")
 public class Estado_Devuelto extends Estado {
 
-    public Estado_Devuelto(HistorialEnvioRepository repo) {
-        super(repo);
-    }
-
     @Override
-    public void FlujoEnvio(Envio envio) {
+    public void FlujoEnvio(Envio envio, HistorialEnvioRepository historialRepo) {
         System.out.println("El envio fue devuelto");
 
         LocalDateTime ahora = getAhora();
@@ -27,6 +28,6 @@ public class Estado_Devuelto extends Estado {
                 fechayHora
         );
 
-        historialEnvioRepository.save(historial);
+        historialRepo.save(historial);
     }
 }

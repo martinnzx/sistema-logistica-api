@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.dto;
 
-import ar.edu.unju.fi.model.NivelFragilidad;
+import ar.edu.unju.fi.Enum.NivelFragilidad;
 import lombok.*;
 
 @Getter

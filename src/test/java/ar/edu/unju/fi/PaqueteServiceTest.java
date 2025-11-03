@@ -3,7 +3,7 @@ package ar.edu.unju.fi;
 import ar.edu.unju.fi.Repository.PaqueteRepository;
 import ar.edu.unju.fi.Service.PaqueteService;
 import ar.edu.unju.fi.dto.PaqueteDTO;
-import ar.edu.unju.fi.model.NivelFragilidad;
+import ar.edu.unju.fi.Enum.NivelFragilidad;
 import ar.edu.unju.fi.model.PaqueteFragil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

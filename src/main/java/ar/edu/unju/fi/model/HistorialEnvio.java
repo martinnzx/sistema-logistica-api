@@ -1,25 +1,37 @@
-package ar.edu.unju.fi.State;
+package ar.edu.unju.fi.model;
 
 
-import ar.edu.unju.fi.model.Envio;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import ar.edu.unju.fi.State.Estado;
+import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class HistorialEnvio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "envio_id")
     private Envio envio;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_anterior_id")
     private Estado anterior;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_nuevo_id")
     private Estado nuevo;
+
     private String fechayHora;
     private String observacion;
 

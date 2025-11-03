@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.dto;
 
-import ar.edu.unju.fi.model.EstadoEnvio;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 import lombok.*;
 
 import java.util.List;

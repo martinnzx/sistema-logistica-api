@@ -35,15 +35,12 @@ public class Envio {
     @Column(length = 10, nullable = false)
     private String codigoPostal;
 
-    /*@Enumerated(EnumType.STRING)
-    @NotNull
-    //private EstadoEnvio estado;*/
-
     private String comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Paquete> paquetes;
 
-    @Transient
-    private Estado estadoN;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 }

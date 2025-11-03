@@ -1,11 +1,10 @@
 package ar.edu.unju.fi.Service;
 
 import ar.edu.unju.fi.Repository.EnvioRepository;
-import ar.edu.unju.fi.State.Estado_Generado;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.model.Envio;
-import ar.edu.unju.fi.model.EstadoEnvio;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 import ar.edu.unju.fi.model.Paquete;
 import ar.edu.unju.fi.model.PaqueteRefrigerado;
 import lombok.extern.slf4j.Slf4j;
