@@ -15,18 +15,21 @@ public class EnvioMapper {
             return null;
         }
 
-        List<PaqueteDTO> paquetesDTO = envio.getPaquetes().stream()
-                .map(PaqueteMapper::toDTO)
-                .collect(Collectors.toList());
+        List<PaqueteDTO> paquetesDTO = null;
+        if (envio.getPaquetes() != null) {
+            paquetesDTO = envio.getPaquetes().stream()
+                    .map(PaqueteMapper::toDTO)
+                    .collect(Collectors.toList());
+        }
 
-        return new EnvioDTO(
-                envio.getRemitente(),
-                envio.getDestinatario(),
-                envio.getDireccionEntrega(),
-                envio.getEstado(),
-                envio.getComprobanteEntrega(),
-                paquetesDTO
-        );
+        return EnvioDTO.builder()
+                .remitente(ClienteMapper.toDTO(envio.getRemitente()))
+                .destinatario(ClienteMapper.toDTO(envio.getDestinatario()))
+                .direccionEntrega(envio.getDireccionEntrega())
+                .estado(envio.getEstado())
+                .comprobanteEntrega(envio.getComprobanteEntrega())
+                .paquetes(paquetesDTO)
+                .build();
     }
 
     public static Envio toEntity(EnvioDTO dto) {
@@ -35,17 +38,18 @@ public class EnvioMapper {
         }
 
         Envio envio = new Envio();
-        envio.setRemitente(dto.getRemitente());
-        envio.setDestinatario(dto.getDestinatario());
+        envio.setRemitente(ClienteMapper.toEntity(dto.getRemitente()));
+        envio.setDestinatario(ClienteMapper.toEntity(dto.getDestinatario()));
         envio.setDireccionEntrega(dto.getDireccionEntrega());
         envio.setEstado(dto.getEstado());
         envio.setComprobanteEntrega(dto.getComprobanteEntrega());
 
         if (dto.getPaquetes() != null) {
-            List<Paquete> paquetes = dto.getPaquetes().stream()
-                    .map(PaqueteMapper::toEntity)
-                    .collect(Collectors.toList());
-            envio.setPaquetes(paquetes);
+            envio.setPaquetes(
+                    dto.getPaquetes().stream()
+                            .map(PaqueteMapper::toEntity)
+                            .collect(Collectors.toList())
+            );
         }
 
         return envio;
