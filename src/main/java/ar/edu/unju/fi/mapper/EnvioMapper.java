@@ -15,18 +15,25 @@ public class EnvioMapper {
             return null;
         }
 
-        List<PaqueteDTO> paquetesDTO = envio.getPaquetes().stream()
-                .map(PaqueteMapper::toDTO)
-                .collect(Collectors.toList());
+        List<PaqueteDTO> paquetesDTO = null;
+        if (envio.getPaquetes() != null) {
+            paquetesDTO = envio.getPaquetes().stream()
+                    .map(PaqueteMapper::toDTO)
+                    .collect(Collectors.toList());
+        }
 
-        return new EnvioDTO(
-                envio.getRemitente(),
-                envio.getDestinatario(),
-                envio.getDireccionEntrega(),
-                envio.getEstado(),
-                envio.getComprobanteEntrega(),
-                paquetesDTO
-        );
+        return EnvioDTO.builder()
+                .id(envio.getId()) //
+                .remitente(ClienteMapper.toDTO(envio.getRemitente()))
+                .destinatario(ClienteMapper.toDTO(envio.getDestinatario()))
+                .direccionEntrega(envio.getDireccionEntrega())
+                .codigoPostal(envio.getCodigoPostal())
+                .estado(envio.getEstado())
+                .requiereFrio(envio.getRequiereFrio())
+                .codigoUnico(envio.getCodigoUnico())
+                .comprobanteEntrega(envio.getComprobanteEntrega())
+                .paquetes(paquetesDTO)
+                .build();
     }
 
     public static Envio toEntity(EnvioDTO dto) {
@@ -35,17 +42,27 @@ public class EnvioMapper {
         }
 
         Envio envio = new Envio();
-        envio.setRemitente(dto.getRemitente());
-        envio.setDestinatario(dto.getDestinatario());
+
+        // Mapea el ID (importante para actualizaciones, será null para creaciones)
+        envio.setId(dto.getId());
+
+        envio.setRemitente(ClienteMapper.toEntity(dto.getRemitente()));
+        envio.setDestinatario(ClienteMapper.toEntity(dto.getDestinatario()));
         envio.setDireccionEntrega(dto.getDireccionEntrega());
-        envio.setEstado(dto.getEstado());
+        envio.setCodigoPostal(dto.getCodigoPostal()); // <-- Crítico que esté
+        envio.setRequiereFrio(dto.getRequiereFrio()); // <-- Crítico que esté
         envio.setComprobanteEntrega(dto.getComprobanteEntrega());
 
+        // NO MAPEAR:
+        // envio.setEstado(dto.getEstado()); // <-- BORRAR ESTO
+        // envio.setCodigoUnico(dto.getCodigoUnico()); // <-- BORRAR ESTO
+
         if (dto.getPaquetes() != null) {
-            List<Paquete> paquetes = dto.getPaquetes().stream()
-                    .map(PaqueteMapper::toEntity)
-                    .collect(Collectors.toList());
-            envio.setPaquetes(paquetes);
+            envio.setPaquetes(
+                    dto.getPaquetes().stream()
+                            .map(PaqueteMapper::toEntity)
+                            .collect(Collectors.toList())
+            );
         }
 
         return envio;

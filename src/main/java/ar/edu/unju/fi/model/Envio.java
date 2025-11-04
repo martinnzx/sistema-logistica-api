@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -48,6 +49,6 @@ public class Envio {
     private String comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Paquete> paquetes;
+    private List<Paquete> paquetes = new ArrayList<>();;
 
 }

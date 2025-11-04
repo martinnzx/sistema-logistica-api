@@ -12,10 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class EnvioDTO {
-    private Cliente remitente;
-    private Cliente destinatario;
+    private ClienteDTO remitente;
+    private ClienteDTO destinatario;
     private String direccionEntrega;
     private EstadoEnvio estado;
     private String comprobanteEntrega;
     private List<PaqueteDTO> paquetes;
+    private Long id;
+    private String codigoPostal;
+    private Boolean requiereFrio;
+    private String codigoUnico;
 }

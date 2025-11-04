@@ -1,26 +1,38 @@
 package ar.edu.unju.fi.Service;
 
+import ar.edu.unju.fi.dto.ClienteDTO;
+import ar.edu.unju.fi.mapper.ClienteMapper;
 import ar.edu.unju.fi.model.Cliente;
 import ar.edu.unju.fi.Repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public Cliente getById(Long id) {
-        return clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + id));
+    public ClienteDTO crearCliente(ClienteDTO dto) {
+        log.info("Creando nuevo cliente: {}", dto.getNombreRazonSocial());
+
+        Cliente cliente = ClienteMapper.toEntity(dto);
+        Cliente guardado = clienteRepository.save(cliente);
+
+        log.info("Cliente guardado exitosamente con ID: {}", guardado.getId());
+        return ClienteMapper.toDTO(guardado);
     }
 
-    public Cliente getByDocumentoOCuit(String doc) {
-        return clienteRepository.findByDocumentoOCuit(doc);
-    }
+    public ClienteDTO buscarPorDocumentoOCuit(String doc) {
+        log.info("Buscando cliente con documento/CUIT: {}", doc);
 
-    public Cliente save(Cliente cliente) {
-        return clienteRepository.save(cliente);
+        Cliente cliente = clienteRepository.findByDocumentoOCuit(doc);
+        if (cliente == null) {
+            throw new RuntimeException("Cliente no encontrado con documento o CUIT: " + doc);
+        }
+
+        return ClienteMapper.toDTO(cliente);
     }
 }
