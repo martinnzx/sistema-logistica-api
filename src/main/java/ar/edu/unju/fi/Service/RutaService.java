@@ -31,8 +31,14 @@ public class RutaService {
     }
 
     public RutaDTO crearRuta(RutaDTO dto) {
-        if (dto == null) return null;
+        if (dto == null) {
+            log.error("Intento de crear ruta con DTO nulo.");
+            return null;
+        }
+
+        log.info("Creando ruta con vehículo: {}", dto.getVehiculo() != null ? dto.getVehiculo().getPatente() : "sin vehículo");
         VehiculoDTO vehiculoDTO = dto.getVehiculo();
+
         if (vehiculoDTO == null || vehiculoDTO.getPatente() == null) {
             throw new IllegalArgumentException("Vehículo obligatorio");
         }
@@ -40,6 +46,7 @@ public class RutaService {
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
         List<Envio> enviosGuardados = new ArrayList<>();
         if (dto.getEnvios() != null) {
+            log.info("Guardando {} envíos asociados a la ruta.", dto.getEnvios().size());
             for (EnvioDTO envioDTO : dto.getEnvios()) {
                 Envio envio = EnvioMapper.toEntity(envioDTO);
                 Envio envioGuardado = envioRepository.save(envio);
@@ -55,6 +62,7 @@ public class RutaService {
         ruta.setEnvios(enviosGuardados);
 
         Ruta guardada = rutaRepository.save(ruta);
+        log.info("Ruta creada exitosamente con ID: {}", guardada.getId());
 
         RutaDTO rutaDTO = RutaMapper.toDto(guardada);
         rutaDTO.setVehiculo(VehiculoMapper.toDTO(vehiculo));
@@ -63,9 +71,13 @@ public class RutaService {
 
 
     public List<RutaDTO> obtenerEnviosPorRutaYFecha(Long rutaId, LocalDate fecha) {
+        log.info("Consultando rutas para rutaId={} en fecha={}", rutaId, fecha);
         List<Ruta> rutas = rutaRepository.findByIdAndFecha(rutaId, fecha);
         List<RutaDTO> rutasDTO = new ArrayList<>();
 
+        if (rutas.isEmpty()) {
+            throw new IllegalArgumentException("No se encontro el ruta con ID: " + rutaId);
+        }
         for (Ruta ruta : rutas) {
             RutaDTO dto = RutaMapper.toDto(ruta);
             rutasDTO.add(dto);
@@ -75,6 +87,7 @@ public class RutaService {
     }
 
     private void validarCompatibilidad(Vehiculo vehiculo, List<Envio> envios) {
+        log.debug("Validando compatibilidad de paquetes con vehículo {}", vehiculo.getPatente());
         for (Envio envio : envios) {
             for (Paquete paquete : envio.getPaquetes()) {
                 if (paquete instanceof PaqueteRefrigerado && !vehiculo.getRefrigerado()) {
@@ -85,6 +98,7 @@ public class RutaService {
     }
 
     private void validarCapacidad(Vehiculo vehiculo, List<Envio> envios) {
+        log.debug("Validando capacidad del vehículo {}", vehiculo.getPatente());
         double pesoTotal = 0.0;
         double volumenTotal = 0.0;
 
@@ -94,7 +108,7 @@ public class RutaService {
                 volumenTotal += paquete.getVolumenDm3();
             }
         }
-
+        log.debug("Peso total: {} kg, Volumen total: {} dm3", pesoTotal, volumenTotal);
         if (pesoTotal > vehiculo.getCapacidadMaxPesoKg()) {
             throw new IllegalArgumentException("El peso total (" + pesoTotal + " kg) supera la capacidad del vehículo");
         }
@@ -104,6 +118,7 @@ public class RutaService {
         }
     }
     private void validarTemperaturaPaquetes(Vehiculo vehiculo, List<Envio> envios) {
+        log.debug("Validando temperatura de paquetes para vehículo {}", vehiculo.getPatente());
         Double rangoMinVeh = vehiculo.getRangoTemperaturaMin();
         Double rangoMaxVeh = vehiculo.getRangoTemperaturaMax();
         if (rangoMinVeh == null || rangoMaxVeh == null) {
