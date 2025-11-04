@@ -12,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class EnvioDTO {
-    private Cliente remitente;
-    private Cliente destinatario;
+    private ClienteDTO remitente;
+    private ClienteDTO destinatario;
     private String direccionEntrega;
     private EstadoEnvio estado;
     private String comprobanteEntrega;
