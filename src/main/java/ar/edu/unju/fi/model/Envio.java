@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.model;
 
-import ar.edu.unju.fi.State.Estado;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -20,30 +20,34 @@ public class Envio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "remitente_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "remitente_id")
+    @NotNull
     private Cliente remitente;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "destinatario_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "destinatario_id")
+    @NotNull
     private Cliente destinatario;
 
     @NotBlank
     private String direccionEntrega;
 
     @NotBlank
-    @Column(length = 10, nullable = false)
     private String codigoPostal;
 
-    /*@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @NotNull
-    //private EstadoEnvio estado;*/
+    private EstadoEnvio estado;
+
+    private Boolean requiereFrio = false;
+
+    @Column(unique = true, nullable = false)
+    private String codigoUnico;
 
     private String comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Paquete> paquetes;
 
-    @Transient
-    private Estado estadoN;
 }

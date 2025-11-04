@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.dto;
 
-import ar.edu.unju.fi.model.EstadoEnvio;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 import lombok.*;
 
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class EnvioDTO {
-    private String remitente;
-    private String destinatario;
+    private ClienteDTO remitente;
+    private ClienteDTO destinatario;
     private String direccionEntrega;
     private EstadoEnvio estado;
     private String comprobanteEntrega;

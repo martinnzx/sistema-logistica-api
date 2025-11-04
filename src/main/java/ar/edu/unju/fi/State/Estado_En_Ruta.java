@@ -1,20 +1,34 @@
 package ar.edu.unju.fi.State;
 
+import ar.edu.unju.fi.Repository.HistorialEnvioRepository;
 import ar.edu.unju.fi.model.Envio;
+import ar.edu.unju.fi.model.HistorialEnvio;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+import java.time.LocalDateTime;
+
+@Entity
+@DiscriminatorValue("EstadoEnRuta")
 public class Estado_En_Ruta extends Estado {
-    @Override
-    public void FlujoEnvio(Envio envio) {
-        System.out.println("El envio se encuentra en Ruta");// log.info("Estado_En_Almacen del envio");
 
-        Estado nuevo_Estado = new Estado_Generado();
+    @Override
+    public void FlujoEnvio(Envio envio, HistorialEnvioRepository historialRepo) {
+        System.out.println("El envio se encuentra en Ruta");
+
+        LocalDateTime ahora = getAhora();
+        String fechayHora = "El Envio preparado para entregar a las " + ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha);
+
+        Estado anterior = this;
+        Estado nuevo = new Estado_Entregado();
         HistorialEnvio historial = new HistorialEnvio(
                 envio,
-                this,
-                "Envio en Ruta",
-                "El Envio en Ruta a las " +  ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha)
+                anterior,
+                nuevo,
+                "Envio se encuentra listo para Entregar",
+                fechayHora
         );
-        //historialEnvioRepository.save(historial);
-        envio.setEstadoN(nuevo_Estado);
+        historialRepo.save(historial);
+        envio.setEstado(nuevo);
     }
 }

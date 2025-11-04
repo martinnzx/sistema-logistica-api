@@ -1,20 +1,32 @@
 package ar.edu.unju.fi.State;
 
+import ar.edu.unju.fi.Repository.HistorialEnvioRepository;
 import ar.edu.unju.fi.model.Envio;
+import ar.edu.unju.fi.model.HistorialEnvio;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-public class Estado_Cancelado extends  Estado{
+import java.time.LocalDateTime;
+
+@Entity
+@DiscriminatorValue("CANCELADO")
+public class Estado_Cancelado extends Estado{
+
     @Override
-    public void FlujoEnvio(Envio envio) {
-        System.out.println("El Envio ah sido cancelado");// log.info("Estado_En_Almacen del envio");
+    public void FlujoEnvio(Envio envio, HistorialEnvioRepository historialRepo) {
+        System.out.println("El Envio ha sido cancelado");
 
-        Estado nuevo_Estado = new Estado_Generado();
+        LocalDateTime ahora = getAhora();
+        String fechayHora = "El Envio CANCELADO a las " + ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha);
+
+        Estado estado = this;
+
         HistorialEnvio historial = new HistorialEnvio(
                 envio,
-                this,
-                "Envio CANCELADO",
-                "El Envio CANCELADO a las " +  ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha)
+                estado,
+                "Envio CANCELADO por el remitente",
+                fechayHora
         );
-        //historialEnvioRepository.save(historial);
-        envio.setEstadoN(nuevo_Estado);
+        historialRepo.save(historial);
     }
 }

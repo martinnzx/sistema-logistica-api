@@ -2,7 +2,7 @@ package ar.edu.unju.fi.Repository;
 
 
 import ar.edu.unju.fi.model.Envio;
-import ar.edu.unju.fi.model.EstadoEnvio;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

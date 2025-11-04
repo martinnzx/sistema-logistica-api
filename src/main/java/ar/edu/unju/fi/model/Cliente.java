@@ -2,37 +2,37 @@ package ar.edu.unju.fi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 @Entity
-@Table(name = "Clientes")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name="clientes")
 public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
-    private String nombre;
+    private String nombreRazonSocial;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
-    private String documento;
+    private String documentoOCuit;
 
     @NotBlank
-    @Column(nullable = false)
     private String telefono;
 
+    @Email
+    private String email;
+
     @NotBlank
-    @Column(nullable = false)
     private String direccionPrincipal;
 
     @NotBlank
-    @Column(length = 10, nullable = false)
     private String codigoPostal;
 }

@@ -4,8 +4,8 @@ package ar.edu.unju.fi;
 import ar.edu.unju.fi.Service.EnvioService;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.PaqueteDTO;
-import ar.edu.unju.fi.model.EstadoEnvio;
-import ar.edu.unju.fi.model.NivelFragilidad;
+import ar.edu.unju.fi.Enum.EstadoEnvio;
+import ar.edu.unju.fi.Enum.NivelFragilidad;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

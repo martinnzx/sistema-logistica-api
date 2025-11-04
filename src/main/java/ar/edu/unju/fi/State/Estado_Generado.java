@@ -2,22 +2,32 @@ package ar.edu.unju.fi.State;
 
 import ar.edu.unju.fi.Repository.HistorialEnvioRepository;
 import ar.edu.unju.fi.model.Envio;
+import ar.edu.unju.fi.model.HistorialEnvio;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+import java.time.LocalDateTime;
+
+@Entity
+@DiscriminatorValue("GENERADO")
 public class Estado_Generado extends Estado{
-    @Override
-    public void FlujoEnvio(Envio envio) {
-        System.out.println("Envio Generado ");
 
-        Estado nuevo_Estado = new Estado_Generado();
+    @Override
+    public void FlujoEnvio(Envio envio, HistorialEnvioRepository historialRepo) {
+        Estado nuevo = new Estado_En_Almacen();
+
+        LocalDateTime ahora = getAhora();
+        String fechaHora = "Cambio a EN_ALMACÉN a las " +
+                ahora.format(formatoHora) + " del día " + ahora.format(formatoFecha);
+
         HistorialEnvio historial = new HistorialEnvio(
                 envio,
                 this,
-                "Envio Generado",
-                "El Envio fue generado a las " +  ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha)
+                nuevo,
+                "Envío listo para almacenarse",
+                fechaHora
         );
-        //HistorialEnvioRepository.save(historial);
-
-        envio.setEstadoN(nuevo_Estado);
-
+        historialRepo.save(historial);
+        envio.setEstado(nuevo);
     }
 }

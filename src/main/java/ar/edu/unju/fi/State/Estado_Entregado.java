@@ -2,26 +2,35 @@ package ar.edu.unju.fi.State;
 
 import ar.edu.unju.fi.Repository.HistorialEnvioRepository;
 import ar.edu.unju.fi.model.Envio;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import ar.edu.unju.fi.model.HistorialEnvio;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+import java.time.LocalDateTime;
 
-public class Estado_Entregado extends Estado{
-
+@Entity
+@DiscriminatorValue("ENTREGADO")
+public class Estado_Entregado extends Estado {
 
     @Override
-    public void FlujoEnvio(Envio envio) {
-        System.out.println("Envio Entregado");
+    public void FlujoEnvio(Envio envio, HistorialEnvioRepository historialRepo) {
+        System.out.println("El envío ID: " + envio.getId() + " ya fue ENTREGADO. No hay más acciones.");
+        LocalDateTime ahora = getAhora();
+        String fechayHora = "El Envio ENTREGADO en la sucursal a las " + ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha);
 
-        Estado nuevo_Estado = new Estado_Generado();
+        Estado estado = this;
         HistorialEnvio historial = new HistorialEnvio(
                 envio,
-                this,
-                "Envio Entregado",
-                "El Envio fue Entregado a las " +  ahora.format(formatoHora) + " del dia " + ahora.format(formatoFecha)
+                estado,
+                "Envio Entregado al destinatario",
+                fechayHora
         );
-        //historialEnvioRepository.save(historial);
-        envio.setEstadoN(nuevo_Estado);
+        historialRepo.save(historial);
+        ComprobanteEntrega(envio.getId(), historial.getId());
+    }
 
+    public void ComprobanteEntrega(Long idEnvio, Long idHistorial) {
+        System.out.println("El paquete entregado a DESTINATARIO con firma: .......");
+        System.out.println("El envio con Identificador: " + idEnvio + " y Historial con Identificador: " + idHistorial);
     }
 }
