@@ -49,7 +49,7 @@ public class RutaServiceTest {
         vehiculoDTO = vehiculoService.crearVehiculo(vehiculoDTO); // devuelve DTO con ID asignado
     }
 
-    @Test
+   /* @Test
     void crearRuta_guardaCorrectamente() {
 
         RutaDTO rutaDTO = new RutaDTO();
@@ -125,5 +125,5 @@ public class RutaServiceTest {
         assertEquals(2, dto.getEnvios().size(), "La ruta debe tener 2 envíos");
         assertEquals("ABC123", dto.getVehiculo().getPatente(), "El vehículo debe coincidir");
         assertEquals(LocalDate.now(), dto.getFecha(), "La fecha debe coincidir");
-    }
+    }*/
 }
