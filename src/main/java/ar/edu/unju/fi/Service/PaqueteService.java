@@ -4,6 +4,7 @@ import ar.edu.unju.fi.Repository.PaqueteRepository;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.mapper.PaqueteMapper;
 import ar.edu.unju.fi.model.Paquete;
+import ar.edu.unju.fi.model.PaqueteRefrigerado;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class PaqueteService {
 
     public PaqueteDTO crearPaquete(PaqueteDTO dto) {
         Paquete paquete = PaqueteMapper.toEntity(dto);
+        validarTemperaturaPaquete(paquete);
         Paquete guardado = paqueteRepository.save(paquete);
         return PaqueteMapper.toDTO(guardado);
     }
@@ -43,5 +45,25 @@ public class PaqueteService {
         }
         return pDTO;
 
+    }
+    private void validarTemperaturaPaquete(Paquete paquete) {
+        if (paquete instanceof PaqueteRefrigerado) {
+            PaqueteRefrigerado pRef = (PaqueteRefrigerado) paquete;
+
+            Double tempObj = pRef.getTemperaturaObjetivo();
+            Double rangoMin = pRef.getRangoMin();
+            Double rangoMax = pRef.getRangoMax();
+
+            if (tempObj == null || rangoMin == null || rangoMax == null) {
+                throw new IllegalArgumentException("Faltan datos de temperatura en el paquete refrigerado");
+            }
+
+            if (tempObj < rangoMin || tempObj > rangoMax) {
+                throw new IllegalArgumentException(
+                        "La temperatura objetivo (" + tempObj + "°C) está fuera del rango permitido [" +
+                                rangoMin + "°C - " + rangoMax + "°C]"
+                );
+            }
+        }
     }
 }

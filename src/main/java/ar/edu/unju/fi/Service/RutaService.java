@@ -10,12 +10,14 @@ import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.mapper.RutaMapper;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class RutaService {
     private EnvioRepository envioRepository;
@@ -46,10 +48,14 @@ public class RutaService {
         }
         validarCompatibilidad(vehiculo, enviosGuardados);
         validarCapacidad(vehiculo, enviosGuardados);
+        validarTemperaturaPaquetes(vehiculo, enviosGuardados);
+
         Ruta ruta = RutaMapper.toEntity(dto);
         ruta.setVehiculo(vehiculo);
         ruta.setEnvios(enviosGuardados);
+
         Ruta guardada = rutaRepository.save(ruta);
+
         RutaDTO rutaDTO = RutaMapper.toDto(guardada);
         rutaDTO.setVehiculo(VehiculoMapper.toDTO(vehiculo));
         return rutaDTO;
@@ -97,5 +103,28 @@ public class RutaService {
             throw new IllegalArgumentException("El volumen total (" + volumenTotal + " dm3) supera la capacidad del vehículo");
         }
     }
+    private void validarTemperaturaPaquetes(Vehiculo vehiculo, List<Envio> envios) {
+        Double rangoMinVeh = vehiculo.getRangoTemperaturaMin();
+        Double rangoMaxVeh = vehiculo.getRangoTemperaturaMax();
+        if (rangoMinVeh == null || rangoMaxVeh == null) {
+            throw new IllegalArgumentException("El vehículo refrigerado no tiene definido su rango de temperatura.");
+        }
 
+        for (Envio envio : envios) {
+            for (Paquete paquete : envio.getPaquetes()) {
+                if (paquete instanceof PaqueteRefrigerado) {
+                    PaqueteRefrigerado pRef = (PaqueteRefrigerado) paquete;
+
+                    Double tempObj = pRef.getTemperaturaObjetivo();
+
+                    if (tempObj < rangoMinVeh || tempObj > rangoMaxVeh) {
+                        throw new IllegalArgumentException(
+                                "El vehículo no puede mantener la temperatura requerida (" + tempObj + "°C). " +
+                                        "Su rango es [" + rangoMinVeh + "°C - " + rangoMaxVeh + "°C]."
+                        );
+                    }
+                }
+            }
+        }
+    }
 }
