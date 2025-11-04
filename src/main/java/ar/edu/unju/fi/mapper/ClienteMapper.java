@@ -18,14 +18,20 @@ public class ClienteMapper {
     }
 
     public static Cliente toEntity(ClienteDTO dto) {
-        return Cliente.builder()
-                .id(dto.getId())
-                .nombreRazonSocial(dto.getNombreRazonSocial())
-                .documentoOCuit(dto.getDocumentoOCuit())
-                .telefono(dto.getTelefono())
-                .email(dto.getEmail())
-                .direccionPrincipal(dto.getDireccionPrincipal())
-                .codigoPostal(dto.getCodigoPostal())
-                .build();
+        if (dto == null) {
+            return null;
+        }
+        Cliente cliente = new Cliente();
+
+        cliente.setId(dto.getId());
+
+        cliente.setNombreRazonSocial(dto.getNombreRazonSocial());
+        cliente.setDocumentoOCuit(dto.getDocumentoOCuit());
+        cliente.setTelefono(dto.getTelefono());
+        cliente.setEmail(dto.getEmail());
+        cliente.setDireccionPrincipal(dto.getDireccionPrincipal());
+        cliente.setCodigoPostal(dto.getCodigoPostal());
+
+        return cliente;
     }
 }

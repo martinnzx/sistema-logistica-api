@@ -18,4 +18,8 @@ public class EnvioDTO {
     private EstadoEnvio estado;
     private String comprobanteEntrega;
     private List<PaqueteDTO> paquetes;
+    private Long id;
+    private String codigoPostal;
+    private Boolean requiereFrio;
+    private String codigoUnico;
 }
