@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface EnvioRepository extends JpaRepository<Envio,Long> {
-    List<Envio> findByRemitenteIgnoreCase(String remitente);
+    List<Envio> findByRemitente_DocumentoOCuitIgnoreCase(String documentoOCuit);
 
-    List<Envio> findByDestinatarioIgnoreCase(String destinatario);
+    List<Envio> findByDestinatario_DocumentoOCuitIgnoreCase(String documentoOCuit);
 
     List<Envio> findByEstado(EstadoEnvio estado);
 }
