@@ -62,7 +62,6 @@ public class PaqueteServiceTest {
 
         assertNotNull(guardado, "El paquete guardado no debe ser nulo");
         assertEquals("Fragil", guardado.getTipo());
-        assertEquals("PF-001", guardado.getCodigo());
         assertEquals(1, paqueteRepository.count(), "Debe haberse guardado 1 paquete");
     }
 

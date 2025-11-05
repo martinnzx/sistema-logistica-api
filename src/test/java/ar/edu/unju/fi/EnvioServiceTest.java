@@ -1,6 +1,8 @@
 package ar.edu.unju.fi;
 
 
+import ar.edu.unju.fi.Repository.EnvioRepository;
+import ar.edu.unju.fi.Repository.HistorialEstadoEnvioRepository;
 import ar.edu.unju.fi.Service.ClienteService;
 import ar.edu.unju.fi.Service.EnvioService;
 import ar.edu.unju.fi.dto.ClienteDTO;
@@ -9,6 +11,7 @@ import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.Enum.EstadoEnvio;
 import ar.edu.unju.fi.Enum.NivelFragilidad;
 
+import ar.edu.unju.fi.model.Envio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -30,14 +32,20 @@ public class EnvioServiceTest {
     private EnvioService envioService;
 
     @Autowired
-    private ClienteService clienteService; // <- Necesario para crear clientes
+    private ClienteService clienteService;
 
-    private ClienteDTO clienteJuan;
-    private ClienteDTO clienteMaria;
-    private ClienteDTO clienteCarlos;
-    private ClienteDTO clientePedro;
-    private ClienteDTO clienteHector;
-    private ClienteDTO clienteAle;
+    @Autowired
+    private EnvioRepository envioRepository;
+
+    @Autowired
+    private HistorialEstadoEnvioRepository HistorialEstadoEnvioRepository;
+
+    private ClienteDTO Juan;
+    private ClienteDTO Maria;
+    private ClienteDTO Carlos;
+    private ClienteDTO Pedro;
+    private ClienteDTO Hector;
+    private ClienteDTO Ale;
 
     private PaqueteDTO p1;
     private PaqueteDTO p2;
@@ -67,12 +75,12 @@ public class EnvioServiceTest {
         ClienteDTO hectorDTO = ClienteDTO.builder().nombreRazonSocial("Hector").documentoOCuit("555").telefono("123").email("h@h.com").direccionPrincipal("Dir 5").codigoPostal("5000").build();
         ClienteDTO aleDTO = ClienteDTO.builder().nombreRazonSocial("Ale").documentoOCuit("666").telefono("123").email("a@a.com").direccionPrincipal("Dir 6").codigoPostal("6000").build();
 
-        clienteJuan = clienteService.crearCliente(juanDTO);
-        clienteMaria = clienteService.crearCliente(mariaDTO);
-        clienteCarlos = clienteService.crearCliente(carlosDTO);
-        clientePedro = clienteService.crearCliente(pedroDTO);
-        clienteHector = clienteService.crearCliente(hectorDTO);
-        clienteAle = clienteService.crearCliente(aleDTO);
+        Juan = clienteService.crearCliente(juanDTO);
+        Maria = clienteService.crearCliente(mariaDTO);
+        Carlos = clienteService.crearCliente(carlosDTO);
+        Pedro = clienteService.crearCliente(pedroDTO);
+        Hector = clienteService.crearCliente(hectorDTO);
+        Ale = clienteService.crearCliente(aleDTO);
     }
 
     @Test
@@ -81,8 +89,8 @@ public class EnvioServiceTest {
         paquetesDTO.add(p1);
 
         EnvioDTO dto = new EnvioDTO();
-        dto.setRemitente(clienteJuan);
-        dto.setDestinatario(clienteMaria);
+        dto.setRemitente(Juan);
+        dto.setDestinatario(Maria);
         dto.setDireccionEntrega("Calle Falsa 123");
         dto.setCodigoPostal("4600");
 
@@ -93,9 +101,9 @@ public class EnvioServiceTest {
         assertNotNull(guardado.getId());
         assertNotNull(guardado.getCodigoUnico());
         assertEquals(EstadoEnvio.GENERADO, guardado.getEstado());
-        assertEquals(clienteJuan.getId(), guardado.getRemitente().getId());
+        assertEquals(Juan.getId(), guardado.getRemitente().getId());
         assertEquals("Juan Perez", guardado.getRemitente().getNombreRazonSocial());
-        assertEquals(clienteMaria.getId(), guardado.getDestinatario().getId());
+        assertEquals(Maria.getId(), guardado.getDestinatario().getId());
         assertEquals("Maria Gomez", guardado.getDestinatario().getNombreRazonSocial());
     }
 
@@ -103,8 +111,8 @@ public class EnvioServiceTest {
     void listarPorRemitente() {
 
         EnvioDTO dto1 = EnvioDTO.builder()
-                .remitente(clienteJuan)
-                .destinatario(clientePedro)
+                .remitente(Juan)
+                .destinatario(Pedro)
                 .direccionEntrega("Calle 1")
                 .codigoPostal("1001")
                 .paquetes(List.of(p1))
@@ -112,8 +120,8 @@ public class EnvioServiceTest {
         envioService.crearEnvio(dto1);
 
         EnvioDTO dto2 = EnvioDTO.builder()
-                .remitente(clienteCarlos)
-                .destinatario(clienteJuan)
+                .remitente(Carlos)
+                .destinatario(Juan)
                 .direccionEntrega("Calle 2")
                 .codigoPostal("1002")
                 .paquetes(List.of(p2))
@@ -122,14 +130,14 @@ public class EnvioServiceTest {
 
         List<EnvioDTO> resultado = envioService.listarPorRemitente("111");
         assertEquals(1, resultado.size(), "Solo debería encontrar 1 envío con remitente '111'.");
-        assertEquals(clienteJuan.getId(), resultado.get(0).getRemitente().getId(), "El remitente del envío encontrado debe ser 'Juan'.");
+        assertEquals(Juan.getId(), resultado.get(0).getRemitente().getId(), "El remitente del envío encontrado debe ser 'Juan'.");
     }
 
     @Test
     void listarPorDestinatario() {
         EnvioDTO dto1 = EnvioDTO.builder()
-                .remitente(clienteJuan)
-                .destinatario(clienteAle)
+                .remitente(Juan)
+                .destinatario(Ale)
                 .direccionEntrega("Calle 1")
                 .codigoPostal("1001")
                 .paquetes(List.of(p1))
@@ -138,8 +146,8 @@ public class EnvioServiceTest {
 
 
         EnvioDTO dto2 = EnvioDTO.builder()
-                .remitente(clienteCarlos)
-                .destinatario(clienteHector)
+                .remitente(Carlos)
+                .destinatario(Hector)
                 .direccionEntrega("Calle 2")
                 .codigoPostal("1002")
                 .paquetes(List.of(p2))
@@ -149,6 +157,65 @@ public class EnvioServiceTest {
         List<EnvioDTO> resultado = envioService.listarPorDestinatario("555"); // Buscar por doc de Hector
 
         assertEquals(1, resultado.size(), "Solo debería encontrar 1 envío con destinatario '555'.");
-        assertEquals(clienteHector.getId(), resultado.get(0).getDestinatario().getId(), "El destinatario del envío encontrado debe ser 'Hector'.");
+        assertEquals(Hector.getId(), resultado.get(0).getDestinatario().getId(), "El destinatario del envío encontrado debe ser 'Hector'.");
+    }
+    private Envio crearEnvioBase() {
+        EnvioDTO dto = EnvioDTO.builder()
+                .remitente(Juan)
+                .destinatario(Maria)
+                .direccionEntrega("Calle Falsa 123")
+                .codigoPostal("4600")
+                .paquetes(List.of(p1))
+                .build();
+
+        EnvioDTO guardadoDTO = envioService.crearEnvio(dto);
+
+        return envioRepository.findById(guardadoDTO.getId()).orElseThrow();
+    }
+    @Test
+    void avanzarEstado_deberiaCambiarDeGeneradoAEnRutaYRegistrarHistorial() {
+        Envio envio = crearEnvioBase();
+        Long envioId = envio.getId();
+        String observacion = "Sale a reparto con vehículo X.";
+
+        envioService.avanzarEstado(envioId, observacion);
+
+        Envio envioActualizado = envioRepository.findById(envioId).orElseThrow();
+        assertEquals(EstadoEnvio.EN_ALMACEN, envioActualizado.getEstado(), "El estado debe cambiar a EN_RUTA.");
+        assertEquals(2, HistorialEstadoEnvioRepository.count(), "Deben haber 2 registros en el historial: Generado y En Ruta.");
+
+        envioService.avanzarEstado(envioId, observacion);
+        assertEquals(EstadoEnvio.EN_RUTA, envioActualizado.getEstado(), "El estado debe cambiar a EN_RUTA.");
+
+    }
+
+    @Test
+    void cancelarEnvio_deberiaCambiarAEstadoCanceladoYRegistrarHistorial() {
+        Envio envio = crearEnvioBase();
+        Long envioId = envio.getId();
+        String observacion = "Cancelación solicitada por el remitente.";
+
+        envioService.cancelarEnvio(envioId, observacion);
+
+        Envio envioActualizado = envioRepository.findById(envioId).orElseThrow();
+        assertEquals(EstadoEnvio.CANCELADO, envioActualizado.getEstado(), "El estado debe cambiar a CANCELADO.");
+
+        assertEquals(2, HistorialEstadoEnvioRepository.count(), "Deben haber 2 registros en el historial: Generado y Cancelado.");
+    }
+
+    @Test
+    void devolverEnvio_deberiaLanzarExcepcionDesdeEstadoGenerado() {
+        Envio envio = crearEnvioBase();
+        Long envioId = envio.getId();
+        String observacion = "Intento de devolución prematura.";
+
+        assertThrows(RuntimeException.class, () -> {
+            envioService.devolverEnvio(envioId, observacion);
+        }, "Devolver un envío en estado GENERADO debe lanzar una excepción.");
+
+        Envio envioSinCambios = envioRepository.findById(envioId).orElseThrow();
+        assertEquals(EstadoEnvio.GENERADO, envioSinCambios.getEstado(), "El estado debe permanecer en GENERADO.");
+
+        assertEquals(1, HistorialEstadoEnvioRepository.count(), "Solo debe haber 1 registro (GENERADO) en el historial.");
     }
 }
