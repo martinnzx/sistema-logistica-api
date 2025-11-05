@@ -1,10 +1,8 @@
 package ar.edu.unju.fi;
 
-import ar.edu.unju.fi.Repository.VehiculoRepository;
 import ar.edu.unju.fi.Service.VehiculoService;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

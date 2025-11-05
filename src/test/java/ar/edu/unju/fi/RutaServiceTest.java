@@ -1,15 +1,12 @@
 package ar.edu.unju.fi;
 
 import ar.edu.unju.fi.Enum.NivelFragilidad;
-import ar.edu.unju.fi.Repository.EnvioRepository;
 import ar.edu.unju.fi.Repository.RutaRepository;
-import ar.edu.unju.fi.Repository.VehiculoRepository;
 import ar.edu.unju.fi.Service.ClienteService;
 import ar.edu.unju.fi.Service.EnvioService;
 import ar.edu.unju.fi.Service.RutaService;
 import ar.edu.unju.fi.Service.VehiculoService;
 import ar.edu.unju.fi.dto.*;
-import ar.edu.unju.fi.Enum.EstadoEnvio;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,7 +85,7 @@ public class RutaServiceTest {
                 .codigoPostal("4600")
                 .paquetes(List.of(p1))
                 .build();
-        envioGuardado1 = envioService.crearEnvio(dtoEnvio1); // Guardado, ahora tiene ID
+        envioGuardado1 = envioService.crearEnvio(dtoEnvio1);
 
         EnvioDTO dtoEnvio2 = EnvioDTO.builder()
                 .remitente(hector)
