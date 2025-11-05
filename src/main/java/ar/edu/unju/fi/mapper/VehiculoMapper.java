@@ -14,7 +14,9 @@ public class VehiculoMapper {
             vehiculo.getPatente(),
             vehiculo.getCapacidadMaxPesoKg(),
             vehiculo.getCapacidadMaxVolDm3(),
-            vehiculo.getRefrigerado()
+            vehiculo.getRefrigerado(),
+            vehiculo.getRangoTemperaturaMin(),
+            vehiculo.getRangoTemperaturaMax()
         );
     }
 

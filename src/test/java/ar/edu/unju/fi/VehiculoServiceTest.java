@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @Transactional
@@ -20,58 +22,94 @@ public class VehiculoServiceTest {
     @Autowired
     private VehiculoService vehiculoService;
 
-    @Autowired
-    private VehiculoRepository vehiculoRepository;
+    private VehiculoDTO vRefrigerado;
+    private VehiculoDTO vPesado;
+    private VehiculoDTO vVoluminoso;
+    private VehiculoDTO vNormal;
 
     @BeforeEach
     void setUp() {
-        vehiculoRepository.deleteAll();
+
+        vRefrigerado = VehiculoDTO.builder()
+                .patente("V-REF")
+                .capacidadMaxPesoKg(500.0)
+                .capacidadMaxVolDm3(50.0)
+                .refrigerado(true)
+                .rangoTemperaturaMin(1.0)
+                .rangoTemperaturaMax(10.0)
+                .build();
+
+        vPesado = VehiculoDTO.builder()
+                .patente("V-PES")
+                .capacidadMaxPesoKg(1000.0) // > 900
+                .capacidadMaxVolDm3(50.0)
+                .refrigerado(false)
+                .build();
+
+        vVoluminoso = VehiculoDTO.builder()
+                .patente("V-VOL")
+                .capacidadMaxPesoKg(500.0)
+                .capacidadMaxVolDm3(150.0) // > 100
+                .refrigerado(false)
+                .build();
+
+        vNormal = VehiculoDTO.builder()
+                .patente("V-NOR")
+                .capacidadMaxPesoKg(500.0)
+                .capacidadMaxVolDm3(50.0)
+                .refrigerado(false)
+                .build();
+
+        vRefrigerado = vehiculoService.crearVehiculo(vRefrigerado);
+        vPesado = vehiculoService.crearVehiculo(vPesado);
+        vVoluminoso = vehiculoService.crearVehiculo(vVoluminoso);
+        vNormal = vehiculoService.crearVehiculo(vNormal);
     }
 
     @Test
     void testCrearVehiculo() {
-        VehiculoDTO vehiculoDTO = new VehiculoDTO("ABC123", 1000.0, 10.0, true);
+        VehiculoDTO vehiculoDTO = VehiculoDTO.builder()
+                .patente("ABC123")
+                .capacidadMaxPesoKg(1000.0)
+                .capacidadMaxVolDm3(10.0)
+                .refrigerado(true)
+                .rangoTemperaturaMin(0.0)
+                .rangoTemperaturaMax(5.0)
+                .build();
 
         VehiculoDTO resultado = vehiculoService.crearVehiculo(vehiculoDTO);
 
-        Assertions.assertNotNull(resultado);
-        Assertions.assertEquals("ABC123", resultado.getPatente());
-        Assertions.assertTrue(resultado.getRefrigerado());
+        assertNotNull(resultado);
+        assertEquals("ABC123", resultado.getPatente());
+        assertTrue(resultado.getRefrigerado());
     }
 
     @Test
     void testBuscarVehiculosRefrigerados() {
-        VehiculoDTO v1 = new VehiculoDTO("A1", 500.0, 5.0, true);
-        VehiculoDTO v2 = new VehiculoDTO("A2", 800.0, 8.0, false);
-
-        vehiculoService.crearVehiculo(v1);
-        vehiculoService.crearVehiculo(v2);
-
         List<VehiculoDTO> refrigerados = vehiculoService.buscarVehiculosRefrigerados(true);
 
-        Assertions.assertEquals(1, refrigerados.size());
-        Assertions.assertTrue(refrigerados.get(0).getRefrigerado());
+        assertEquals(1, refrigerados.size());
+        assertEquals("V-REF", refrigerados.get(0).getPatente());
+        assertTrue(refrigerados.get(0).getRefrigerado());
+
+        List<VehiculoDTO> noRefrigerados = vehiculoService.buscarVehiculosRefrigerados(false);
+        assertEquals(3, noRefrigerados.size());
     }
 
     @Test
     void testBuscarVehiculosPorPeso() {
-        vehiculoService.crearVehiculo(new VehiculoDTO("A1", 400.0, 5.0, true));
-        vehiculoService.crearVehiculo(new VehiculoDTO("A2", 1000.0, 10.0, false));
 
         List<VehiculoDTO> pesados = vehiculoService.buscarVehiculosPorPeso(900.0);
 
-        Assertions.assertEquals(1, pesados.size());
-        Assertions.assertEquals("A2", pesados.get(0).getPatente());
+        assertEquals(1, pesados.size(), "Solo 'V-PES' debe superar los 900kg");
+        assertEquals("V-PES", pesados.get(0).getPatente());
     }
 
     @Test
     void testBuscarVehiculosPorVolumen() {
-        vehiculoService.crearVehiculo(new VehiculoDTO("V1", 600.0, 5.0, true));
-        vehiculoService.crearVehiculo(new VehiculoDTO("V2", 600.0, 15.0, false));
+        List<VehiculoDTO> voluminosos = vehiculoService.buscarVehiculosPorVolumen(100.0);
 
-        List<VehiculoDTO> voluminosos = vehiculoService.buscarVehiculosPorVolumen(10.0);
-
-        Assertions.assertEquals(1, voluminosos.size());
-        Assertions.assertEquals("V2", voluminosos.get(0).getPatente());
+        assertEquals(1, voluminosos.size(), "Solo 'V-VOL' debe superar los 100dm3");
+        assertEquals("V-VOL", voluminosos.get(0).getPatente());
     }
 }
