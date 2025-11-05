@@ -46,22 +46,28 @@ public class RutaService {
         }
         Vehiculo vehiculo = vehiculoRepository.findByPatente(vehiculoDTO.getPatente())
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
-        List<Envio> enviosGuardados = new ArrayList<>();
+
+        List<Envio> enviosParaRuta = new ArrayList<>();
         if (dto.getEnvios() != null) {
-            log.info("Guardando {} envíos asociados a la ruta.", dto.getEnvios().size());
+            log.info("Asignando {} envíos a la ruta.", dto.getEnvios().size());
             for (EnvioDTO envioDTO : dto.getEnvios()) {
-                Envio envio = EnvioMapper.toEntity(envioDTO);
-                Envio envioGuardado = envioRepository.save(envio);
-                enviosGuardados.add(envioGuardado);
+                if (envioDTO.getId() == null) {
+                    throw new IllegalArgumentException("Solo se pueden agregar envíos existentes (con ID) a una ruta.");
+                }
+                Envio envio = envioRepository.findById(envioDTO.getId())
+                        .orElseThrow(() -> new RuntimeException("Envio no encontrado con ID: " + envioDTO.getId()));
+
+                enviosParaRuta.add(envio);
             }
         }
-        validarCompatibilidad(vehiculo, enviosGuardados);
-        validarCapacidad(vehiculo, enviosGuardados);
-        validarTemperaturaPaquetes(vehiculo, enviosGuardados);
+
+        validarCompatibilidad(vehiculo, enviosParaRuta);
+        validarCapacidad(vehiculo, enviosParaRuta);
+        validarTemperaturaPaquetes(vehiculo, enviosParaRuta);
 
         Ruta ruta = RutaMapper.toEntity(dto);
         ruta.setVehiculo(vehiculo);
-        ruta.setEnvios(enviosGuardados);
+        ruta.setEnvios(enviosParaRuta);
 
         Ruta guardada = rutaRepository.save(ruta);
         log.info("Ruta creada exitosamente con ID: {}", guardada.getId());
@@ -74,18 +80,16 @@ public class RutaService {
 
     public List<RutaDTO> obtenerEnviosPorRutaYFecha(Long rutaId, LocalDate fecha) {
         log.info("Consultando rutas para rutaId={} en fecha={}", rutaId, fecha);
-        List<Ruta> rutas = rutaRepository.findByIdAndFecha(rutaId, fecha);
-        List<RutaDTO> rutasDTO = new ArrayList<>();
+        Ruta ruta = rutaRepository.findById(rutaId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro el ruta con ID: " + rutaId));
 
-        if (rutas.isEmpty()) {
-            throw new IllegalArgumentException("No se encontro el ruta con ID: " + rutaId);
-        }
-        for (Ruta ruta : rutas) {
-            RutaDTO dto = RutaMapper.toDto(ruta);
-            rutasDTO.add(dto);
+        if (!ruta.getFecha().equals(fecha)) {
+            log.warn("Ruta {} encontrada, pero no coincide con la fecha {}", rutaId, fecha);
+            return new ArrayList<>();
         }
 
-        return rutasDTO;
+        RutaDTO dto = RutaMapper.toDto(ruta);
+        return List.of(dto);
     }
 
     private void validarCompatibilidad(Vehiculo vehiculo, List<Envio> envios) {
@@ -121,20 +125,33 @@ public class RutaService {
     }
     private void validarTemperaturaPaquetes(Vehiculo vehiculo, List<Envio> envios) {
         log.debug("Validando temperatura de paquetes para vehículo {}", vehiculo.getPatente());
+
+        boolean necesitaValidarTemp = envios.stream()
+                .flatMap(envio -> envio.getPaquetes().stream())
+                .anyMatch(paquete -> paquete instanceof PaqueteRefrigerado);
+
+        if (!necesitaValidarTemp) {
+            log.debug("No hay paquetes refrigerados, no se requiere validación de temperatura.");
+            return;
+        }
+
+        log.debug("Se detectaron paquetes refrigerados. Validando vehículo.");
+        if (!vehiculo.getRefrigerado()) {
+            throw new IllegalArgumentException("El vehículo no es refrigerado pero intenta llevar paquetes refrigerados.");
+        }
+
         Double rangoMinVeh = vehiculo.getRangoTemperaturaMin();
         Double rangoMaxVeh = vehiculo.getRangoTemperaturaMax();
         if (rangoMinVeh == null || rangoMaxVeh == null) {
-            throw new IllegalArgumentException("El vehículo refrigerado no tiene definido su rango de temperatura.");
+            throw new IllegalArgumentException("El vehículo refrigerado (" + vehiculo.getPatente() + ") no tiene definido su rango de temperatura.");
         }
 
         for (Envio envio : envios) {
             for (Paquete paquete : envio.getPaquetes()) {
-                if (paquete instanceof PaqueteRefrigerado) {
-                    PaqueteRefrigerado pRef = (PaqueteRefrigerado) paquete;
-
+                if (paquete instanceof PaqueteRefrigerado pRef) {
                     Double tempObj = pRef.getTemperaturaObjetivo();
 
-                    if (tempObj < rangoMinVeh || tempObj > rangoMaxVeh) {
+                    if (tempObj != null && (tempObj < rangoMinVeh || tempObj > rangoMaxVeh)) {
                         throw new IllegalArgumentException(
                                 "El vehículo no puede mantener la temperatura requerida (" + tempObj + "°C). " +
                                         "Su rango es [" + rangoMinVeh + "°C - " + rangoMaxVeh + "°C]."
