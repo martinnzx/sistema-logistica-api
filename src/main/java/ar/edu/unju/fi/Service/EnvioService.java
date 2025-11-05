@@ -11,6 +11,7 @@ import ar.edu.unju.fi.State.EstadoEnvioFactory;
 import ar.edu.unju.fi.State.EstadoEnvioState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public class EnvioService {
     /* =====================
        CREAR ENVIO
        ===================== */
-
+    @Transactional
     public EnvioDTO crearEnvio(EnvioDTO dto) {
         log.info("Iniciando creacion de envio para remitente: {}", dto.getRemitente());
         Envio envio = EnvioMapper.toEntity(dto);
@@ -83,7 +84,7 @@ public class EnvioService {
     /* =====================
        CAMBIO DE ESTADO
        ===================== */
-
+    @Transactional
     public void avanzarEstado(Long envioId, String observacion) {
         log.info("Intentando avanzar estado del envio con ID: {}", envioId);
 
@@ -110,6 +111,7 @@ public class EnvioService {
         }
     }
 
+    @Transactional
     public void cancelarEnvio(Long envioId, String observacion) {
         log.info("Intentando cancelar el envio con ID: {}", envioId);
 
@@ -136,6 +138,7 @@ public class EnvioService {
         }
     }
 
+    @Transactional
     public void devolverEnvio(Long envioId, String observacion) {
         log.info("Intentando devolver el envio con ID: {}", envioId);
 
@@ -162,6 +165,7 @@ public class EnvioService {
         }
     }
 
+    @Transactional
     public void adjuntarComprobante(Long envioId, String comprobante) {
         log.info("Adjuntando comprobante al envio con ID: {}", envioId);
         Envio envio = envioRepository.findById(envioId)

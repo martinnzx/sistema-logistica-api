@@ -4,6 +4,7 @@ import ar.edu.unju.fi.Repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.Vehiculo;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class VehiculoService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
+    @Transactional
     public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
         if (vehiculoDTO == null) {
             log.warn("Intento de crear vehículo con DTO nulo.");

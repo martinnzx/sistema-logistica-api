@@ -10,6 +10,7 @@ import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.mapper.RutaMapper;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.*;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class RutaService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
+    @Transactional
     public RutaDTO crearRuta(RutaDTO dto) {
         if (dto == null) {
             log.error("Intento de crear ruta con DTO nulo.");

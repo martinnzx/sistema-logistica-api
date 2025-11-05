@@ -5,6 +5,7 @@ import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.mapper.PaqueteMapper;
 import ar.edu.unju.fi.model.Paquete;
 import ar.edu.unju.fi.model.PaqueteRefrigerado;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class PaqueteService {
         this.paqueteRepository = paqueteRepository;
     }
 
+    @Transactional
     public PaqueteDTO crearPaquete(PaqueteDTO dto) {
         if (dto == null) {
             log.error("Intento de crear paquete con DTO nulo.");

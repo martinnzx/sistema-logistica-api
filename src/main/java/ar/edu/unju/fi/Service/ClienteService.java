@@ -4,6 +4,7 @@ import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.mapper.ClienteMapper;
 import ar.edu.unju.fi.model.Cliente;
 import ar.edu.unju.fi.Repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
+    @Transactional
     public ClienteDTO crearCliente(ClienteDTO dto) {
         log.info("Creando nuevo cliente: {}", dto.getNombreRazonSocial());
 
