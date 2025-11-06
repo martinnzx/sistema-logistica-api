@@ -1,6 +1,6 @@
-package ar.edu.unju.fi.Service;
+package ar.edu.unju.fi.service;
 
-import ar.edu.unju.fi.Repository.PaqueteRepository;
+import ar.edu.unju.fi.repository.PaqueteRepository;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.mapper.PaqueteMapper;
 import ar.edu.unju.fi.model.Paquete;

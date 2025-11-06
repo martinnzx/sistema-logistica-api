@@ -1,4 +1,4 @@
-package ar.edu.unju.fi.Repository;
+package ar.edu.unju.fi.repository;
 
 import ar.edu.unju.fi.model.HistorialEstadoEnvio;
 import org.springframework.data.jpa.repository.JpaRepository;

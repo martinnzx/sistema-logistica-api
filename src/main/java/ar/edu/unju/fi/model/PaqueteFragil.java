@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.model;
 
-import ar.edu.unju.fi.Enum.NivelFragilidad;
+import ar.edu.unju.fi.enums.NivelFragilidad;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;

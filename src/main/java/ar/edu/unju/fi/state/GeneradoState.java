@@ -1,7 +1,7 @@
-package ar.edu.unju.fi.State;
+package ar.edu.unju.fi.state;
 
 import ar.edu.unju.fi.model.Envio;
-import ar.edu.unju.fi.Enum.EstadoEnvio;
+import ar.edu.unju.fi.enums.EstadoEnvio;
 
 public class GeneradoState implements EstadoEnvioState {
 

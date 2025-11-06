@@ -1,4 +1,4 @@
-package ar.edu.unju.fi.Enum;
+package ar.edu.unju.fi.enums;
 
 public enum NivelFragilidad {
     BAJA,

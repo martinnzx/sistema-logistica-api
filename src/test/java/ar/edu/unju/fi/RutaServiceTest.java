@@ -1,11 +1,11 @@
 package ar.edu.unju.fi;
 
-import ar.edu.unju.fi.Enum.NivelFragilidad;
-import ar.edu.unju.fi.Repository.RutaRepository;
-import ar.edu.unju.fi.Service.ClienteService;
-import ar.edu.unju.fi.Service.EnvioService;
-import ar.edu.unju.fi.Service.RutaService;
-import ar.edu.unju.fi.Service.VehiculoService;
+import ar.edu.unju.fi.enums.NivelFragilidad;
+import ar.edu.unju.fi.repository.RutaRepository;
+import ar.edu.unju.fi.service.ClienteService;
+import ar.edu.unju.fi.service.EnvioService;
+import ar.edu.unju.fi.service.RutaService;
+import ar.edu.unju.fi.service.VehiculoService;
 import ar.edu.unju.fi.dto.*;
 
 import org.junit.jupiter.api.BeforeEach;

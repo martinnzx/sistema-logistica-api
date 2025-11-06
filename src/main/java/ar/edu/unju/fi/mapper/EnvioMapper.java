@@ -3,7 +3,6 @@ package ar.edu.unju.fi.mapper;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.model.Envio;
-import ar.edu.unju.fi.model.Paquete;
 
 import java.util.List;
 import java.util.stream.Collectors;

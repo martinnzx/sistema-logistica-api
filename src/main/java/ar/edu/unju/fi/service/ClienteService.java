@@ -1,9 +1,9 @@
-package ar.edu.unju.fi.Service;
+package ar.edu.unju.fi.service;
 
 import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.mapper.ClienteMapper;
 import ar.edu.unju.fi.model.Cliente;
-import ar.edu.unju.fi.Repository.ClienteRepository;
+import ar.edu.unju.fi.repository.ClienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

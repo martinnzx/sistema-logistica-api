@@ -1383,74 +1383,74 @@ Caused by: java.sql.SQLSyntaxErrorException: Table 'tp_final_poo.ruta_envios' do
 2025-11-04T23:41:59.003-03:00  INFO 98072 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
 2025-11-04T23:41:59.630-03:00  WARN 98072 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2025-11-04T23:42:00.100-03:00  INFO 98072 --- [main] ar.edu.unju.fi.EnvioServiceTest          : Started EnvioServiceTest in 5.342 seconds (process running for 6.304)
-2025-11-04T23:42:00.573-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:42:00.674-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 1
-2025-11-04T23:42:00.675-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:42:00.677-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 2
-2025-11-04T23:42:00.677-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:42:00.679-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 3
-2025-11-04T23:42:00.681-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:42:00.682-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 4
-2025-11-04T23:42:00.683-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:42:00.685-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 5
-2025-11-04T23:42:00.685-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:42:00.687-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 6
-2025-11-04T23:42:00.689-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@31b827a6
-2025-11-04T23:42:00.690-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:42:00.690-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:42:00.710-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 1 y codigo: 79ce1804-0d69-456d-81ba-de2354094b54
-2025-11-04T23:42:00.715-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: 79ce1804-0d69-456d-81ba-de2354094b54
-2025-11-04T23:42:00.715-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: 79ce1804-0d69-456d-81ba-de2354094b54
-2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@17db90a7
-2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:42:00.720-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 2 y codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
-2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
-2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
-2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Listando envios del destinatario con documento/CUIT: 555
-2025-11-04T23:42:00.863-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:42:00.865-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 7
-2025-11-04T23:42:00.865-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:42:00.867-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 8
-2025-11-04T23:42:00.868-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:42:00.871-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 9
-2025-11-04T23:42:00.872-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:42:00.874-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 10
-2025-11-04T23:42:00.874-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:42:00.876-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 11
-2025-11-04T23:42:00.877-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 12
-2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@1314ccc1
-2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:42:00.882-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 3 y codigo: f742ef7d-5049-487e-9cac-433271ed3bff
-2025-11-04T23:42:00.885-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: f742ef7d-5049-487e-9cac-433271ed3bff
-2025-11-04T23:42:00.885-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: f742ef7d-5049-487e-9cac-433271ed3bff
-2025-11-04T23:42:00.895-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:42:00.897-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 13
-2025-11-04T23:42:00.897-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:42:00.901-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 14
-2025-11-04T23:42:00.901-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:42:00.903-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 15
-2025-11-04T23:42:00.903-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:42:00.905-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 16
-2025-11-04T23:42:00.905-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:42:00.907-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 17
-2025-11-04T23:42:00.907-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 18
-2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@38821ada
-2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:42:00.915-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 4 y codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
-2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
-2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
-2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@314b0d53
-2025-11-04T23:42:00.919-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:42:00.919-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:42:00.925-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 5 y codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
-2025-11-04T23:42:00.927-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
-2025-11-04T23:42:00.928-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
-2025-11-04T23:42:00.928-03:00  INFO 98072 --- [main] ar.edu.unju.fi.Service.EnvioService      : Listando envios del remitente con documento/CUIT: 111
+2025-11-04T23:42:00.573-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:42:00.674-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 1
+2025-11-04T23:42:00.675-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:42:00.677-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 2
+2025-11-04T23:42:00.677-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:42:00.679-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 3
+2025-11-04T23:42:00.681-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:42:00.682-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 4
+2025-11-04T23:42:00.683-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:42:00.685-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 5
+2025-11-04T23:42:00.685-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:42:00.687-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 6
+2025-11-04T23:42:00.689-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@31b827a6
+2025-11-04T23:42:00.690-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:42:00.690-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:42:00.710-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 1 y codigo: 79ce1804-0d69-456d-81ba-de2354094b54
+2025-11-04T23:42:00.715-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: 79ce1804-0d69-456d-81ba-de2354094b54
+2025-11-04T23:42:00.715-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: 79ce1804-0d69-456d-81ba-de2354094b54
+2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@17db90a7
+2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:42:00.716-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:42:00.720-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 2 y codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
+2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
+2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: 23763b5e-3a52-44a6-8e82-af640225d01c
+2025-11-04T23:42:00.722-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Listando envios del destinatario con documento/CUIT: 555
+2025-11-04T23:42:00.863-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:42:00.865-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 7
+2025-11-04T23:42:00.865-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:42:00.867-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 8
+2025-11-04T23:42:00.868-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:42:00.871-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 9
+2025-11-04T23:42:00.872-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:42:00.874-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 10
+2025-11-04T23:42:00.874-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:42:00.876-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 11
+2025-11-04T23:42:00.877-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 12
+2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@1314ccc1
+2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:42:00.878-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:42:00.882-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 3 y codigo: f742ef7d-5049-487e-9cac-433271ed3bff
+2025-11-04T23:42:00.885-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: f742ef7d-5049-487e-9cac-433271ed3bff
+2025-11-04T23:42:00.885-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: f742ef7d-5049-487e-9cac-433271ed3bff
+2025-11-04T23:42:00.895-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:42:00.897-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 13
+2025-11-04T23:42:00.897-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:42:00.901-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 14
+2025-11-04T23:42:00.901-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:42:00.903-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 15
+2025-11-04T23:42:00.903-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:42:00.905-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 16
+2025-11-04T23:42:00.905-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:42:00.907-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 17
+2025-11-04T23:42:00.907-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 18
+2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@38821ada
+2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:42:00.910-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:42:00.915-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 4 y codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
+2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
+2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: a3f7874a-0e15-4113-8a0d-0b1b803955b7
+2025-11-04T23:42:00.918-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@314b0d53
+2025-11-04T23:42:00.919-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:42:00.919-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:42:00.925-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 5 y codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
+2025-11-04T23:42:00.927-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
+2025-11-04T23:42:00.928-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: a78d5a4f-0999-4ce3-ba2a-9b154ec9537d
+2025-11-04T23:42:00.928-03:00  INFO 98072 --- [main] ar.edu.unju.fi.service.EnvioService      : Listando envios del remitente con documento/CUIT: 111
 2025-11-04T23:42:00.948-03:00  INFO 98072 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-11-04T23:42:01.136-03:00  INFO 98072 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-11-04T23:42:01.144-03:00  INFO 98072 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
@@ -2839,74 +2839,74 @@ Caused by: java.sql.SQLSyntaxErrorException: Table 'tp_final_poo.ruta_envios' do
 2025-11-04T23:46:47.017-03:00  INFO 108380 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
 2025-11-04T23:46:47.479-03:00  WARN 108380 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2025-11-04T23:46:47.853-03:00  INFO 108380 --- [main] ar.edu.unju.fi.EnvioServiceTest          : Started EnvioServiceTest in 5.458 seconds (process running for 6.589)
-2025-11-04T23:46:48.178-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:46:48.272-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 1
-2025-11-04T23:46:48.272-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:46:48.274-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 2
-2025-11-04T23:46:48.274-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:46:48.276-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 3
-2025-11-04T23:46:48.277-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:46:48.278-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 4
-2025-11-04T23:46:48.278-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:46:48.281-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 5
-2025-11-04T23:46:48.281-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:46:48.283-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 6
-2025-11-04T23:46:48.286-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@1fae388c
-2025-11-04T23:46:48.287-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:46:48.287-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:46:48.309-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 1 y codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
-2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
-2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
-2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@3049dcac
-2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:46:48.320-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 2 y codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
-2025-11-04T23:46:48.321-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
-2025-11-04T23:46:48.323-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
-2025-11-04T23:46:48.323-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Listando envios del destinatario con documento/CUIT: 555
-2025-11-04T23:46:48.439-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:46:48.442-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 7
-2025-11-04T23:46:48.443-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:46:48.445-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 8
-2025-11-04T23:46:48.445-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:46:48.446-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 9
-2025-11-04T23:46:48.447-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:46:48.448-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 10
-2025-11-04T23:46:48.448-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:46:48.450-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 11
-2025-11-04T23:46:48.450-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 12
-2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@306f439c
-2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:46:48.458-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 3 y codigo: b9557090-d7ac-4635-8f35-28541b3ac941
-2025-11-04T23:46:48.459-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: b9557090-d7ac-4635-8f35-28541b3ac941
-2025-11-04T23:46:48.459-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: b9557090-d7ac-4635-8f35-28541b3ac941
-2025-11-04T23:46:48.466-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Juan Perez
-2025-11-04T23:46:48.469-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 13
-2025-11-04T23:46:48.469-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Maria Gomez
-2025-11-04T23:46:48.471-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 14
-2025-11-04T23:46:48.471-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Carlos Luis
-2025-11-04T23:46:48.473-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 15
-2025-11-04T23:46:48.473-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Pedro G
-2025-11-04T23:46:48.474-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 16
-2025-11-04T23:46:48.474-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Hector
-2025-11-04T23:46:48.476-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 17
-2025-11-04T23:46:48.476-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Creando nuevo cliente: Ale
-2025-11-04T23:46:48.477-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.ClienteService    : Cliente guardado exitosamente con ID: 18
-2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@41dcfd0
-2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:46:48.481-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 4 y codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
-2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
-2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
-2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@19544627
-2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Todos los paquetes del envio null son validos
-2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : El envio null no requiere refrigeracion
-2025-11-04T23:46:48.489-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Envio guardado exitosamente con ID: 5 y codigo: ef3be635-3274-453a-8e66-b7067127a279
-2025-11-04T23:46:48.491-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial creado para envio con codigo: ef3be635-3274-453a-8e66-b7067127a279
-2025-11-04T23:46:48.492-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Historial inicial registrado para el envio con codigo: ef3be635-3274-453a-8e66-b7067127a279
-2025-11-04T23:46:48.492-03:00  INFO 108380 --- [main] ar.edu.unju.fi.Service.EnvioService      : Listando envios del remitente con documento/CUIT: 111
+2025-11-04T23:46:48.178-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:46:48.272-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 1
+2025-11-04T23:46:48.272-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:46:48.274-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 2
+2025-11-04T23:46:48.274-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:46:48.276-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 3
+2025-11-04T23:46:48.277-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:46:48.278-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 4
+2025-11-04T23:46:48.278-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:46:48.281-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 5
+2025-11-04T23:46:48.281-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:46:48.283-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 6
+2025-11-04T23:46:48.286-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@1fae388c
+2025-11-04T23:46:48.287-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:46:48.287-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:46:48.309-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 1 y codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
+2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
+2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: b268ecee-a547-4aa5-bef1-479f9d5536c3
+2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@3049dcac
+2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:46:48.314-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:46:48.320-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 2 y codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
+2025-11-04T23:46:48.321-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
+2025-11-04T23:46:48.323-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: d9d52005-fbe3-47b0-b012-dd7f3f88ffb4
+2025-11-04T23:46:48.323-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Listando envios del destinatario con documento/CUIT: 555
+2025-11-04T23:46:48.439-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:46:48.442-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 7
+2025-11-04T23:46:48.443-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:46:48.445-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 8
+2025-11-04T23:46:48.445-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:46:48.446-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 9
+2025-11-04T23:46:48.447-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:46:48.448-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 10
+2025-11-04T23:46:48.448-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:46:48.450-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 11
+2025-11-04T23:46:48.450-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 12
+2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@306f439c
+2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:46:48.452-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:46:48.458-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 3 y codigo: b9557090-d7ac-4635-8f35-28541b3ac941
+2025-11-04T23:46:48.459-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: b9557090-d7ac-4635-8f35-28541b3ac941
+2025-11-04T23:46:48.459-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: b9557090-d7ac-4635-8f35-28541b3ac941
+2025-11-04T23:46:48.466-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Juan Perez
+2025-11-04T23:46:48.469-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 13
+2025-11-04T23:46:48.469-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Maria Gomez
+2025-11-04T23:46:48.471-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 14
+2025-11-04T23:46:48.471-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Carlos Luis
+2025-11-04T23:46:48.473-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 15
+2025-11-04T23:46:48.473-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Pedro G
+2025-11-04T23:46:48.474-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 16
+2025-11-04T23:46:48.474-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Hector
+2025-11-04T23:46:48.476-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 17
+2025-11-04T23:46:48.476-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Creando nuevo cliente: Ale
+2025-11-04T23:46:48.477-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.ClienteService    : Cliente guardado exitosamente con ID: 18
+2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@41dcfd0
+2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:46:48.478-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:46:48.481-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 4 y codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
+2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
+2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: 9f248401-7752-4bb5-a3cb-8f759eb12ec2
+2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Iniciando creacion de envio para remitente: ar.edu.unju.fi.dto.ClienteDTO@19544627
+2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Todos los paquetes del envio null son validos
+2025-11-04T23:46:48.483-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : El envio null no requiere refrigeracion
+2025-11-04T23:46:48.489-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Envio guardado exitosamente con ID: 5 y codigo: ef3be635-3274-453a-8e66-b7067127a279
+2025-11-04T23:46:48.491-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial creado para envio con codigo: ef3be635-3274-453a-8e66-b7067127a279
+2025-11-04T23:46:48.492-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Historial inicial registrado para el envio con codigo: ef3be635-3274-453a-8e66-b7067127a279
+2025-11-04T23:46:48.492-03:00  INFO 108380 --- [main] ar.edu.unju.fi.service.EnvioService      : Listando envios del remitente con documento/CUIT: 111
 2025-11-04T23:46:48.510-03:00  INFO 108380 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-11-04T23:46:48.710-03:00  INFO 108380 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-11-04T23:46:48.716-03:00  INFO 108380 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

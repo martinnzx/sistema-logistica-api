@@ -1,6 +1,6 @@
 package ar.edu.unju.fi.model;
 
-import ar.edu.unju.fi.Enum.EstadoEnvio;
+import ar.edu.unju.fi.enums.EstadoEnvio;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;

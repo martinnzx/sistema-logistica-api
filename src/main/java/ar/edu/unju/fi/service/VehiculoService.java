@@ -1,6 +1,6 @@
-package ar.edu.unju.fi.Service;
+package ar.edu.unju.fi.service;
 
-import ar.edu.unju.fi.Repository.VehiculoRepository;
+import ar.edu.unju.fi.repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.Vehiculo;

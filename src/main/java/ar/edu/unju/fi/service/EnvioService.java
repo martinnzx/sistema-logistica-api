@@ -1,14 +1,14 @@
-package ar.edu.unju.fi.Service;
+package ar.edu.unju.fi.service;
 
-import ar.edu.unju.fi.Enum.EstadoEnvio;
-import ar.edu.unju.fi.Repository.ClienteRepository;
-import ar.edu.unju.fi.Repository.EnvioRepository;
-import ar.edu.unju.fi.Repository.HistorialEstadoEnvioRepository;
+import ar.edu.unju.fi.enums.EstadoEnvio;
+import ar.edu.unju.fi.repository.ClienteRepository;
+import ar.edu.unju.fi.repository.EnvioRepository;
+import ar.edu.unju.fi.repository.HistorialEstadoEnvioRepository;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.model.*;
-import ar.edu.unju.fi.State.EstadoEnvioFactory;
-import ar.edu.unju.fi.State.EstadoEnvioState;
+import ar.edu.unju.fi.state.EstadoEnvioFactory;
+import ar.edu.unju.fi.state.EstadoEnvioState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

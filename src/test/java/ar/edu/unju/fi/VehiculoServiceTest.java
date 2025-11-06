@@ -1,6 +1,6 @@
 package ar.edu.unju.fi;
 
-import ar.edu.unju.fi.Service.VehiculoService;
+import ar.edu.unju.fi.service.VehiculoService;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

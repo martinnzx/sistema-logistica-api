@@ -1,15 +1,15 @@
 package ar.edu.unju.fi;
 
 
-import ar.edu.unju.fi.Repository.EnvioRepository;
-import ar.edu.unju.fi.Repository.HistorialEstadoEnvioRepository;
-import ar.edu.unju.fi.Service.ClienteService;
-import ar.edu.unju.fi.Service.EnvioService;
+import ar.edu.unju.fi.repository.EnvioRepository;
+import ar.edu.unju.fi.repository.HistorialEstadoEnvioRepository;
+import ar.edu.unju.fi.service.ClienteService;
+import ar.edu.unju.fi.service.EnvioService;
 import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.dto.PaqueteDTO;
-import ar.edu.unju.fi.Enum.EstadoEnvio;
-import ar.edu.unju.fi.Enum.NivelFragilidad;
+import ar.edu.unju.fi.enums.EstadoEnvio;
+import ar.edu.unju.fi.enums.NivelFragilidad;
 
 import ar.edu.unju.fi.model.Envio;
 import org.junit.jupiter.api.BeforeEach;
