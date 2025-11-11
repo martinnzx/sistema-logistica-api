@@ -6,8 +6,11 @@ import ar.edu.unju.fi.model.PaqueteFragil;
 import ar.edu.unju.fi.model.PaqueteRefrigerado;
 
 public class PaqueteMapper {
+    private static final String TIPO_REFRIGERADO = "Refrigerado";
+    private static final String TIPO_FRAGIL = "Fragil";
+
     public static Paquete toEntity(PaqueteDTO dto){
-        if (dto.getTipo().equals("Resfrigerado")){
+        if (TIPO_REFRIGERADO.equalsIgnoreCase(dto.getTipo())){
             PaqueteRefrigerado paquete = new PaqueteRefrigerado();
             paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
@@ -18,7 +21,8 @@ public class PaqueteMapper {
             paquete.setRangoMax(dto.getRangoMax());
             paquete.setHorasMaxFueraDeFrio(dto.getHorasMaxFueraDeFrio());
             return paquete;
-        } else {
+
+        } else if (TIPO_FRAGIL.equalsIgnoreCase(dto.getTipo())) {
             PaqueteFragil paquete = new PaqueteFragil();
             paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
@@ -27,8 +31,9 @@ public class PaqueteMapper {
             paquete.setNivelFragilidad(dto.getNivelFragilidad());
             paquete.setSeguroAdicional(dto.getSeguroAdicional());
             return paquete;
+        } else {
+            throw new IllegalArgumentException("Tipo de paquete no reconocido: " + dto.getTipo());
         }
-
     }
 
     public static PaqueteDTO toDTO(Paquete paquete){
@@ -40,14 +45,14 @@ public class PaqueteMapper {
         p.setCodigo(paquete.getCodigo());
 
         if(paquete instanceof PaqueteRefrigerado paqueteRefrigerado){
-            p.setTipo("Resfrigerado");
+            p.setTipo(TIPO_REFRIGERADO);
             p.setRangoMax(paqueteRefrigerado.getRangoMax());
             p.setRangoMin(paqueteRefrigerado.getRangoMin());
             p.setTemperaturaObjetivo(paqueteRefrigerado.getTemperaturaObjetivo());
             p.setHorasMaxFueraDeFrio(paqueteRefrigerado.getHorasMaxFueraDeFrio());
 
         } else if (paquete instanceof PaqueteFragil paqueteFragil) {
-            p.setTipo("Fragil");
+            p.setTipo(TIPO_FRAGIL);
             p.setNivelFragilidad(paqueteFragil.getNivelFragilidad());
             p.setSeguroAdicional(paqueteFragil.getSeguroAdicional());
         }
