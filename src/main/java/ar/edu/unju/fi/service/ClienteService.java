@@ -30,10 +30,8 @@ public class ClienteService {
     public ClienteDTO buscarPorDocumentoOCuit(String doc) {
         log.info("Buscando cliente con documento/CUIT: {}", doc);
 
-        Cliente cliente = clienteRepository.findByDocumentoOCuit(doc);
-        if (cliente == null) {
-            throw new RuntimeException("Cliente no encontrado con documento o CUIT: " + doc);
-        }
+        Cliente cliente = clienteRepository.findByDocumentoOCuitIgnoreCase(doc)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con documento o CUIT: " + doc));
 
         return ClienteMapper.toDTO(cliente);
     }
