@@ -5,6 +5,7 @@ import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.Vehiculo;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class VehiculoService {
     }
 
     @Transactional
-    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
+    public VehiculoDTO crearVehiculo(@Valid VehiculoDTO vehiculoDTO) {
         if (vehiculoDTO == null) {
             log.warn("Intento de crear vehículo con DTO nulo.");
             return null;
