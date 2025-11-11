@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,7 +44,7 @@ public class VehiculoService {
         return vehiculoRepository.findByRefrigerado(refrigerado)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<VehiculoDTO> buscarVehiculosPorPeso(Double pesoRequerido) {
@@ -53,7 +52,7 @@ public class VehiculoService {
         return vehiculoRepository.findByCapacidadMaxPesoKgGreaterThanEqual(pesoRequerido)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<VehiculoDTO> buscarVehiculosPorVolumen(Double volumen) {
@@ -61,7 +60,7 @@ public class VehiculoService {
         return vehiculoRepository.findByCapacidadMaxVolDm3GreaterThanEqual(volumen)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }
