@@ -1,7 +1,13 @@
 package ar.edu.unju.fi.controller;
 
+import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,39 +20,61 @@ import org.springframework.web.bind.annotation.*;
  * Expone los endpoints de la API para crear y consultar clientes.
  */
 @Slf4j
-@RestController // Indica que esta clase maneja peticiones REST y devuelve JSON
-@RequestMapping("/api/clientes") // URL base: todas las rutas comienzan con /api/clientes
-@RequiredArgsConstructor // Inyección automatica del service por constructor
+@RestController
+@RequestMapping("/api/clientes")
+@RequiredArgsConstructor
+@Tag(name = "clientes", description = "Operaciones sobre Clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;
 
-    /**
-     * Endpoint: POST /api/clientes
-     * Crea un nuevo cliente a partir de los datos recibidos en el cuerpo de la peticion.
-     */
+    @Operation(
+            summary = "Crear un nuevo Cliente",
+            description = "Permite registrar un nuevo cliente en el sistema.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Cliente creado correctamente",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ClienteDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error de validación en los datos ingresados",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class))
+                    )
+            }
+    )
     @PostMapping
     public ResponseEntity<ClienteDTO> crearCliente(@Valid @RequestBody ClienteDTO clienteDTO) {
         log.info("Recibida petición para crear cliente: {}", clienteDTO.getNombreRazonSocial());
-
-        // Llama al servicio para crear el cliente
         ClienteDTO nuevoCliente = clienteService.crearCliente(clienteDTO);
-
-        // Devuelve una respuesta 201 Created con el cliente creado
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
     }
 
-    /**
-     * Endpoint: GET /api/clientes/{documentoOCuit}
-     * Busca un cliente por su documento o CUIT.
-     */
+    @Operation(
+            summary = "Buscar Cliente por documento o CUIT",
+            description = "Devuelve los datos del cliente correspondiente al documento o CUIT ingresado.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Cliente encontrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ClienteDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Cliente no encontrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class))
+                    )
+            }
+    )
     @GetMapping("/{documentoOCuit}")
     public ResponseEntity<ClienteDTO> buscarPorDocumentoOCuit(@PathVariable String documentoOCuit) {
         log.info("Buscando cliente con documento o CUIT: {}", documentoOCuit);
-
         ClienteDTO cliente = clienteService.buscarPorDocumentoOCuit(documentoOCuit);
-
-        // Si no se encuentra, el service lanza una excepcion capturada por el GlobalExceptionHandler
         return ResponseEntity.ok(cliente);
     }
 }
