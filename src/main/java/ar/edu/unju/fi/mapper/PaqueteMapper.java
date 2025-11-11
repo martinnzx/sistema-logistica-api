@@ -7,7 +7,11 @@ import ar.edu.unju.fi.model.PaqueteRefrigerado;
 
 public class PaqueteMapper {
     public static Paquete toEntity(PaqueteDTO dto){
-        if (dto.getTipo().equals("Resfrigerado")){
+        if (dto == null || dto.getTipo() == null || dto.getTipo().isBlank()) {
+            throw new IllegalArgumentException("El tipo de paquete es obligatorio (Fragil o Refrigerado).");
+        }
+
+        if (dto.getTipo().equals("Refrigerado")){
             PaqueteRefrigerado paquete = new PaqueteRefrigerado();
             paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
@@ -37,7 +41,7 @@ public class PaqueteMapper {
         p.setPesoKg(paquete.getPesoKg());
         p.setVolumenDm3(paquete.getVolumenDm3());
         if(paquete instanceof PaqueteRefrigerado paqueteRefrigerado){
-            p.setTipo("Resfrigerado");
+            p.setTipo("Refrigerado");
             p.setRangoMax(paqueteRefrigerado.getRangoMax());
             p.setRangoMin(paqueteRefrigerado.getRangoMin());
             p.setTemperaturaObjetivo(paqueteRefrigerado.getTemperaturaObjetivo());
