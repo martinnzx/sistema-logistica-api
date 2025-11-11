@@ -37,18 +37,37 @@ public class EnvioService {
        ===================== */
     @Transactional
     public EnvioDTO crearEnvio(EnvioDTO dto) {
-        log.info("Iniciando creacion de envio para remitente: {}", dto.getRemitente());
-        Envio envio = EnvioMapper.toEntity(dto);
+        log.info("Iniciando creación de envío para remitente: {}", dto.getRemitente());
 
+        // Buscar clientes existentes por documento o CUIT
+        String docRemitente = dto.getRemitente().getDocumentoOCuit();
+        String docDestinatario = dto.getDestinatario().getDocumentoOCuit();
+
+        Cliente remitente = clienteRepository.findByDocumentoOCuitIgnoreCase(docRemitente)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Remitente no encontrado con documento o CUIT: " + docRemitente));
+
+        Cliente destinatario = clienteRepository.findByDocumentoOCuitIgnoreCase(docDestinatario)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Destinatario no encontrado con documento o CUIT: " + docDestinatario));
+
+        // Construir el envío (sin crear nuevos clientes)
+        Envio envio = EnvioMapper.toEntity(dto);
+        envio.setRemitente(remitente);
+        envio.setDestinatario(destinatario);
+
+        // Validaciones
         validarPaquetes(envio);
         detectarRefrigerado(envio);
         inicializarEnvio(envio);
 
+        // Guardar en base de datos
         envio = envioRepository.save(envio);
-        log.info("Envio guardado exitosamente con ID: {} y codigo: {}", envio.getId(), envio.getCodigoUnico());
+        log.info("Envío guardado exitosamente con ID: {} y código: {}", envio.getId(), envio.getCodigoUnico());
 
+        // Registrar historial inicial
         registrarHistorialInicial(envio);
-        log.info("Historial inicial registrado para el envio con codigo: {}", envio.getCodigoUnico());
+        log.info("Historial inicial registrado para el envío con código: {}", envio.getCodigoUnico());
 
         return EnvioMapper.toDTO(envio);
     }
@@ -80,6 +99,23 @@ public class EnvioService {
                 .map(EnvioMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public EnvioDTO obtenerEnvioPorCodigo(String codigoUnico) {
+        Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico));
+
+        return EnvioMapper.toDTO(envio);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HistorialEstadoEnvio> obtenerHistorialPorCodigo(String codigoUnico) {
+        Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico));
+
+        return historialEstadoEnvioRepository.findByEnvio(envio);
+    }
+
 
     /* =====================
        CAMBIO DE ESTADO
@@ -167,15 +203,24 @@ public class EnvioService {
 
     @Transactional
     public void adjuntarComprobante(Long envioId, String comprobante) {
-        log.info("Adjuntando comprobante al envio con ID: {}", envioId);
+        log.info("Intentando adjuntar comprobante al envio con ID: {}", envioId);
+
         Envio envio = envioRepository.findById(envioId)
-                .orElseThrow(() -> {
-                    log.error("No se encontro envio con ID: {}", envioId);
-                    return new RuntimeException("Envio no encontrado");
-                });
+                .orElseThrow(() -> new RuntimeException("Envio no encontrado"));
+
+        // Validar comprobante no vacío
+        if (comprobante == null || comprobante.isBlank()) {
+            throw new IllegalArgumentException("El comprobante no puede estar vacio.");
+        }
+
+        // Validar que no se pueda adjuntar si ya está entregado o cancelado
+        if (envio.getEstado() == EstadoEnvio.ENTREGADO || envio.getEstado() == EstadoEnvio.CANCELADO) {
+            throw new IllegalStateException("No se puede adjuntar un comprobante a un envio entregado o cancelado.");
+        }
 
         envio.setComprobanteEntrega(comprobante);
         envioRepository.save(envio);
+
         log.info("Comprobante adjuntado correctamente al envio {}", envio.getCodigoUnico());
     }
 

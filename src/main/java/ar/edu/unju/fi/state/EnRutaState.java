@@ -7,7 +7,11 @@ public class EnRutaState implements EstadoEnvioState {
 
     @Override
     public void avanzar(Envio envio) {
-        // Validar comprobante solo al pasar a ENTREGADO
+        // Validar que tenga comprobante antes de marcar como ENTREGADO
+        if (envio.getComprobanteEntrega() == null || envio.getComprobanteEntrega().isBlank()) {
+            throw new IllegalStateException("No se puede marcar como ENTREGADO sin comprobante de entrega.");
+        }
+
         envio.setEstado(EstadoEnvio.ENTREGADO);
     }
 
