@@ -56,32 +56,83 @@ public class EnvioService {
        BÚSQUEDAS
        ===================== */
     public List<EnvioDTO> listarPorRemitente(String documentoOCuit) {
-        return envioRepository.findByRemitente_DocumentoOCuitIgnoreCase(documentoOCuit)
+        log.info("Buscando envíos del remitente con documento/CUIT: {}", documentoOCuit);
+
+        List<EnvioDTO> envios = envioRepository.findByRemitente_DocumentoOCuitIgnoreCase(documentoOCuit)
                 .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos para el remitente con documento/CUIT: {}", documentoOCuit);
+        } else {
+            log.info("Se encontraron {} envíos para el remitente con documento/CUIT: {}", envios.size(), documentoOCuit);
+        }
+
+        return envios;
     }
 
     public List<EnvioDTO> listarPorDestinatario(String documentoOCuit) {
-        return envioRepository.findByDestinatario_DocumentoOCuitIgnoreCase(documentoOCuit)
+        log.info("Buscando envíos del destinatario con documento/CUIT: {}", documentoOCuit);
+
+        List<EnvioDTO> envios = envioRepository.findByDestinatario_DocumentoOCuitIgnoreCase(documentoOCuit)
                 .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos para el destinatario con documento/CUIT: {}", documentoOCuit);
+        } else {
+            log.info("Se encontraron {} envíos para el destinatario con documento/CUIT: {}", envios.size(), documentoOCuit);
+        }
+
+        return envios;
     }
 
     public List<EnvioDTO> listarPorEstado(EstadoEnvio estado) {
-        return envioRepository.findByEstado(estado)
+        log.info("Listando envíos con estado: {}", estado);
+
+        List<EnvioDTO> envios = envioRepository.findByEstado(estado)
                 .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos con el estado: {}", estado);
+        } else {
+            log.info("Se encontraron {} envíos con el estado: {}", envios.size(), estado);
+        }
+
+        return envios;
     }
 
     @Transactional(readOnly = true)
     public EnvioDTO obtenerEnvioPorCodigo(String codigoUnico) {
+        log.info("Buscando envío con código único: {}", codigoUnico);
+
         Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
-                .orElseThrow(() -> new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico));
+                .orElseThrow(() -> {
+                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
+                });
+
+        log.info("Envío encontrado: código={}, estado={}", envio.getCodigoUnico(), envio.getEstado());
         return EnvioMapper.toDTO(envio);
     }
 
     @Transactional(readOnly = true)
     public List<HistorialEstadoEnvio> obtenerHistorialPorCodigo(String codigoUnico) {
+        log.info("Buscando historial de estados para el envío con código: {}", codigoUnico);
+
         Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
-                .orElseThrow(() -> new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico));
-        return historialEstadoEnvioRepository.findByEnvio(envio);
+                .orElseThrow(() -> {
+                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
+                });
+
+        List<HistorialEstadoEnvio> historial = historialEstadoEnvioRepository.findByEnvio(envio);
+
+        if (historial.isEmpty()) {
+            log.warn("El envío con código {} no tiene historial registrado.", codigoUnico);
+        } else {
+            log.info("Historial recuperado: {} registros encontrados para el envío con código {}", historial.size(), codigoUnico);
+        }
+
+        return historial;
     }
 
     /* =====================
