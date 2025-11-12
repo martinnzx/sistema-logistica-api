@@ -1,10 +1,8 @@
 package ar.edu.unju.fi;
 
-import ar.edu.unju.fi.repository.PaqueteRepository;
 import ar.edu.unju.fi.service.PaqueteService;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.enums.NivelFragilidad;
-import ar.edu.unju.fi.model.PaqueteFragil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +13,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
-public class PaqueteServiceTest {
+class PaqueteServiceTest {
 
     @Autowired
     private PaqueteService paqueteService;
 
-    @Autowired
-    private PaqueteRepository paqueteRepository;
-
     private PaqueteDTO paqueteDtoBase;
-    private PaqueteFragil paqueteFragilA;
-    private PaqueteFragil paqueteFragilB;
+    private PaqueteDTO paqueteDtoA;
+    private PaqueteDTO paqueteDtoB;
 
+    private PaqueteDTO dtoFueraDeRango;
+    private PaqueteDTO dtoConNulos;
     @BeforeEach
     void setUp() {
         paqueteDtoBase = new PaqueteDTO();
@@ -41,19 +37,38 @@ public class PaqueteServiceTest {
         paqueteDtoBase.setNivelFragilidad(NivelFragilidad.ALTA);
         paqueteDtoBase.setSeguroAdicional(true);
 
-        paqueteFragilA = new PaqueteFragil();
-        paqueteFragilA.setCodigo("PF-001");
-        paqueteFragilA.setPesoKg(5.0);
-        paqueteFragilA.setVolumenDm3(10.0);
-        paqueteFragilA.setNivelFragilidad(NivelFragilidad.ALTA);
-        paqueteFragilA.setSeguroAdicional(true);
+        paqueteDtoA = new PaqueteDTO();
+        paqueteDtoA.setCodigo("PF-001");
+        paqueteDtoA.setTipo("Fragil");
+        paqueteDtoA.setPesoKg(5.0);
+        paqueteDtoA.setVolumenDm3(10.0);
+        paqueteDtoA.setNivelFragilidad(NivelFragilidad.ALTA);
+        paqueteDtoA.setSeguroAdicional(true);
 
-        paqueteFragilB = new PaqueteFragil();
-        paqueteFragilB.setCodigo("PF-002");
-        paqueteFragilB.setPesoKg(15.0);
-        paqueteFragilB.setVolumenDm3(25.0);
-        paqueteFragilB.setNivelFragilidad(NivelFragilidad.MEDIA);
-        paqueteFragilB.setSeguroAdicional(false);
+        paqueteDtoB = new PaqueteDTO();
+        paqueteDtoB.setCodigo("PF-002");
+        paqueteDtoB.setTipo("Fragil");
+        paqueteDtoB.setPesoKg(15.0);
+        paqueteDtoB.setVolumenDm3(25.0);
+        paqueteDtoB.setNivelFragilidad(NivelFragilidad.MEDIA);
+        paqueteDtoB.setSeguroAdicional(false);
+
+        dtoFueraDeRango = new PaqueteDTO();
+        dtoFueraDeRango.setTipo("Resfrigerado");
+        dtoFueraDeRango.setCodigo("PR-ERR-01");
+        dtoFueraDeRango.setPesoKg(5.0);
+        dtoFueraDeRango.setVolumenDm3(5.0);
+        dtoFueraDeRango.setTemperaturaObjetivo(10.0);
+        dtoFueraDeRango.setRangoMin(2.0);
+        dtoFueraDeRango.setRangoMax(8.0);
+
+        dtoConNulos = new PaqueteDTO();
+        dtoConNulos.setTipo("Resfrigerado");
+        dtoConNulos.setCodigo("PR-ERR-02");
+        dtoConNulos.setPesoKg(5.0);
+        dtoConNulos.setVolumenDm3(5.0);
+        dtoConNulos.setTemperaturaObjetivo(null);
+        dtoConNulos.setRangoMax(8.0);
     }
 
     @Test
@@ -62,31 +77,45 @@ public class PaqueteServiceTest {
 
         assertNotNull(guardado, "El paquete guardado no debe ser nulo");
         assertEquals("Fragil", guardado.getTipo());
-        assertEquals(1, paqueteRepository.count(), "Debe haberse guardado 1 paquete");
+        assertNotNull(guardado.getId(), "El paquete guardado debe tener un ID asignado");
     }
 
     @Test
     void listarPorPeso_deberiaRetornarPaquetesDentroDelRango() {
-
-        paqueteRepository.save(paqueteFragilA);
-        paqueteRepository.save(paqueteFragilB);
+        paqueteService.crearPaquete(paqueteDtoA); // Paquete con 5.0 kg
+        paqueteService.crearPaquete(paqueteDtoB); // Paquete con 15.0 kg
 
         List<PaqueteDTO> resultado = paqueteService.listarPorPeso(0.0, 10.0);
 
         assertEquals(1, resultado.size());
-        assertEquals(5.0, resultado.get(0).getPesoKg());
-        assertTrue(resultado.get(0).getPesoKg() <= 10.0);
+
+        assertEquals(5.0, resultado.getFirst().getPesoKg());
+        assertEquals("PF-001", resultado.getFirst().getCodigo());
     }
 
     @Test
-    void listarPorVolumen_deberiaRetornarPaquetesDentroDelRango() {
-        paqueteRepository.save(paqueteFragilA);
-        paqueteRepository.save(paqueteFragilB);
+    void listarPorVolumen() {
+        paqueteService.crearPaquete(paqueteDtoA);
+        paqueteService.crearPaquete(paqueteDtoB);
 
         List<PaqueteDTO> resultado = paqueteService.listarPorVolumen(0.0, 15.0);
 
         assertEquals(1, resultado.size());
-        assertEquals(10.0, resultado.get(0).getVolumenDm3());
-        assertTrue(resultado.get(0).getVolumenDm3() <= 15.0);
+
+        assertEquals(10.0, resultado.getFirst().getVolumenDm3());
+        assertEquals("PF-001", resultado.getFirst().getCodigo());
+    }
+    @Test
+    void crearPaqueteRefrigerado_conTemperaturaFueraDeRango_deberiaLanzarExcepcion() {
+        assertThrows(IllegalArgumentException.class,
+                () -> paqueteService.crearPaquete(dtoFueraDeRango)
+        );
+    }
+
+    @Test
+    void crearPaqueteRefrigerado_conValoresDeTemperaturaNulos_deberiaLanzarExcepcion() {
+        assertThrows(IllegalArgumentException.class,
+                () -> paqueteService.crearPaquete(dtoConNulos)
+        );
     }
 }

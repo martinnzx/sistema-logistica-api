@@ -6,6 +6,7 @@ import ar.edu.unju.fi.mapper.PaqueteMapper;
 import ar.edu.unju.fi.model.Paquete;
 import ar.edu.unju.fi.model.PaqueteRefrigerado;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class PaqueteService {
     }
 
     @Transactional
-    public PaqueteDTO crearPaquete(PaqueteDTO dto) {
+    public PaqueteDTO crearPaquete(@Valid PaqueteDTO dto) {
         if (dto == null) {
             log.error("Intento de crear paquete con DTO nulo.");
             return null;
@@ -67,26 +68,29 @@ public class PaqueteService {
         return pDTO;
     }
     private void validarTemperaturaPaquete(Paquete paquete) {
-        if (paquete instanceof PaqueteRefrigerado) {
-            log.debug("Validando temperatura de paquete refrigerado...");
-            PaqueteRefrigerado pRef = (PaqueteRefrigerado) paquete;
-
-            Double tempObj = pRef.getTemperaturaObjetivo();
-            Double rangoMin = pRef.getRangoMin();
-            Double rangoMax = pRef.getRangoMax();
-
-            if (tempObj == null || rangoMin == null || rangoMax == null) {
-                throw new IllegalArgumentException("Faltan datos de temperatura en el paquete refrigerado");
-            }
-
-            if (tempObj < rangoMin || tempObj > rangoMax) {
-                throw new IllegalArgumentException(
-                        "La temperatura objetivo (" + tempObj + "°C) está fuera del rango permitido [" +
-                                rangoMin + "°C - " + rangoMax + "°C]"
-                );
-            }
-            log.info("Temperatura del paquete refrigerado validada correctamente ({}) dentro del rango [{} - {}]",
-                    tempObj, rangoMin, rangoMax);
+        if (paquete instanceof PaqueteRefrigerado pRef) {
+            this.validarRangoTemperaturaRefrigerado(pRef);
         }
+
     }
+    private void validarRangoTemperaturaRefrigerado(PaqueteRefrigerado pRef) {
+        log.debug("Validando temperatura de paquete refrigerado...");
+
+        Double tempObj = pRef.getTemperaturaObjetivo();
+        Double rangoMin = pRef.getRangoMin();
+        Double rangoMax = pRef.getRangoMax();
+
+        if (tempObj == null || rangoMin == null || rangoMax == null) {
+            throw new IllegalArgumentException("Faltan datos de temperatura en el paquete refrigerado");
+        }
+
+        if (tempObj < rangoMin || tempObj > rangoMax) {
+            throw new IllegalArgumentException(
+                    "La temperatura objetivo (" + tempObj + "°C) está fuera del rango permitido [" +
+                            rangoMin + "°C - " + rangoMax + "°C]"
+            );
+        }
+        log.info("Temperatura del paquete refrigerado validada correctamente ({}) dentro del rango [{} - {}]", tempObj, rangoMin, rangoMax);
+    }
+
 }

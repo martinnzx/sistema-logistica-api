@@ -6,8 +6,11 @@ import ar.edu.unju.fi.model.PaqueteFragil;
 import ar.edu.unju.fi.model.PaqueteRefrigerado;
 
 public class PaqueteMapper {
+    private static final String TIPO_REFRIGERADO = "Refrigerado";
+    private static final String TIPO_FRAGIL = "Fragil";
+
     public static Paquete toEntity(PaqueteDTO dto){
-        if (dto.getTipo().equals("Resfrigerado")){
+        if (TIPO_REFRIGERADO.equalsIgnoreCase(dto.getTipo())){
             PaqueteRefrigerado paquete = new PaqueteRefrigerado();
             paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
@@ -18,7 +21,8 @@ public class PaqueteMapper {
             paquete.setRangoMax(dto.getRangoMax());
             paquete.setHorasMaxFueraDeFrio(dto.getHorasMaxFueraDeFrio());
             return paquete;
-        } else {
+
+        } else if (TIPO_FRAGIL.equalsIgnoreCase(dto.getTipo())) {
             PaqueteFragil paquete = new PaqueteFragil();
             paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
@@ -27,26 +31,30 @@ public class PaqueteMapper {
             paquete.setNivelFragilidad(dto.getNivelFragilidad());
             paquete.setSeguroAdicional(dto.getSeguroAdicional());
             return paquete;
+        } else {
+            throw new IllegalArgumentException("Tipo de paquete no reconocido: " + dto.getTipo());
         }
-
     }
 
     public static PaqueteDTO toDTO(Paquete paquete){
         PaqueteDTO p = new PaqueteDTO();
+
         p.setId(paquete.getId());
         p.setPesoKg(paquete.getPesoKg());
         p.setVolumenDm3(paquete.getVolumenDm3());
+        p.setCodigo(paquete.getCodigo());
+
         if(paquete instanceof PaqueteRefrigerado paqueteRefrigerado){
-            p.setTipo("Resfrigerado");
+            p.setTipo(TIPO_REFRIGERADO);
             p.setRangoMax(paqueteRefrigerado.getRangoMax());
             p.setRangoMin(paqueteRefrigerado.getRangoMin());
             p.setTemperaturaObjetivo(paqueteRefrigerado.getTemperaturaObjetivo());
             p.setHorasMaxFueraDeFrio(paqueteRefrigerado.getHorasMaxFueraDeFrio());
-        }else{
-            PaqueteFragil pf = new PaqueteFragil();
-            p.setTipo("Fragil");
-            p.setNivelFragilidad(pf.getNivelFragilidad());
-            p.setSeguroAdicional(pf.getSeguroAdicional());
+
+        } else if (paquete instanceof PaqueteFragil paqueteFragil) {
+            p.setTipo(TIPO_FRAGIL);
+            p.setNivelFragilidad(paqueteFragil.getNivelFragilidad());
+            p.setSeguroAdicional(paqueteFragil.getSeguroAdicional());
         }
         return p;
     }

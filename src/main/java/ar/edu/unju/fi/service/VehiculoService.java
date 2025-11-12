@@ -5,11 +5,11 @@ import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
 import ar.edu.unju.fi.model.Vehiculo;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,7 +22,7 @@ public class VehiculoService {
     }
 
     @Transactional
-    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
+    public VehiculoDTO crearVehiculo(@Valid VehiculoDTO vehiculoDTO) {
         if (vehiculoDTO == null) {
             log.warn("Intento de crear vehículo con DTO nulo.");
             return null;
@@ -45,7 +45,7 @@ public class VehiculoService {
         return vehiculoRepository.findByRefrigerado(refrigerado)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<VehiculoDTO> buscarVehiculosPorPeso(Double pesoRequerido) {
@@ -53,7 +53,7 @@ public class VehiculoService {
         return vehiculoRepository.findByCapacidadMaxPesoKgGreaterThanEqual(pesoRequerido)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<VehiculoDTO> buscarVehiculosPorVolumen(Double volumen) {
@@ -61,7 +61,7 @@ public class VehiculoService {
         return vehiculoRepository.findByCapacidadMaxVolDm3GreaterThanEqual(volumen)
                 .stream()
                 .map(VehiculoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

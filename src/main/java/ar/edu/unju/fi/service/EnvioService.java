@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,209 +25,194 @@ public class EnvioService {
     private final HistorialEstadoEnvioRepository historialEstadoEnvioRepository;
     private final ClienteRepository clienteRepository;
 
-    public EnvioService(EnvioRepository envioRepository, HistorialEstadoEnvioRepository historialEstadoEnvioRepository, ClienteRepository clienteRepository) {
+    public EnvioService(EnvioRepository envioRepository,
+                        HistorialEstadoEnvioRepository historialEstadoEnvioRepository,
+                        ClienteRepository clienteRepository) {
         this.envioRepository = envioRepository;
         this.historialEstadoEnvioRepository = historialEstadoEnvioRepository;
         this.clienteRepository = clienteRepository;
     }
 
     /* =====================
-       CREAR ENVIO
+       CREAR ENVÍO
        ===================== */
     @Transactional
     public EnvioDTO crearEnvio(EnvioDTO dto) {
-        log.info("Iniciando creacion de envio para remitente: {}", dto.getRemitente());
-        Envio envio = EnvioMapper.toEntity(dto);
+        log.info("Iniciando creación de envío para remitente: {}", dto.getRemitente());
+        Envio envio = ensamblarEnvio(dto);
 
         validarPaquetes(envio);
         detectarRefrigerado(envio);
         inicializarEnvio(envio);
-
         envio = envioRepository.save(envio);
-        log.info("Envio guardado exitosamente con ID: {} y codigo: {}", envio.getId(), envio.getCodigoUnico());
 
         registrarHistorialInicial(envio);
-        log.info("Historial inicial registrado para el envio con codigo: {}", envio.getCodigoUnico());
 
+        log.info("Envío creado correctamente con código: {}", envio.getCodigoUnico());
         return EnvioMapper.toDTO(envio);
     }
 
     /* =====================
-       BUSQUEDAS
+       BÚSQUEDAS
        ===================== */
-
     public List<EnvioDTO> listarPorRemitente(String documentoOCuit) {
-        log.info("Listando envios del remitente con documento/CUIT: {}", documentoOCuit);
-        return envioRepository.findByRemitente_DocumentoOCuitIgnoreCase(documentoOCuit)
-                .stream()
-                .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList());
+        log.info("Buscando envíos del remitente con documento/CUIT: {}", documentoOCuit);
+
+        List<EnvioDTO> envios = envioRepository.findByRemitente_DocumentoOCuitIgnoreCase(documentoOCuit)
+                .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos para el remitente con documento/CUIT: {}", documentoOCuit);
+        } else {
+            log.info("Se encontraron {} envíos para el remitente con documento/CUIT: {}", envios.size(), documentoOCuit);
+        }
+
+        return envios;
     }
 
     public List<EnvioDTO> listarPorDestinatario(String documentoOCuit) {
-        log.info("Listando envios del destinatario con documento/CUIT: {}", documentoOCuit);
-        return envioRepository.findByDestinatario_DocumentoOCuitIgnoreCase(documentoOCuit)
-                .stream()
-                .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList());
+        log.info("Buscando envíos del destinatario con documento/CUIT: {}", documentoOCuit);
+
+        List<EnvioDTO> envios = envioRepository.findByDestinatario_DocumentoOCuitIgnoreCase(documentoOCuit)
+                .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos para el destinatario con documento/CUIT: {}", documentoOCuit);
+        } else {
+            log.info("Se encontraron {} envíos para el destinatario con documento/CUIT: {}", envios.size(), documentoOCuit);
+        }
+
+        return envios;
     }
 
     public List<EnvioDTO> listarPorEstado(EstadoEnvio estado) {
-        log.info("Listando envios por estado: {}", estado);
-        return envioRepository.findByEstado(estado)
-                .stream()
-                .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList());
+        log.info("Listando envíos con estado: {}", estado);
+
+        List<EnvioDTO> envios = envioRepository.findByEstado(estado)
+                .stream().map(EnvioMapper::toDTO).toList();
+
+        if (envios.isEmpty()) {
+            log.warn("No se encontraron envíos con el estado: {}", estado);
+        } else {
+            log.info("Se encontraron {} envíos con el estado: {}", envios.size(), estado);
+        }
+
+        return envios;
+    }
+
+    @Transactional(readOnly = true)
+    public EnvioDTO obtenerEnvioPorCodigo(String codigoUnico) {
+        log.info("Buscando envío con código único: {}", codigoUnico);
+
+        Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
+                .orElseThrow(() -> {
+                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
+                });
+
+        log.info("Envío encontrado: código={}, estado={}", envio.getCodigoUnico(), envio.getEstado());
+        return EnvioMapper.toDTO(envio);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HistorialEstadoEnvio> obtenerHistorialPorCodigo(String codigoUnico) {
+        log.info("Buscando historial de estados para el envío con código: {}", codigoUnico);
+
+        Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
+                .orElseThrow(() -> {
+                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
+                });
+
+        List<HistorialEstadoEnvio> historial = historialEstadoEnvioRepository.findByEnvio(envio);
+
+        if (historial.isEmpty()) {
+            log.warn("El envío con código {} no tiene historial registrado.", codigoUnico);
+        } else {
+            log.info("Historial recuperado: {} registros encontrados para el envío con código {}", historial.size(), codigoUnico);
+        }
+
+        return historial;
     }
 
     /* =====================
-       CAMBIO DE ESTADO
+       CAMBIO DE ESTADO (Patrón STATE)
        ===================== */
+
     @Transactional
     public void avanzarEstado(Long envioId, String observacion) {
-        log.info("Intentando avanzar estado del envio con ID: {}", envioId);
-
-        Envio envio = envioRepository.findById(envioId)
-                .orElseThrow(() -> {
-                    log.warn("Envio con ID {} no encontrado al intentar avanzar estado", envioId);
-                    return new RuntimeException("Envio no encontrado");
-                });
-
-        EstadoEnvio estadoAnterior = envio.getEstado();
-
-        try {
-            EstadoEnvioState estadoActual = EstadoEnvioFactory.getEstado(estadoAnterior);
-            estadoActual.avanzar(envio);
-
-            EstadoEnvio nuevoEstado = envio.getEstado();
-            envioRepository.save(envio);
-
-            registrarHistorial(envio, estadoAnterior, nuevoEstado, observacion);
-            log.info("Envio {} avanzo de {} a {}", envio.getCodigoUnico(), estadoAnterior, nuevoEstado);
-        } catch (Exception e) {
-            log.error("Error al avanzar estado del Envio {}: {}", envio.getCodigoUnico(), e.getMessage());
-            throw e;
-        }
+        Envio envio = obtenerEnvioPorId(envioId);
+        EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
+        estado.avanzar(envio, historialEstadoEnvioRepository, observacion);
+        envioRepository.save(envio);
+        log.info("Envío {} avanzó correctamente al estado {}", envio.getCodigoUnico(), envio.getEstado());
     }
 
     @Transactional
     public void cancelarEnvio(Long envioId, String observacion) {
-        log.info("Intentando cancelar el envio con ID: {}", envioId);
-
-        Envio envio = envioRepository.findById(envioId)
-                .orElseThrow(() -> {
-                    log.warn("Envio con ID {} no encontrado al intentar cancelar", envioId);
-                    return new RuntimeException("Envio no encontrado");
-                });
-
-        EstadoEnvio estadoAnterior = envio.getEstado();
-
-        try {
-            EstadoEnvioState estadoActual = EstadoEnvioFactory.getEstado(estadoAnterior);
-            estadoActual.cancelar(envio);
-
-            EstadoEnvio nuevoEstado = envio.getEstado();
-            envioRepository.save(envio);
-
-            registrarHistorial(envio, estadoAnterior, nuevoEstado, observacion);
-            log.info("Envio {} cancelado correctamente. Estado previo: {}, estado nuevo: {}", envio.getCodigoUnico(), estadoAnterior, nuevoEstado);
-        } catch (Exception e) {
-            log.error("Error al cancelar envio {}: {}", envio.getCodigoUnico(), e.getMessage());
-            throw e;
-        }
+        Envio envio = obtenerEnvioPorId(envioId);
+        EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
+        estado.cancelar(envio, historialEstadoEnvioRepository, observacion);
+        envioRepository.save(envio);
+        log.info("Envío {} fue cancelado. Estado final: {}", envio.getCodigoUnico(), envio.getEstado());
     }
 
     @Transactional
     public void devolverEnvio(Long envioId, String observacion) {
-        log.info("Intentando devolver el envio con ID: {}", envioId);
-
-        Envio envio = envioRepository.findById(envioId)
-                .orElseThrow(() -> {
-                    log.warn("Envio con ID {} no encontrado al intentar devolver", envioId);
-                    return new RuntimeException("Envio no encontrado");
-                });
-
-        EstadoEnvio estadoAnterior = envio.getEstado();
-
-        try {
-            EstadoEnvioState estadoActual = EstadoEnvioFactory.getEstado(estadoAnterior);
-            estadoActual.devolver(envio);
-
-            EstadoEnvio nuevoEstado = envio.getEstado();
-            envioRepository.save(envio);
-
-            registrarHistorial(envio, estadoAnterior, nuevoEstado, observacion);
-            log.info("Envio {} devuelto correctamente. Estado previo: {}, estado nuevo: {}", envio.getCodigoUnico(), estadoAnterior, nuevoEstado);
-        } catch (Exception e) {
-            log.error("Error al devolver envio {}: {}", envio.getCodigoUnico(), e.getMessage());
-            throw e;
-        }
+        Envio envio = obtenerEnvioPorId(envioId);
+        EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
+        estado.devolver(envio, historialEstadoEnvioRepository, observacion);
+        envioRepository.save(envio);
+        log.info("Envío {} fue devuelto. Estado final: {}", envio.getCodigoUnico(), envio.getEstado());
     }
 
     @Transactional
     public void adjuntarComprobante(Long envioId, String comprobante) {
-        log.info("Adjuntando comprobante al envio con ID: {}", envioId);
-        Envio envio = envioRepository.findById(envioId)
-                .orElseThrow(() -> {
-                    log.error("No se encontro envio con ID: {}", envioId);
-                    return new RuntimeException("Envio no encontrado");
-                });
+        Envio envio = obtenerEnvioPorId(envioId);
+
+        if (comprobante == null || comprobante.isBlank()) {
+            throw new IllegalArgumentException("El comprobante no puede estar vacío.");
+        }
+
+        if (envio.getEstado() == EstadoEnvio.ENTREGADO || envio.getEstado() == EstadoEnvio.CANCELADO) {
+            throw new IllegalStateException("No se puede adjuntar comprobante a un envío entregado o cancelado.");
+        }
 
         envio.setComprobanteEntrega(comprobante);
         envioRepository.save(envio);
-        log.info("Comprobante adjuntado correctamente al envio {}", envio.getCodigoUnico());
+
+        log.info("Comprobante adjuntado correctamente al envío {}", envio.getCodigoUnico());
     }
 
     /* =====================
-       VALIDACIONES
+       VALIDACIONES Y UTILIDADES
        ===================== */
 
-    private void registrarHistorial(Envio envio, EstadoEnvio anterior, EstadoEnvio nuevo, String observacion) {
-        log.debug("Registrando historial para envio {}. Estado anterior: {}, nuevo estado: {}", envio.getCodigoUnico(), anterior, nuevo);
-
-        HistorialEstadoEnvio historial = HistorialEstadoEnvio.builder()
-                .envio(envio)
-                .estadoAnterior(anterior)
-                .estadoNuevo(nuevo)
-                .fechaHora(LocalDateTime.now())
-                .observacion(observacion)
-                .build();
-
-        historialEstadoEnvioRepository.save(historial);
-        log.info("Historial registrado para envio {} con nuevo estado {}", envio.getCodigoUnico(), nuevo);
+    private Envio obtenerEnvioPorId(Long id) {
+        return envioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Envío no encontrado con ID: " + id));
     }
 
     private void validarPaquetes(Envio envio) {
-        for (Paquete paquete : envio.getPaquetes()) {
-            if (paquete.getPesoKg() == null || paquete.getPesoKg() <= 0) {
-                log.error("Peso invalido para paquete {}", paquete.getCodigo());
-                throw new IllegalArgumentException("Peso invalido para el paquete: " + paquete.getCodigo());
-            }
-            if (paquete.getVolumenDm3() == null || paquete.getVolumenDm3() <= 0) {
-                log.error("Volumen invalido para paquete {}", paquete.getCodigo());
-                throw new IllegalArgumentException("Volumen invalido para el paquete: " + paquete.getCodigo());
-            }
+        for (Paquete p : envio.getPaquetes()) {
+            if (p.getPesoKg() == null || p.getPesoKg() <= 0)
+                throw new IllegalArgumentException("Peso inválido en paquete " + p.getCodigo());
+            if (p.getVolumenDm3() == null || p.getVolumenDm3() <= 0)
+                throw new IllegalArgumentException("Volumen inválido en paquete " + p.getCodigo());
         }
-        log.info("Todos los paquetes del envio {} son validos", envio.getCodigoUnico());
+        log.debug("Validando paquetes...");
     }
 
     private void detectarRefrigerado(Envio envio) {
-        boolean requiereFrio = false;
-
-        for (Paquete paquete : envio.getPaquetes()) {
-            if (paquete instanceof PaqueteRefrigerado) {
-                requiereFrio = true;
-                break;
-            }
-        }
+        boolean requiereFrio = envio.getPaquetes().stream().anyMatch(PaqueteRefrigerado.class::isInstance);
         envio.setRequiereFrio(requiereFrio);
-        log.info("El envio {} {}", envio.getCodigoUnico(), requiereFrio ? "requiere refrigeracion" : "no requiere refrigeracion");
+        log.debug("Detectando si es refrigerado...");
     }
 
     private void inicializarEnvio(Envio envio) {
         envio.setEstado(EstadoEnvio.GENERADO);
         envio.setCodigoUnico(UUID.randomUUID().toString());
-        log.debug("Envio inicializado con estado GENERADO y codigo: {}", envio.getCodigoUnico());
+        log.debug("Inicializando estado del envío...");
     }
 
     private void registrarHistorialInicial(Envio envio) {
@@ -237,10 +221,20 @@ public class EnvioService {
                 .estadoAnterior(null)
                 .estadoNuevo(EstadoEnvio.GENERADO)
                 .fechaHora(LocalDateTime.now())
-                .observacion("Envio creado")
+                .observacion("Envío creado")
                 .build());
 
-        log.info("Historial inicial creado para envio con codigo: {}", envio.getCodigoUnico());
     }
+    private Envio ensamblarEnvio(EnvioDTO dto) {
+        Cliente remitente = clienteRepository.findByDocumentoOCuitIgnoreCase(dto.getRemitente().getDocumentoOCuit())
+                .orElseThrow(() -> new IllegalArgumentException("Remitente no encontrado"));
+        Cliente destinatario = clienteRepository.findByDocumentoOCuitIgnoreCase(dto.getDestinatario().getDocumentoOCuit())
+                .orElseThrow(() -> new IllegalArgumentException("Destinatario no encontrado"));
 
+        Envio envio = EnvioMapper.toEntity(dto);
+        envio.setRemitente(remitente);
+        envio.setDestinatario(destinatario);
+
+        return envio;
+    }
 }

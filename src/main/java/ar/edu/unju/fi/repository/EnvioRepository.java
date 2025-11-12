@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface EnvioRepository extends JpaRepository<Envio,Long> {
     List<Envio> findByRemitente_DocumentoOCuitIgnoreCase(String documentoOCuit);
@@ -14,4 +16,6 @@ public interface EnvioRepository extends JpaRepository<Envio,Long> {
     List<Envio> findByDestinatario_DocumentoOCuitIgnoreCase(String documentoOCuit);
 
     List<Envio> findByEstado(EstadoEnvio estado);
+
+    Optional<Envio> findByCodigoUnico(String codigoUnico);
 }
