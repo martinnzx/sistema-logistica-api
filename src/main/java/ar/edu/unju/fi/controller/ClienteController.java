@@ -4,6 +4,7 @@ import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controlador REST para manejar operaciones sobre clientes.
@@ -76,5 +79,40 @@ public class ClienteController {
         log.info("Buscando cliente con documento o CUIT: {}", documentoOCuit);
         ClienteDTO cliente = clienteService.buscarPorDocumentoOCuit(documentoOCuit);
         return ResponseEntity.ok(cliente);
+    }
+    @Operation(
+            summary = "Actualizar un cliente",
+            description = "Actualizacion de cliente, verifica si existe y lo persiste si todo esta correcto",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Cliente actualizado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error de validación o CUIT/Documento no encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeError.class))
+                    )
+            }
+    )
+    @PutMapping("/{documentoOCuit}")
+    public ResponseEntity<ClienteDTO> actualizarCliente(@PathVariable String documentoOCuit,@Valid @RequestBody ClienteDTO clienteDTO) {
+        log.info("Actualizando un cliente");
+        ClienteDTO actualizado = clienteService.actualizarCliente(documentoOCuit,clienteDTO);
+        return ResponseEntity.ok().body(actualizado);
+    }
+
+    @Operation(summary = "Listar clientes",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Listado de clientes",
+                            content = @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ClassLoader.class))))
+            })
+    @GetMapping
+    public ResponseEntity<List<ClienteDTO>> listar() {
+        log.info("Listando usuarios...");
+        List<ClienteDTO> lista = clienteService.listarClientes();
+        return ResponseEntity.ok(lista);
     }
 }
