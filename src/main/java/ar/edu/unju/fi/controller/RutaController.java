@@ -2,12 +2,14 @@ package ar.edu.unju.fi.controller;
 
 import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.RutaDTO;
+import ar.edu.unju.fi.dto.views.RutaViewDTO;
 import ar.edu.unju.fi.service.RutaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,15 +29,13 @@ public class RutaController {
 
     private final RutaService rutaService;
 
-    /* =======================================================
-       1. CREAR RUTA
-    ======================================================= */
     @Operation(
             summary = "Crear una nueva Ruta",
-            description = "Genera una ruta asignando un vehículo y una lista de envíos existentes.",
+            description = "Genera una ruta asignando un vehículo (por patente) y una lista de envíos (por códigos).",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Ruta creada exitosamente",
                             content = @Content(mediaType = "application/json",
+                                    // La RESPUESTA sigue siendo el DTO completo
                                     schema = @Schema(implementation = RutaDTO.class))),
                     @ApiResponse(responseCode = "400", description = "Validación fallida o datos incorrectos",
                             content = @Content(mediaType = "application/json",
@@ -43,9 +43,13 @@ public class RutaController {
             }
     )
     @PostMapping
-    public ResponseEntity<RutaDTO> crearRuta(@RequestBody RutaDTO dto) {
-        log.info("Solicitud para crear ruta recibida");
-        RutaDTO nueva = rutaService.crearRuta(dto);
+    public ResponseEntity<RutaDTO> crearRuta(
+            @Valid @RequestBody RutaViewDTO viewDTO
+    ) {
+        log.info("Solicitud para crear ruta recibida para patente: {}", viewDTO.getPatenteVehiculo());
+
+        RutaDTO nueva = rutaService.crearRuta(viewDTO);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
 
@@ -71,7 +75,6 @@ public class RutaController {
             @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha
     ) {
         log.info("Consultando envíos de la ruta {} en fecha {}", id, fecha);
-
         List<RutaDTO> resultado = rutaService.obtenerEnviosPorRutaYFecha(id, fecha);
 
         if (resultado.isEmpty()) {
