@@ -2,6 +2,10 @@ package ar.edu.unju.fi.controller;
 
 import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.EnvioDTO;
+import ar.edu.unju.fi.dto.views.EnvioViewDTO;
+import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
+import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
+import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 import ar.edu.unju.fi.model.HistorialEstadoEnvio;
 import ar.edu.unju.fi.service.EnvioService;
@@ -25,7 +29,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Tag(name = "envíos", description = "Operaciones sobre Envíos y su ciclo de vida")
 public class EnvioController {
-
     private final EnvioService envioService;
 
     /* =======================================================
@@ -44,7 +47,7 @@ public class EnvioController {
             }
     )
     @PostMapping
-    public ResponseEntity<EnvioDTO> crearEnvio(@RequestBody EnvioDTO dto) {
+    public ResponseEntity<EnvioDTO> crearEnvio(@RequestBody EnvioViewDTO dto) {
         log.info("Solicitud para crear un nuevo envío recibida");
         EnvioDTO nuevo = envioService.crearEnvio(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
@@ -59,13 +62,13 @@ public class EnvioController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewRemitenteDTO.class)))
             }
     )
     @GetMapping("/remitente/{documento}")
-    public ResponseEntity<List<EnvioDTO>> listarPorRemitente(@PathVariable String documento) {
+    public ResponseEntity<List<EnvioViewRemitenteDTO>> listarPorRemitente(@PathVariable String documento) {
         log.info("Listando envíos del remitente con documento: {}", documento);
-        List<EnvioDTO> envios = envioService.listarPorRemitente(documento);
+        List<EnvioViewRemitenteDTO> envios = envioService.listarPorRemitente(documento);
         return ResponseEntity.ok(envios);
     }
 
@@ -78,13 +81,13 @@ public class EnvioController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewDestinatarioDTO.class)))
             }
     )
     @GetMapping("/destinatario/{documento}")
-    public ResponseEntity<List<EnvioDTO>> listarPorDestinatario(@PathVariable String documento) {
+    public ResponseEntity<List<EnvioViewDestinatarioDTO>> listarPorDestinatario(@PathVariable String documento) {
         log.info("Listando envíos del destinatario con documento: {}", documento);
-        List<EnvioDTO> envios = envioService.listarPorDestinatario(documento);
+        List<EnvioViewDestinatarioDTO> envios = envioService.listarPorDestinatario(documento);
         return ResponseEntity.ok(envios);
     }
 
@@ -97,13 +100,13 @@ public class EnvioController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewEstadoDTO.class)))
             }
     )
     @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<EnvioDTO>> listarPorEstado(@PathVariable EstadoEnvio estado) {
+    public ResponseEntity<List<EnvioViewEstadoDTO>> listarPorEstado(@PathVariable EstadoEnvio estado) {
         log.info("Listando envíos por estado: {}", estado);
-        List<EnvioDTO> envios = envioService.listarPorEstado(estado);
+        List<EnvioViewEstadoDTO> envios = envioService.listarPorEstado(estado);
         return ResponseEntity.ok(envios);
     }
 

@@ -3,6 +3,7 @@ package ar.edu.unju.fi.repository;
 
 import ar.edu.unju.fi.model.Envio;
 import ar.edu.unju.fi.enums.EstadoEnvio;
+import ar.edu.unju.fi.model.Paquete;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,5 @@ public interface EnvioRepository extends JpaRepository<Envio,Long> {
     List<Envio> findByEstado(EstadoEnvio estado);
 
     Optional<Envio> findByCodigoUnico(String codigoUnico);
+    boolean existsByPaquetes(Paquete paquete);
 }

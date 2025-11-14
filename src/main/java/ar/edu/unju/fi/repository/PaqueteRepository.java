@@ -10,4 +10,5 @@ import java.util.List;
 public interface PaqueteRepository extends JpaRepository<Paquete, Long> {
     List<Paquete> findByPesoKgBetween(Double p, Double p2);
     List<Paquete> findByVolumenDm3Between(Double v, Double v2);
+    List<Paquete> findByCodigoIn(List<String> codigos);
 }
