@@ -172,8 +172,9 @@ public class EnvioService {
        ===================== */
 
     @Transactional
-    public void avanzarEstado(Long envioId, String observacion) {
-        Envio envio = obtenerEnvioPorId(envioId);
+    public void avanzarEstado(String codigo, String observacion) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
         EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
         estado.avanzar(envio, historialEstadoEnvioRepository, observacion);
         envioRepository.save(envio);
@@ -181,8 +182,9 @@ public class EnvioService {
     }
 
     @Transactional
-    public void cancelarEnvio(Long envioId, String observacion) {
-        Envio envio = obtenerEnvioPorId(envioId);
+    public void cancelarEnvio(String codigo, String observacion) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
         EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
         estado.cancelar(envio, historialEstadoEnvioRepository, observacion);
         envioRepository.save(envio);
@@ -190,8 +192,9 @@ public class EnvioService {
     }
 
     @Transactional
-    public void devolverEnvio(Long envioId, String observacion) {
-        Envio envio = obtenerEnvioPorId(envioId);
+    public void devolverEnvio(String codigo, String observacion) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
         EstadoEnvioState estado = EstadoEnvioFactory.getEstado(envio.getEstado());
         estado.devolver(envio, historialEstadoEnvioRepository, observacion);
         envioRepository.save(envio);

@@ -114,10 +114,13 @@ public class EnvioController {
        5. AVANZAR ESTADO
     ======================================================= */
     @Operation(
-            summary = "Avanzar el estado de un envío",
-            description = "Avanza el estado del envío según la lógica del patrón State. Se puede incluir una observación opcional.",
+            summary = "Avanzar el estado de un envío por CÓDIGO", // <-- Actualizado
+            description = "Avanza el estado del envío (buscado por su código único) según la lógica del patrón State.", // <-- Actualizado
             responses = {
                     @ApiResponse(responseCode = "200", description = "Estado avanzado correctamente",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class))),
+                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código", // <-- Añadido
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = MensajeError.class))),
                     @ApiResponse(responseCode = "400", description = "Error al avanzar estado (por ejemplo, estado no válido)",
@@ -125,13 +128,16 @@ public class EnvioController {
                                     schema = @Schema(implementation = MensajeError.class)))
             }
     )
-    @PutMapping("/{id}/avanzar")
+    @PutMapping("/{codigo}/avanzar")
     public ResponseEntity<MensajeError> avanzarEstado(
-            @PathVariable Long id,
+            @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
 
         String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
-        envioService.avanzarEstado(id, observacion);
+
+        // 3. CAMBIO EN LA LLAMADA AL SERVICIO: de id a codigo
+        envioService.avanzarEstado(codigo, observacion);
+
         return ResponseEntity.ok(new MensajeError("El estado del envío se avanzó correctamente."));
     }
 
@@ -139,46 +145,51 @@ public class EnvioController {
        6. CANCELAR ENVÍO
     ======================================================= */
     @Operation(
-            summary = "Cancelar un envío",
-            description = "Cambia el estado del envío a CANCELADO. Se puede incluir una observación.",
+            summary = "Cancelar un envío por CÓDIGO", // <-- Actualizado
+            description = "Cambia el estado del envío (buscado por código único) a CANCELADO.", // <-- Actualizado
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Envío cancelado correctamente",
+                    @ApiResponse(responseCode = "200", description = "Envío cancelado correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = MensajeError.class)))
             }
     )
-    @PutMapping("/{id}/cancelar")
+// 1. CAMBIO EN LA RUTA
+    @PutMapping("/{codigo}/cancelar")
     public ResponseEntity<MensajeError> cancelarEnvio(
-            @PathVariable Long id,
+            @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
 
         String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
-        envioService.cancelarEnvio(id, observacion);
+        envioService.cancelarEnvio(codigo, observacion);
+
         return ResponseEntity.ok(new MensajeError("El envío fue cancelado correctamente."));
     }
-
     /* =======================================================
        7. DEVOLVER ENVÍO
     ======================================================= */
     @Operation(
-            summary = "Devolver un envío",
-            description = "Marca el envío como devuelto (por ejemplo, si no se pudo entregar al destinatario).",
+            summary = "Devolver un envío por CÓDIGO", // <-- Actualizado
+            description = "Marca el envío (buscado por código único) como devuelto.", // <-- Actualizado
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Envío devuelto correctamente",
+                    @ApiResponse(responseCode = "200", description = "Envío devuelto correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = MensajeError.class)))
             }
     )
-    @PutMapping("/{id}/devolver")
+// 1. CAMBIO EN LA RUTA
+    @PutMapping("/{codigo}/devolver")
     public ResponseEntity<MensajeError> devolverEnvio(
-            @PathVariable Long id,
+            @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
 
         String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
-        envioService.devolverEnvio(id, observacion);
+
+        envioService.devolverEnvio(codigo, observacion);
+
         return ResponseEntity.ok(new MensajeError("El envío fue devuelto correctamente."));
     }
-
     /* =======================================================
        8. ADJUNTAR COMPROBANTE
     ======================================================= */
