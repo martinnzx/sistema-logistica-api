@@ -20,4 +20,5 @@ public interface EnvioRepository extends JpaRepository<Envio,Long> {
 
     Optional<Envio> findByCodigoUnico(String codigoUnico);
     boolean existsByPaquetes(Paquete paquete);
+    List<Envio> findByCodigoUnicoIn(List<String> codigos);
 }

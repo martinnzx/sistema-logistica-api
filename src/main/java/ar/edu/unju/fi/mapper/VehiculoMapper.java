@@ -30,6 +30,8 @@ public class VehiculoMapper {
         vehiculo.setCapacidadMaxPesoKg(dto.getCapacidadMaxPesoKg());
         vehiculo.setCapacidadMaxVolDm3(dto.getCapacidadMaxVolDm3());
         vehiculo.setRefrigerado(dto.getRefrigerado());
+        vehiculo.setRangoTemperaturaMin(dto.getRangoTemperaturaMin());
+        vehiculo.setRangoTemperaturaMax(dto.getRangoTemperaturaMax());
 
         return vehiculo;
     }
