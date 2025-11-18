@@ -92,5 +92,19 @@ public class PaqueteService {
         }
         log.info("Temperatura del paquete refrigerado validada correctamente ({}) dentro del rango [{} - {}]", tempObj, rangoMin, rangoMax);
     }
+    public List<Paquete> buscarPaquetesPorCodigos(List<String> codigos) {
+        List<Paquete> paquetesEncontrados = paqueteRepository.findByCodigoIn(codigos);
 
+        if (paquetesEncontrados.size() != codigos.size()) {
+            List<String> codigosEncontrados = paquetesEncontrados.stream()
+                    .map(Paquete::getCodigo)
+                    .toList();
+            List<String> codigosFaltantes = codigos.stream()
+                    .filter(c -> !codigosEncontrados.contains(c))
+                    .toList();
+
+            throw new IllegalArgumentException("Los siguientes códigos de paquete no se encontraron: " + String.join(", ", codigosFaltantes));
+        }
+        return paquetesEncontrados;
+    }
 }

@@ -1,5 +1,6 @@
 package ar.edu.unju.fi.service;
 
+import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
 import ar.edu.unju.fi.repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
@@ -62,6 +63,10 @@ public class VehiculoService {
                 .stream()
                 .map(VehiculoMapper::toDTO)
                 .toList();
+    }
+    public Vehiculo buscarVehiculoPatente(String patente){
+        return vehiculoRepository.findByPatenteIgnoreCase(patente)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "patente", patente));
     }
 
 }
