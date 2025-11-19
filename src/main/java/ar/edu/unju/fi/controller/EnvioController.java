@@ -2,10 +2,7 @@ package ar.edu.unju.fi.controller;
 
 import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.EnvioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
+import ar.edu.unju.fi.dto.views.*;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 import ar.edu.unju.fi.model.HistorialEstadoEnvio;
 import ar.edu.unju.fi.service.EnvioService;
@@ -195,7 +192,7 @@ public class EnvioController {
     ======================================================= */
     @Operation(
             summary = "Adjuntar comprobante de entrega",
-            description = "Adjunta un comprobante (texto o hash simulado) al envío antes de ser entregado.",
+            description = "Adjunta un comprobante al envío antes de ser entregado.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Comprobante adjuntado correctamente",
                             content = @Content(mediaType = "application/json",
@@ -205,13 +202,14 @@ public class EnvioController {
                                     schema = @Schema(implementation = MensajeError.class)))
             }
     )
+
     @PutMapping("/{id}/comprobante")
     public ResponseEntity<MensajeError> adjuntarComprobante(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body) {
+            @RequestBody ComprobanteDTO request) {
 
-        String comprobante = body.get("comprobante");
-        envioService.adjuntarComprobante(id, comprobante);
+        envioService.adjuntarComprobante(id, request);
+
         return ResponseEntity.ok(new MensajeError("Comprobante adjuntado correctamente al envío."));
     }
 

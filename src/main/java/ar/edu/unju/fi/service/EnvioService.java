@@ -2,10 +2,7 @@ package ar.edu.unju.fi.service;
 
 import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.dto.DatosEmailDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
+import ar.edu.unju.fi.dto.views.*;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
 import ar.edu.unju.fi.mapper.ClienteMapper;
@@ -18,7 +15,6 @@ import ar.edu.unju.fi.repository.HistorialEstadoEnvioRepository;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.model.*;
-import ar.edu.unju.fi.service.email.EmailService;
 import ar.edu.unju.fi.state.EstadoEnvioFactory;
 import ar.edu.unju.fi.state.EstadoEnvioState;
 import jakarta.validation.Valid;
@@ -250,18 +246,14 @@ public class EnvioService {
     }
 
     @Transactional
-    public void adjuntarComprobante(Long envioId, String comprobante) {
+    public void adjuntarComprobante(Long envioId, ComprobanteDTO comprobateDTO) {
         Envio envio = obtenerEnvioPorId(envioId);
-
-        if (comprobante == null || comprobante.isBlank()) {
-            throw new IllegalArgumentException("El comprobante no puede estar vacío.");
-        }
 
         if (envio.getEstado() == EstadoEnvio.ENTREGADO || envio.getEstado() == EstadoEnvio.CANCELADO) {
             throw new IllegalStateException("No se puede adjuntar comprobante a un envío entregado o cancelado.");
         }
 
-        envio.setComprobanteEntrega(comprobante);
+        envio.setComprobanteEntrega(comprobateDTO.getComprobante());
         envioRepository.save(envio);
 
         log.info("Comprobante adjuntado correctamente al envío {}", envio.getCodigoUnico());
