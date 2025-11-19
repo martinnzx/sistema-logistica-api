@@ -237,12 +237,12 @@ public class EnvioController {
                                     schema = @Schema(implementation = MensajeError.class)))
             }
     )
-    @PutMapping("/{id}/comprobante")
+    @PutMapping("/{codigo}/comprobante")
     public ResponseEntity<MensajeError> adjuntarComprobante(
-            @PathVariable Long id,
+            @PathVariable String codigo,
             @RequestBody ComprobanteDTO request) {
 
-        envioService.adjuntarComprobante(id, request);
+        envioService.adjuntarComprobante(codigo, request);
 
         return ResponseEntity.ok(new MensajeError("Comprobante adjuntado correctamente al envío."));
     }

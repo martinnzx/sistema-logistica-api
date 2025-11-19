@@ -258,8 +258,9 @@ public class EnvioService {
     }
 
     @Transactional
-    public void adjuntarComprobante(Long envioId, ComprobanteDTO comprobateDTO) {
-        Envio envio = obtenerEnvioPorId(envioId);
+    public void adjuntarComprobante(String codigo, ComprobanteDTO comprobateDTO) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
 
         if (envio.getEstado() == EstadoEnvio.ENTREGADO || envio.getEstado() == EstadoEnvio.CANCELADO) {
             throw new IllegalStateException("No se puede adjuntar comprobante a un envío entregado o cancelado.");
@@ -274,11 +275,6 @@ public class EnvioService {
     /* =====================
        VALIDACIONES Y UTILIDADES
        ===================== */
-
-    private Envio obtenerEnvioPorId(Long id) {
-        return envioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Envío no encontrado con ID: " + id));
-    }
 
     private void validarPaquetes(Envio envio) {
         for (Paquete p : envio.getPaquetes()) {
