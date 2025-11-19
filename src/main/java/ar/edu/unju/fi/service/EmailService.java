@@ -1,4 +1,4 @@
-package ar.edu.unju.fi.service.email;
+package ar.edu.unju.fi.service;
 
 import ar.edu.unju.fi.dto.DatosEmailDTO;
 import jakarta.mail.MessagingException;
@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService {
+public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Override
     public void enviar(String para, String asunto, String cuerpoHtml) {
 
         try {
@@ -29,10 +28,9 @@ public class EmailServiceImpl implements EmailService {
             mailSender.send(mensaje);
 
         } catch (MessagingException e) {
-            throw new RuntimeException("Error al enviar correo: " + e.getMessage());
+            throw new IllegalArgumentException("Error al enviar correo: " + e.getMessage());
         }
     }
-    @Override
     public void enviarEmailEnvioRegistrado(DatosEmailDTO datos) {
         String asunto = "¡Tu envío " + datos.getCodigo() + " ha sido registrado!";
         String cuerpoHtml = this.plantillaEnvioRegistrado(datos); // Usa la plantilla
@@ -40,7 +38,6 @@ public class EmailServiceImpl implements EmailService {
         this.enviar(datos.getEmailPara(), asunto, cuerpoHtml);
     }
 
-    @Override
     public void enviarEmailEnvioEntregado(DatosEmailDTO datos) {
         String asunto = "¡Tu pedido " + datos.getCodigo() + " ha sido entregado!";
         String cuerpoHtml = this.plantillaEnvioEntregado(datos); // Usa la plantilla
@@ -52,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         String html = """
         <div style="font-family: Arial; max-width: 600px; margin:auto; border:1px solid #ddd;">
             <div style="background:#007bff; padding:20px; text-align:center; color:white;">
-                <img src="https://cdn-icons-png.flaticon.com/512/2962/2962288.png" width="80"/>
+                <img src="https://cdn.dribbble.com/userupload/31071214/file/original-097ef1c4344add3ec697f411c924aac0.jpg?resize=752x&vertical=center" width="80"/>
                 <h2>¡Envío Registrado!</h2>
                 <p>Tu envío ha sido registrado exitosamente.</p>
             </div>
