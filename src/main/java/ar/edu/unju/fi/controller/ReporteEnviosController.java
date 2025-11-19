@@ -1,6 +1,8 @@
 package ar.edu.unju.fi.controller;
 
+import ar.edu.unju.fi.dto.views.PDFcomprobanteDTO;
 import ar.edu.unju.fi.enums.EstadoEnvio;
+import ar.edu.unju.fi.service.EnvioService;
 import ar.edu.unju.fi.service.ReporteEnviosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,6 +22,7 @@ import java.time.LocalDate;
 public class ReporteEnviosController {
 
     private final ReporteEnviosService reporteService;
+    private final EnvioService envioService;
 
     @Operation(
             summary = "Generar reporte PDF de envíos",
@@ -80,5 +83,26 @@ public class ReporteEnviosController {
         );
 
         return new ResponseEntity<>(archivo, headers, HttpStatus.OK);
+    }
+    @Operation(
+            summary = "Generar comprobante PDF individual por código",
+            description = "Devuelve un archivo PDF (comprobante) con los detalles de un envío específico dado su código único."
+    )
+    @GetMapping("/comprobante/{codigo}")
+    public ResponseEntity<byte[]> generarComprobante(
+            @Parameter(description = "Código único del envío para generar el comprobante", required = true)
+            @PathVariable String codigo
+    ) {
+        PDFcomprobanteDTO pdfDetails = envioService.obtenerCodigo(codigo);
+
+        byte[] archivo = reporteService.generarComprobanteEnvio(pdfDetails);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF.toString())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment()
+                                .filename("comprobante-" + codigo + ".pdf")
+                                .build().toString())
+                .body(archivo);
     }
 }

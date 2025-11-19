@@ -198,6 +198,18 @@ public class EnvioService {
         }
         return envios;
     }
+    public PDFcomprobanteDTO obtenerCodigo(String codigo) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
+        PDFcomprobanteDTO pdf = new PDFcomprobanteDTO();
+        pdf.setRemitente(envio.getRemitente().getNombreRazonSocial());
+        pdf.setDestinatario(envio.getDestinatario().getNombreRazonSocial());
+        pdf.setCodigo(envio.getCodigoUnico());
+        pdf.setEstado(envio.getEstado().toString());
+        pdf.setFechaHora(LocalDateTime.now());
+        pdf.setObservaciones("Envio generado exitosamente");
+        return pdf;
+    }
     /* =====================
        CAMBIO DE ESTADO (Patrón STATE)
        ===================== */
