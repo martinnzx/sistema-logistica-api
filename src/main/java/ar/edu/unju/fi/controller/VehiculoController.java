@@ -4,9 +4,11 @@ import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.service.VehiculoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -110,5 +112,35 @@ public class VehiculoController {
         List<VehiculoDTO> lista = vehiculoService.buscarVehiculosPorVolumen(volumen);
         return ResponseEntity.ok(lista);
     }
+    @Operation(summary = "Listar Vehiculos",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Listado de vehiculos",
+                            content = @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ClassLoader.class))))
+            })
+    @GetMapping
+    public ResponseEntity<List<VehiculoDTO>> listar() {
+        log.info("Listando vehiculos...");
+        List<VehiculoDTO> lista= vehiculoService.listarVehiculos();
+        return ResponseEntity.ok(lista);
+    }
+    @Operation(summary = "Buscar vehículo por patente", description = "Recupera los datos de un vehículo específico buscando por su número de patente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehículo encontrado exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VehiculoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún vehículo con la patente proporcionada",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+                    content = @Content)
+    })
+    @GetMapping("/patente/{patente}")
+    public ResponseEntity<VehiculoDTO> buscarPorPatente(@PathVariable("patente") String patente) {
+        // Llamamos al servicio que ya convierte la Entidad a DTO
+        VehiculoDTO vehiculoDTO = vehiculoService.buscarVehiculoPorPatente(patente);
+
+        // Retornamos el DTO con estado 200 OK
+        return ResponseEntity.ok(vehiculoDTO);
+    }
+
 }
 
