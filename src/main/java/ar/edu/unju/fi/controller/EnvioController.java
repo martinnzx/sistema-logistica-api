@@ -162,9 +162,9 @@ public class EnvioController {
     @PutMapping("/{codigo}/avanzar")
     public ResponseEntity<MensajeError> avanzarEstado(
             @PathVariable String codigo,
-            @RequestBody(required = false) Map<String, String> body) {
+            @RequestBody(required = false) EstadoEnvioDTO requestBody) {
 
-        String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
+        String observacion = (requestBody != null) ? requestBody.getObservacion() : "";
 
         envioService.avanzarEstado(codigo, observacion);
 
@@ -270,7 +270,7 @@ public class EnvioController {
             }
     )
     @GetMapping("/codigo/{codigoUnico}")
-    public ResponseEntity<?> obtenerEnvioPorCodigo(@PathVariable String codigoUnico) {
+    public ResponseEntity<EnvioDTO> obtenerEnvioPorCodigo(@PathVariable String codigoUnico) {
         EnvioDTO envio = envioService.obtenerEnvioPorCodigo(codigoUnico);
         return ResponseEntity.ok(envio);
     }
@@ -298,7 +298,7 @@ public class EnvioController {
             }
     )
     @GetMapping("/codigo/{codigoUnico}/historial")
-    public ResponseEntity<?> obtenerHistorialPorCodigo(@PathVariable String codigoUnico) {
+    public ResponseEntity<List<HistorialEstadoEnvio>> obtenerHistorialPorCodigo(@PathVariable String codigoUnico) {
         List<HistorialEstadoEnvio> historial = envioService.obtenerHistorialPorCodigo(codigoUnico);
         return ResponseEntity.ok(historial);
     }

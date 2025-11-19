@@ -1,7 +1,6 @@
 package ar.edu.unju.fi.service;
 
 import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
-import ar.edu.unju.fi.mapper.ClienteMapper;
 import ar.edu.unju.fi.repository.PaqueteRepository;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.mapper.PaqueteMapper;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -73,9 +71,8 @@ public class PaqueteService {
     public PaqueteDTO buscarPaquetePorCodigo(String codigo) {
         Paquete paquete = paqueteRepository.findByCodigo(codigo)
                 .orElseThrow(() -> new ResourceNotFoundException("Paquete", "codigo", codigo));
-        PaqueteDTO dto = new PaqueteDTO();
-        dto = PaqueteMapper.toDTO(paquete);
-        return dto;
+
+        return PaqueteMapper.toDTO(paquete);
     }
     public List<PaqueteDTO> listarPaquetes(){
         List<Paquete> p = paqueteRepository.findAll();

@@ -104,7 +104,7 @@ public class RutaController {
             }
     )
     @GetMapping("/{id}/envios")
-    public ResponseEntity<?> obtenerEnviosPorRutaYFecha(
+    public ResponseEntity<RutaDTO> obtenerEnviosPorRutaYFecha(
             @PathVariable Long id,
             @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha
     ) {

@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class PDFcomprobanteDTO {
-    private String Remitente;
-    private String Destinatario;
+    private String remitente;
+    private String destinatario;
     private String codigo;
     private String estado;
     private LocalDateTime fechaHora;

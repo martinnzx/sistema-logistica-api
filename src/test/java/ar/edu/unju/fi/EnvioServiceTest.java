@@ -44,7 +44,7 @@ class EnvioServiceTest {
     private EnvioViewDTO envioViewRefrigerado;
     private EnvioViewDTO envioViewMixto;
 
-    private ClienteDTO juan, maria, carlos, hector, ale;
+    private ClienteDTO juan, maria, hector;
 
     @BeforeEach
     void setUp() {
@@ -97,17 +97,13 @@ class EnvioServiceTest {
         // 2. --- Clientes (DTOs y creación) ---
         ClienteDTO juanDTO = ClienteDTO.builder().nombreRazonSocial("Juan Perez").documentoOCuit("20-11111111-1").telefono("123").email("j@j.com").direccionPrincipal("Dir 1").codigoPostal("1000").build();
         ClienteDTO mariaDTO = ClienteDTO.builder().nombreRazonSocial("Maria Gomez").documentoOCuit("27-22222222-2").telefono("123").email("m@m.com").direccionPrincipal("Dir 2").codigoPostal("2000").build();
-        ClienteDTO carlosDTO = ClienteDTO.builder().nombreRazonSocial("Carlos Luis").documentoOCuit("20-33333333-3").telefono("123").email("c@c.com").direccionPrincipal("Dir 3").codigoPostal("3000").build();
         ClienteDTO pedroDTO = ClienteDTO.builder().nombreRazonSocial("Pedro G").documentoOCuit("20-44444444-4").telefono("123").email("p@p.com").direccionPrincipal("Dir 4").codigoPostal("4000").build();
         ClienteDTO hectorDTO = ClienteDTO.builder().nombreRazonSocial("Hector").documentoOCuit("20-55555555-5").telefono("123").email("h@h.com").direccionPrincipal("Dir 5").codigoPostal("5000").build();
-        ClienteDTO aleDTO = ClienteDTO.builder().nombreRazonSocial("Ale").documentoOCuit("20-66666666-6").telefono("123").email("a@a.com").direccionPrincipal("Dir 6").codigoPostal("6000").build();
 
         juan = clienteService.crearCliente(juanDTO);
         maria = clienteService.crearCliente(mariaDTO);
-        carlos = clienteService.crearCliente(carlosDTO);
         clienteService.crearCliente(pedroDTO);
         hector = clienteService.crearCliente(hectorDTO);
-        ale = clienteService.crearCliente(aleDTO);
 
         // 3. --- Setup EnvioViewDTOs (DTOs de entrada) ---
         envioViewDtoJuanAMaria = EnvioViewDTO.builder()

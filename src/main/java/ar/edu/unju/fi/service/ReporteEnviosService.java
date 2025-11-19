@@ -186,7 +186,6 @@ public class ReporteEnviosService {
 
             // --- DEFINICIÓN DE COLORES ---
             BaseColor colorPrimario = new BaseColor(52, 73, 94);   // Azul Oscuro Profundo
-            BaseColor colorAcento = new BaseColor(46, 204, 113);   // Verde Esmeralda (Más vibrante para contrastar)
             BaseColor colorFondo = new BaseColor(240, 242, 245);   // Gris muy suave
 
             // --- DEFINICIÓN DE FUENTES ---
@@ -294,8 +293,7 @@ public class ReporteEnviosService {
             return baos.toByteArray();
 
         } catch (Exception e) {
-            e.printStackTrace(); // Importante para ver errores en consola
-            throw new RuntimeException("Error al generar el PDF: " + e.getMessage());
+            throw new IllegalArgumentException("Error al generar el PDF: " + e.getMessage());
         }
     }
 

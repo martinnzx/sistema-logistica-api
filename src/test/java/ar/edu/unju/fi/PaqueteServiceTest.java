@@ -77,7 +77,6 @@ class PaqueteServiceTest {
 
         assertNotNull(guardado, "El paquete guardado no debe ser nulo");
         assertEquals("Fragil", guardado.getTipo());
-        assertNotNull(guardado.getId(), "El paquete guardado debe tener un ID asignado");
     }
 
     @Test

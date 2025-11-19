@@ -4,6 +4,7 @@ import ar.edu.unju.fi.controller.dto.MensajeError;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.service.VehiculoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,26 +30,45 @@ public class VehiculoController {
     }
 
     @Operation(
-            summary = "Crear un Vehiculo",
-            description = "Creando un Vehiculo, verificando patente y persistiendo/creando si correcponde",
+            summary = "Registrar un nuevo vehículo",
+            description = "Crea un nuevo vehículo en el sistema. Se validará que la patente no exista previamente y que las capacidades sean valores positivos. Si es refrigerado, se validarán los rangos de temperatura.",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
-                            description = "Vehiculo creado",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = VehiculoDTO.class))
+                            description = "Vehículo creado exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = VehiculoDTO.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error de validación o negocio",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeError.class))
+                            description = "Datos inválidos. Revise el formato de la patente o valores negativos.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Conflicto: Ya existe un vehículo registrado con esa patente.",
+                            content = @Content(mediaType = "application/json")
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor.",
+                            content = @Content(mediaType = "application/json")
                     )
             }
     )
     @PostMapping
-    public ResponseEntity<VehiculoDTO> crearVehiculo(@Valid @RequestBody VehiculoDTO vehiculoDTO){
-        log.info("Creando un vehiculo");
+    public ResponseEntity<VehiculoDTO> crearVehiculo(@Valid @RequestBody VehiculoDTO vehiculoDTO) {
+        log.info("Iniciando creación de vehículo con patente: {}", vehiculoDTO.getPatente());
+
         VehiculoDTO nuevo = vehiculoService.crearVehiculo(vehiculoDTO);
-        return ResponseEntity.created(URI.create("/api/vehiculos" + nuevo.getPatente())).body(nuevo);
+        URI location = URI.create(String.format("/api/vehiculos/%s", nuevo.getPatente()));
+
+        return ResponseEntity.created(location).body(nuevo);
     }
 
     @Operation(
@@ -112,33 +132,56 @@ public class VehiculoController {
         List<VehiculoDTO> lista = vehiculoService.buscarVehiculosPorVolumen(volumen);
         return ResponseEntity.ok(lista);
     }
-    @Operation(summary = "Listar Vehiculos",
+
+    @Operation(
+            summary = "Listar todos los vehículos",
+            description = "Devuelve el inventario completo de vehículos registrados en el sistema.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Listado de vehiculos",
-                            content = @Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ClassLoader.class))))
-            })
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado recuperado exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    // Corrección: ArraySchema debe apuntar a VehiculoDTO, no a ClassLoader
+                                    array = @ArraySchema(schema = @Schema(implementation = VehiculoDTO.class))
+                            )
+                    )
+            }
+    )
     @GetMapping
     public ResponseEntity<List<VehiculoDTO>> listar() {
-        log.info("Listando vehiculos...");
-        List<VehiculoDTO> lista= vehiculoService.listarVehiculos();
+        log.info("Solicitando listado completo de vehículos...");
+        List<VehiculoDTO> lista = vehiculoService.listarVehiculos();
         return ResponseEntity.ok(lista);
     }
-    @Operation(summary = "Buscar vehículo por patente", description = "Recupera los datos de un vehículo específico buscando por su número de patente.")
+
+    @Operation(
+            summary = "Obtener detalle de un vehículo",
+            description = "Busca un vehículo específico por su patente única."
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Vehículo encontrado exitosamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VehiculoDTO.class))),
-            @ApiResponse(responseCode = "404", description = "No se encontró ningún vehículo con la patente proporcionada",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                    content = @Content)
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Vehículo encontrado.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VehiculoDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontró ningún vehículo con esa patente.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeError.class)) // Importante: Usa tu clase de error
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeError.class))
+            )
     })
     @GetMapping("/patente/{patente}")
-    public ResponseEntity<VehiculoDTO> buscarPorPatente(@PathVariable("patente") String patente) {
-        // Llamamos al servicio que ya convierte la Entidad a DTO
-        VehiculoDTO vehiculoDTO = vehiculoService.buscarVehiculoPorPatente(patente);
+    public ResponseEntity<VehiculoDTO> buscarPorPatente(
+            @Parameter(description = "Patente del vehículo (sin guiones ni espacios)", example = "AA123BB")
+            @PathVariable("patente") String patente) {
 
-        // Retornamos el DTO con estado 200 OK
+        VehiculoDTO vehiculoDTO = vehiculoService.buscarVehiculoPorPatente(patente);
         return ResponseEntity.ok(vehiculoDTO);
     }
 }

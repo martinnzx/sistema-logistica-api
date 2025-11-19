@@ -165,7 +165,7 @@ public class EnvioService {
 
         Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
                 .orElseThrow(() -> {
-                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    log.error("En el Envio No se encontro un envio con el codigo: {}", codigoUnico);
                     return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
                 });
 

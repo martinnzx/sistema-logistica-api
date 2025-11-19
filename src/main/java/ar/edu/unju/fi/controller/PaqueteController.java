@@ -36,8 +36,15 @@ public class PaqueteController {
     // ===========================================================
 
     @Operation(
-            summary = "Crear un nuevo paquete",
-            description = "Registra un paquete en el sistema validando el tipo y los datos enviados.",
+            summary = "Crear un nuevo paquete (Frágil o Refrigerado)",
+            description = """
+            Registra un paquete validando sus campos específicos según el tipo:
+        
+            * **Si es FRAGIL:** Se requieren `nivelFragilidad` y `seguroAdicional`.
+            * **Si es REFRIGERADOS:** Se requieren `temperaturaObjetivo`, `rangoMin`, `rangoMax` y `horasMaxFueraDeFrio`.
+            * **Comunes:** `pesoKg` y `volumenDm3` son siempre obligatorios.
+            * ** A los demas campos no rellenados dejarlos como `null`
+        """,
             responses = {
                     @ApiResponse(
                             responseCode = "201",
