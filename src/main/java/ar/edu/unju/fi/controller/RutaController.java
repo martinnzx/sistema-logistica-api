@@ -116,7 +116,76 @@ public class RutaController {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(resultado.get(0));
+        return ResponseEntity.ok(resultado.getFirst());
+    }
+    // ===========================================================
+    //                LISTAR TODAS LAS RUTAS
+    // ===========================================================
+
+    @Operation(
+            summary = "Listar todas las rutas",
+            description = "Recupera el listado completo de todas las rutas registradas en el sistema.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado de rutas recuperado correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RutaDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "No existen rutas registradas en el sistema"
+                    )
+            }
+    )
+    @GetMapping
+    public ResponseEntity<List<RutaDTO>> listarTodas() {
+        log.info("Solicitud para listar todas las rutas");
+
+        List<RutaDTO> rutas = rutaService.listarTodas();
+
+        if (rutas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(rutas);
+    }
+
+    // ===========================================================
+    //                 CONSULTAR RUTA POR ID
+    // ===========================================================
+
+    @Operation(
+            summary = "Obtener detalles de una ruta específica",
+            description = "Busca una ruta por su identificador único (ID) y devuelve su información detallada.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ruta encontrada exitosamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RutaDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "No se encontró ninguna ruta con el ID proporcionado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Error404.class) // O MensajeError.class
+                            )
+                    )
+            }
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<RutaDTO> obtenerPorId(@PathVariable Long id) {
+        log.info("Solicitud para obtener la ruta con ID: {}", id);
+
+        RutaDTO ruta = rutaService.obtenerPorId(id);
+
+        return ResponseEntity.ok(ruta);
     }
 }
 

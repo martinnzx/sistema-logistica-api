@@ -61,6 +61,26 @@ public class RutaService {
         RutaDTO dto = RutaMapper.toDto(ruta);
         return List.of(dto);
     }
+    @Transactional
+    public List<RutaDTO> listarTodas() {
+        log.info("Listando todas las rutas del sistema");
+        List<Ruta> rutas = rutaRepository.findAll();
+
+        // Convertimos la lista de Entidades a lista de DTOs
+        return rutas.stream()
+                .map(RutaMapper::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public RutaDTO obtenerPorId(Long id) {
+        log.info("Buscando ruta con ID: {}", id);
+
+        Ruta ruta = rutaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la ruta con ID: " + id));
+
+        return RutaMapper.toDto(ruta);
+    }
 
     // --- MÉTODOS PRIVADOS DE ENSAMBLAJE Y VALIDACIÓN ---
 
