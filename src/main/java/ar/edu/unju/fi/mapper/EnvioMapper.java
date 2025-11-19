@@ -18,7 +18,7 @@ public class EnvioMapper {
         if (envio.getPaquetes() != null) {
             paquetesDTO = envio.getPaquetes().stream()
                     .map(PaqueteMapper::toDTO)
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         return EnvioDTO.builder()
@@ -60,7 +60,7 @@ public class EnvioMapper {
             envio.setPaquetes(
                     dto.getPaquetes().stream()
                             .map(PaqueteMapper::toEntity)
-                            .collect(Collectors.toList())
+                            .toList()
             );
         }
 
