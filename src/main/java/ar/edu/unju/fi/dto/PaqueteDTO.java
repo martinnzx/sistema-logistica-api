@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PaqueteDTO {
-    private Long id;
     private Double pesoKg;
     private Double volumenDm3;
     private String tipo;

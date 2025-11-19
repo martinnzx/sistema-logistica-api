@@ -110,4 +110,45 @@ public class PaqueteController {
         List<PaqueteDTO> lista = paqueteService.listarPorVolumen(min, max);
         return ResponseEntity.ok(lista);
     }
+    @Operation(
+            summary = "Buscar paquete por código",
+            description = "Recupera los datos detallados de un paquete específico buscando por su código único (ej: PAQ-FRG-200).",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Paquete encontrado exitosamente",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = PaqueteDTO.class))),
+                    @ApiResponse(responseCode = "404", description = "No se encontró ningún paquete con el código proporcionado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class))),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+                            content = @Content)
+            }
+    )
+    @GetMapping("/codigo/{codigo}")
+    public ResponseEntity<PaqueteDTO> buscarPaquetePorCodigo(@PathVariable String codigo) {
+        log.info("Buscando paquete con código: {}", codigo);
+        PaqueteDTO dto = paqueteService.buscarPaquetePorCodigo(codigo);
+        return ResponseEntity.ok(dto);
+    }
+
+    /* =======================================================
+       2. LISTAR TODOS LOS PAQUETES
+    ======================================================= */
+    @Operation(
+            summary = "Listar todos los paquetes",
+            description = "Devuelve una lista completa de todos los paquetes registrados en el sistema, independientemente de su estado o tipo.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de paquetes obtenida correctamente",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class))),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+                            content = @Content)
+            }
+    )
+    @GetMapping
+    public ResponseEntity<List<PaqueteDTO>> listarPaquetes() {
+        log.info("Solicitando listado completo de paquetes");
+        List<PaqueteDTO> paquetes = paqueteService.listarPaquetes();
+        return ResponseEntity.ok(paquetes);
+    }
 }
