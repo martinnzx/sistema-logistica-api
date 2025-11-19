@@ -1,6 +1,7 @@
 package ar.edu.unju.fi.controller;
 
 import ar.edu.unju.fi.controller.dto.MensajeError;
+import ar.edu.unju.fi.controller.dto.Error404;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.service.PaqueteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,33 +19,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST para operaciones sobre paquetes.
- * Permite crear y listar paquetes por peso o volumen.
+ * Controlador para gestionar paquetes. Permite crearlos, buscarlos y filtrarlos
+ * por distintos criterios como peso o volumen.
  */
 @Slf4j
 @RestController
 @RequestMapping("/api/paquetes")
 @RequiredArgsConstructor
-@Tag(name = "paquetes", description = "Operaciones sobre Paquetes (frágiles o refrigerados)")
+@Tag(name = "Paquetes", description = "ABM y consultas sobre paquetes (frágiles o refrigerados)")
 public class PaqueteController {
 
     private final PaqueteService paqueteService;
 
+    // ===========================================================
+    //                       CREAR PAQUETE
+    // ===========================================================
+
     @Operation(
-            summary = "Crear un nuevo Paquete",
-            description = "Crea un paquete del tipo indicado (frágil o refrigerado) validando sus datos antes de guardarlo.",
+            summary = "Crear un nuevo paquete",
+            description = "Registra un paquete en el sistema validando el tipo y los datos enviados.",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Paquete creado exitosamente",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = PaqueteDTO.class))
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PaqueteDTO.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error de validación en los datos o tipo de paquete inválido",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))
+                            description = "Datos inválidos o tipo de paquete incorrecto",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class)
+                            )
                     )
             }
     )
@@ -55,21 +64,29 @@ public class PaqueteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
+    // ===========================================================
+    //                 LISTAR POR RANGO DE PESO
+    // ===========================================================
+
     @Operation(
             summary = "Listar paquetes por rango de peso",
-            description = "Devuelve todos los paquetes cuyo peso esté dentro del rango especificado (en kg).",
+            description = "Devuelve los paquetes cuyo peso se encuentre dentro del rango especificado (kg).",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Búsqueda exitosa",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class))
+                            description = "Listado obtenido correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Parámetros inválidos o rango incorrecto",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))
+                            description = "Parámetros inválidos o rango ingresado incorrecto",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class)
+                            )
                     )
             }
     )
@@ -83,21 +100,29 @@ public class PaqueteController {
         return ResponseEntity.ok(lista);
     }
 
+    // ===========================================================
+    //                 LISTAR POR RANGO DE VOLUMEN
+    // ===========================================================
+
     @Operation(
             summary = "Listar paquetes por rango de volumen",
-            description = "Devuelve todos los paquetes cuyo volumen esté dentro del rango especificado (en dm3).",
+            description = "Devuelve los paquetes cuyo volumen esté dentro del rango indicado (dm³).",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Búsqueda exitosa",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class))
+                            description = "Listado obtenido correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Parámetros inválidos o rango incorrecto",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))
+                            description = "Parámetros inválidos o rango ingresado incorrecto",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = MensajeError.class)
+                            )
                     )
             }
     )
@@ -110,18 +135,36 @@ public class PaqueteController {
         List<PaqueteDTO> lista = paqueteService.listarPorVolumen(min, max);
         return ResponseEntity.ok(lista);
     }
+
+    // ===========================================================
+    //                      BUSCAR POR CÓDIGO
+    // ===========================================================
+
     @Operation(
             summary = "Buscar paquete por código",
-            description = "Recupera los datos detallados de un paquete específico buscando por su código único (ej: PAQ-FRG-200).",
+            description = "Busca un paquete específico usando su código único.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Paquete encontrado exitosamente",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = PaqueteDTO.class))),
-                    @ApiResponse(responseCode = "404", description = "No se encontró ningún paquete con el código proporcionado",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))),
-                    @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                            content = @Content)
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Paquete encontrado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PaqueteDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "No se encontró paquete con el código indicado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Error404.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor",
+                            content = @Content
+                    )
             }
     )
     @GetMapping("/codigo/{codigo}")
@@ -131,18 +174,27 @@ public class PaqueteController {
         return ResponseEntity.ok(dto);
     }
 
-    /* =======================================================
-       2. LISTAR TODOS LOS PAQUETES
-    ======================================================= */
+    // ===========================================================
+    //                  LISTAR TODOS LOS PAQUETES
+    // ===========================================================
+
     @Operation(
             summary = "Listar todos los paquetes",
-            description = "Devuelve una lista completa de todos los paquetes registrados en el sistema, independientemente de su estado o tipo.",
+            description = "Devuelve todos los paquetes registrados, sin importar su tipo o estado.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de paquetes obtenida correctamente",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class))),
-                    @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                            content = @Content)
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado obtenido correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "array", implementation = PaqueteDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor",
+                            content = @Content
+                    )
             }
     )
     @GetMapping

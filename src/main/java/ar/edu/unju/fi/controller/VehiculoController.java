@@ -141,6 +141,4 @@ public class VehiculoController {
         // Retornamos el DTO con estado 200 OK
         return ResponseEntity.ok(vehiculoDTO);
     }
-
 }
-
