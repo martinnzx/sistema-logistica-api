@@ -1,11 +1,9 @@
 package ar.edu.unju.fi.controller;
 
 import ar.edu.unju.fi.controller.dto.MensajeError;
+import ar.edu.unju.fi.controller.dto.Error404;
 import ar.edu.unju.fi.dto.EnvioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
+import ar.edu.unju.fi.dto.views.*;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 import ar.edu.unju.fi.model.HistorialEstadoEnvio;
 import ar.edu.unju.fi.service.EnvioService;
@@ -27,23 +25,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/envios")
 @RequiredArgsConstructor
-@Tag(name = "envíos", description = "Operaciones sobre Envíos y su ciclo de vida")
+@Tag(name = "Envíos", description = "Operaciones relacionadas al ciclo de vida de los envíos")
 public class EnvioController {
+
     private final EnvioService envioService;
 
-    /* =======================================================
-       1. CREAR ENVÍO
-    ======================================================= */
+    // ===========================================================
+    //                      1. CREAR ENVÍO
+    // ===========================================================
+
     @Operation(
-            summary = "Crear un nuevo Envío",
-            description = "Permite crear un nuevo envío con remitente, destinatario y lista de paquetes.",
+            summary = "Crear un nuevo envío",
+            description = "Permite crear un envío indicando remitente, destinatario y los paquetes asociados.",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Envío creado exitosamente",
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Envío creado correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = EnvioDTO.class))),
-                    @ApiResponse(responseCode = "400", description = "Datos inválidos o remitente/destinatario inexistente",
+                                    schema = @Schema(implementation = EnvioDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Datos inválidos o remitente/destinatario inexistente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = MensajeError.class))
+                    )
             }
     )
     @PostMapping
@@ -53,16 +59,21 @@ public class EnvioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
-    /* =======================================================
-       2. LISTAR POR REMITENTE
-    ======================================================= */
+    // ===========================================================
+    //                2. LISTAR POR REMITENTE
+    // ===========================================================
+
     @Operation(
             summary = "Listar envíos por remitente",
-            description = "Devuelve todos los envíos realizados por un cliente según su documento o CUIT.",
+            description = "Devuelve todos los envíos realizados por un cliente, según su documento o CUIT.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado obtenido correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioViewRemitenteDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewRemitenteDTO.class)
+                            )
+                    )
             }
     )
     @GetMapping("/remitente/{documento}")
@@ -72,16 +83,21 @@ public class EnvioController {
         return ResponseEntity.ok(envios);
     }
 
-    /* =======================================================
-       3. LISTAR POR DESTINATARIO
-    ======================================================= */
+    // ===========================================================
+    //               3. LISTAR POR DESTINATARIO
+    // ===========================================================
+
     @Operation(
             summary = "Listar envíos por destinatario",
-            description = "Devuelve todos los envíos recibidos por un cliente según su documento o CUIT.",
+            description = "Devuelve todos los envíos recibidos por un cliente, según su documento o CUIT.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado obtenido correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioViewDestinatarioDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewDestinatarioDTO.class)
+                            )
+                    )
             }
     )
     @GetMapping("/destinatario/{documento}")
@@ -91,16 +107,21 @@ public class EnvioController {
         return ResponseEntity.ok(envios);
     }
 
-    /* =======================================================
-       4. LISTAR POR ESTADO
-    ======================================================= */
+    // ===========================================================
+    //                    4. LISTAR POR ESTADO
+    // ===========================================================
+
     @Operation(
             summary = "Listar envíos por estado",
-            description = "Filtra los envíos según su estado actual (GENERADO, EN_ALMACEN, EN_RUTA, ENTREGADO, etc).",
+            description = "Filtra los envíos por su estado actual (GENERADO, EN_ALMACEN, EN_RUTA, ENTREGADO, etc).",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de envíos obtenida correctamente",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Listado obtenido correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = EnvioViewEstadoDTO.class)))
+                                    schema = @Schema(type = "array", implementation = EnvioViewEstadoDTO.class)
+                            )
+                    )
             }
     )
     @GetMapping("/estado/{estado}")
@@ -110,75 +131,86 @@ public class EnvioController {
         return ResponseEntity.ok(envios);
     }
 
-    /* =======================================================
-       5. AVANZAR ESTADO
-    ======================================================= */
+    // ===========================================================
+    //                   5. AVANZAR ESTADO
+    // ===========================================================
+
     @Operation(
-            summary = "Avanzar el estado de un envío por CÓDIGO", // <-- Actualizado
-            description = "Avanza el estado del envío (buscado por su código único) según la lógica del patrón State.", // <-- Actualizado
+            summary = "Avanzar el estado de un envío",
+            description = "Avanza el estado del envío buscándolo por su código único.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Estado avanzado correctamente",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Estado avanzado correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))),
-                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código", // <-- Añadido
+                                    schema = @Schema(implementation = MensajeError.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No es posible avanzar el estado (validación o negocio)",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))),
-                    @ApiResponse(responseCode = "400", description = "Error al avanzar estado (por ejemplo, estado no válido)",
+                                    schema = @Schema(implementation = MensajeError.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Envío no encontrado con ese código",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = Error404.class))
+                    )
             }
     )
     @PutMapping("/{codigo}/avanzar")
     public ResponseEntity<MensajeError> avanzarEstado(
             @PathVariable String codigo,
-            @RequestBody(required = false) Map<String, String> body) {
+            @RequestBody(required = false) EstadoEnvioDTO requestBody) {
 
-        String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
+        String observacion = (requestBody != null) ? requestBody.getObservacion() : "";
 
-        // 3. CAMBIO EN LA LLAMADA AL SERVICIO: de id a codigo
         envioService.avanzarEstado(codigo, observacion);
 
         return ResponseEntity.ok(new MensajeError("El estado del envío se avanzó correctamente."));
     }
 
-    /* =======================================================
-       6. CANCELAR ENVÍO
-    ======================================================= */
+    // ===========================================================
+    //                    6. CANCELAR ENVÍO
+    // ===========================================================
+
     @Operation(
-            summary = "Cancelar un envío por CÓDIGO", // <-- Actualizado
-            description = "Cambia el estado del envío (buscado por código único) a CANCELADO.", // <-- Actualizado
+            summary = "Cancelar un envío",
+            description = "Cancela un envío buscándolo por su código único.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Envío cancelado correctamente"),
-                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código",
+                    @ApiResponse(responseCode = "404", description = "Envío no encontrado",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = Error404.class)))
             }
     )
-// 1. CAMBIO EN LA RUTA
     @PutMapping("/{codigo}/cancelar")
     public ResponseEntity<MensajeError> cancelarEnvio(
             @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
 
         String observacion = (body != null) ? body.getOrDefault("observacion", "") : "";
+
         envioService.cancelarEnvio(codigo, observacion);
 
         return ResponseEntity.ok(new MensajeError("El envío fue cancelado correctamente."));
     }
-    /* =======================================================
-       7. DEVOLVER ENVÍO
-    ======================================================= */
+
+    // ===========================================================
+    //                    7. DEVOLVER ENVÍO
+    // ===========================================================
+
     @Operation(
-            summary = "Devolver un envío por CÓDIGO", // <-- Actualizado
-            description = "Marca el envío (buscado por código único) como devuelto.", // <-- Actualizado
+            summary = "Devolver un envío",
+            description = "Marca el envío como devuelto buscándolo por su código único.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Envío devuelto correctamente"),
-                    @ApiResponse(responseCode = "404", description = "Envío no encontrado con ese código",
+                    @ApiResponse(responseCode = "404", description = "Envío no encontrado",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = Error404.class)))
             }
     )
-// 1. CAMBIO EN LA RUTA
     @PutMapping("/{codigo}/devolver")
     public ResponseEntity<MensajeError> devolverEnvio(
             @PathVariable String codigo,
@@ -190,17 +222,17 @@ public class EnvioController {
 
         return ResponseEntity.ok(new MensajeError("El envío fue devuelto correctamente."));
     }
-    /* =======================================================
-       8. ADJUNTAR COMPROBANTE
-    ======================================================= */
+
+    // ===========================================================
+    //                8. ADJUNTAR COMPROBANTE
+    // ===========================================================
+
     @Operation(
             summary = "Adjuntar comprobante de entrega",
-            description = "Adjunta un comprobante (texto o hash simulado) al envío antes de ser entregado.",
+            description = "Adjunta un comprobante al envío antes de ser entregado.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Comprobante adjuntado correctamente",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class))),
-                    @ApiResponse(responseCode = "400", description = "No se puede adjuntar comprobante en estados inválidos",
+                    @ApiResponse(responseCode = "200", description = "Comprobante adjuntado correctamente"),
+                    @ApiResponse(responseCode = "400", description = "Estado inválido para adjuntar comprobante",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = MensajeError.class)))
             }
@@ -208,51 +240,65 @@ public class EnvioController {
     @PutMapping("/{id}/comprobante")
     public ResponseEntity<MensajeError> adjuntarComprobante(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body) {
+            @RequestBody ComprobanteDTO request) {
 
-        String comprobante = body.get("comprobante");
-        envioService.adjuntarComprobante(id, comprobante);
+        envioService.adjuntarComprobante(id, request);
+
         return ResponseEntity.ok(new MensajeError("Comprobante adjuntado correctamente al envío."));
     }
 
-    /* =======================================================
-       9. OBTENER ENVÍO POR CÓDIGO
-    ======================================================= */
+    // ===========================================================
+    //                9. OBTENER ENVÍO POR CÓDIGO
+    // ===========================================================
+
     @Operation(
-            summary = "Obtener envío por código único",
-            description = "Busca un envío por su código único (UUID generado al crearlo).",
+            summary = "Obtener envío por código",
+            description = "Busca un envío utilizando su código único asignado al crearlo.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Envío encontrado",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Envío encontrado",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = EnvioDTO.class))),
-                    @ApiResponse(responseCode = "404", description = "Envío no encontrado",
+                                    schema = @Schema(implementation = EnvioDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Envío no encontrado",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = Error404.class))
+                    )
             }
     )
     @GetMapping("/codigo/{codigoUnico}")
-    public ResponseEntity<?> obtenerEnvioPorCodigo(@PathVariable String codigoUnico) {
+    public ResponseEntity<EnvioDTO> obtenerEnvioPorCodigo(@PathVariable String codigoUnico) {
         EnvioDTO envio = envioService.obtenerEnvioPorCodigo(codigoUnico);
         return ResponseEntity.ok(envio);
     }
 
-    /* =======================================================
-       10. OBTENER HISTORIAL POR CÓDIGO
-    ======================================================= */
+    // ===========================================================
+    //              10. OBTENER HISTORIAL POR CÓDIGO
+    // ===========================================================
+
     @Operation(
-            summary = "Consultar historial de estados por código de envío",
-            description = "Devuelve todos los cambios de estado registrados para un envío determinado.",
+            summary = "Consultar historial de estados por código",
+            description = "Devuelve los cambios de estado registrados para el envío indicado.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Historial obtenido correctamente",
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Historial obtenido correctamente",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(type = "array", implementation = HistorialEstadoEnvio.class))),
-                    @ApiResponse(responseCode = "404", description = "Envío no encontrado",
+                                    schema = @Schema(type = "array", implementation = HistorialEstadoEnvio.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Envío no encontrado",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)))
+                                    schema = @Schema(implementation = Error404.class))
+                    )
             }
     )
     @GetMapping("/codigo/{codigoUnico}/historial")
-    public ResponseEntity<?> obtenerHistorialPorCodigo(@PathVariable String codigoUnico) {
+    public ResponseEntity<List<HistorialEstadoEnvio>> obtenerHistorialPorCodigo(@PathVariable String codigoUnico) {
         List<HistorialEstadoEnvio> historial = envioService.obtenerHistorialPorCodigo(codigoUnico);
         return ResponseEntity.ok(historial);
     }

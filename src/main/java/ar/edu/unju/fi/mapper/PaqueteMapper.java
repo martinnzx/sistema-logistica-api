@@ -12,7 +12,6 @@ public class PaqueteMapper {
     public static Paquete toEntity(PaqueteDTO dto){
         if (TIPO_REFRIGERADO.equalsIgnoreCase(dto.getTipo())){
             PaqueteRefrigerado paquete = new PaqueteRefrigerado();
-            paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
             paquete.setCodigo(dto.getCodigo());
             paquete.setVolumenDm3(dto.getVolumenDm3());
@@ -24,7 +23,6 @@ public class PaqueteMapper {
 
         } else if (TIPO_FRAGIL.equalsIgnoreCase(dto.getTipo())) {
             PaqueteFragil paquete = new PaqueteFragil();
-            paquete.setId(dto.getId());
             paquete.setPesoKg(dto.getPesoKg());
             paquete.setCodigo(dto.getCodigo());
             paquete.setVolumenDm3(dto.getVolumenDm3());
@@ -39,7 +37,6 @@ public class PaqueteMapper {
     public static PaqueteDTO toDTO(Paquete paquete){
         PaqueteDTO p = new PaqueteDTO();
 
-        p.setId(paquete.getId());
         p.setPesoKg(paquete.getPesoKg());
         p.setVolumenDm3(paquete.getVolumenDm3());
         p.setCodigo(paquete.getCodigo());

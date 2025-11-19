@@ -1,5 +1,6 @@
 package ar.edu.unju.fi.service;
 
+import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
 import ar.edu.unju.fi.repository.PaqueteRepository;
 import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.mapper.PaqueteMapper;
@@ -67,6 +68,19 @@ public class PaqueteService {
         log.debug("Se encontraron paquetes en el rango de volumen solicitado.");
         return pDTO;
     }
+    public PaqueteDTO buscarPaquetePorCodigo(String codigo) {
+        Paquete paquete = paqueteRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException("Paquete", "codigo", codigo));
+
+        return PaqueteMapper.toDTO(paquete);
+    }
+    public List<PaqueteDTO> listarPaquetes(){
+        List<Paquete> p = paqueteRepository.findAll();
+        return p.stream()
+                .map(PaqueteMapper::toDTO)
+                .toList();
+    }
+    //---------------VALIDACIONES ---------------//
     private void validarTemperaturaPaquete(Paquete paquete) {
         if (paquete instanceof PaqueteRefrigerado pRef) {
             this.validarRangoTemperaturaRefrigerado(pRef);
@@ -92,5 +106,19 @@ public class PaqueteService {
         }
         log.info("Temperatura del paquete refrigerado validada correctamente ({}) dentro del rango [{} - {}]", tempObj, rangoMin, rangoMax);
     }
+    public List<Paquete> buscarPaquetesPorCodigos(List<String> codigos) {
+        List<Paquete> paquetesEncontrados = paqueteRepository.findByCodigoIn(codigos);
 
+        if (paquetesEncontrados.size() != codigos.size()) {
+            List<String> codigosEncontrados = paquetesEncontrados.stream()
+                    .map(Paquete::getCodigo)
+                    .toList();
+            List<String> codigosFaltantes = codigos.stream()
+                    .filter(c -> !codigosEncontrados.contains(c))
+                    .toList();
+
+            throw new IllegalArgumentException("Los siguientes códigos de paquete no se encontraron: " + String.join(", ", codigosFaltantes));
+        }
+        return paquetesEncontrados;
+    }
 }

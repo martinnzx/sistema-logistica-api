@@ -1,11 +1,7 @@
 package ar.edu.unju.fi.service;
 
 import ar.edu.unju.fi.dto.views.RutaViewDTO;
-import ar.edu.unju.fi.enums.EstadoEnvio;
-import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
-import ar.edu.unju.fi.repository.EnvioRepository;
 import ar.edu.unju.fi.repository.RutaRepository;
-import ar.edu.unju.fi.repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.RutaDTO;
 import ar.edu.unju.fi.mapper.RutaMapper;
 import ar.edu.unju.fi.model.*;
@@ -21,14 +17,15 @@ import java.util.List;
 @Slf4j
 @Service
 public class RutaService {
-    private final EnvioRepository envioRepository;
     private final RutaRepository rutaRepository;
-    private final VehiculoRepository vehiculoRepository;
+    private final EnvioService envioService;
+    private final VehiculoService vehiculoService;
 
-    public RutaService(EnvioRepository envioRepository, RutaRepository rutaRepository, VehiculoRepository vehiculoRepository) {
-        this.envioRepository = envioRepository;
+    public RutaService(RutaRepository rutaRepository,
+                        VehiculoService vehiculoService,EnvioService envioService) {
         this.rutaRepository = rutaRepository;
-        this.vehiculoRepository = vehiculoRepository;
+        this.vehiculoService = vehiculoService;
+        this.envioService = envioService;
     }
 
     @Transactional
@@ -64,6 +61,26 @@ public class RutaService {
         RutaDTO dto = RutaMapper.toDto(ruta);
         return List.of(dto);
     }
+    @Transactional
+    public List<RutaDTO> listarTodas() {
+        log.info("Listando todas las rutas del sistema");
+        List<Ruta> rutas = rutaRepository.findAll();
+
+        // Convertimos la lista de Entidades a lista de DTOs
+        return rutas.stream()
+                .map(RutaMapper::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public RutaDTO obtenerPorId(Long id) {
+        log.info("Buscando ruta con ID: {}", id);
+
+        Ruta ruta = rutaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la ruta con ID: " + id));
+
+        return RutaMapper.toDto(ruta);
+    }
 
     // --- MÉTODOS PRIVADOS DE ENSAMBLAJE Y VALIDACIÓN ---
 
@@ -73,40 +90,14 @@ public class RutaService {
         ruta.setFecha(dto.getFecha());
 
         // 1. Buscar y validar Vehículo
-        Vehiculo vehiculo = buscarVehiculoValidado(dto.getPatenteVehiculo());
+        Vehiculo vehiculo = vehiculoService.buscarVehiculoPatente(dto.getPatenteVehiculo());
         ruta.setVehiculo(vehiculo);
 
         // 2. Buscar y validar Envíos
-        List<Envio> envios = buscarEnviosValidados(dto.getCodigoEnvios());
+        List<Envio> envios = envioService.buscarEnviosValidados(dto.getCodigoEnvios());
         ruta.setEnvios(envios);
 
         return ruta;
-    }
-
-    private Vehiculo buscarVehiculoValidado(String patente) {
-        return vehiculoRepository.findByPatenteIgnoreCase(patente)
-                .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "patente", patente));
-    }
-
-    private List<Envio> buscarEnviosValidados(List<String> codigos) {
-        if (codigos == null || codigos.isEmpty()) {
-            throw new IllegalArgumentException("La ruta debe contener al menos un código de envío.");
-        }
-
-
-        List<Envio> envios = envioRepository.findByCodigoUnicoIn(codigos);
-
-        if (envios.size() != codigos.size()) {
-            throw new ResourceNotFoundException("No se encontraron todos los envíos solicitados. Verifique los códigos.");
-        }
-
-        for (Envio envio : envios) {
-            if (envio.getEstado() != EstadoEnvio.EN_ALMACEN) {
-                throw new IllegalArgumentException("El envío " + envio.getCodigoUnico() +
-                        " no puede ser asignado a una ruta. Estado actual: " + envio.getEstado());
-            }
-        }
-        return envios;
     }
 
     private void ejecutarValidacionesDeRuta(Vehiculo vehiculo, List<Envio> envios) {

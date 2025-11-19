@@ -1,22 +1,20 @@
 package ar.edu.unju.fi.service;
 
-import ar.edu.unju.fi.dto.views.EnvioViewDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
+import ar.edu.unju.fi.dto.ClienteDTO;
+import ar.edu.unju.fi.dto.DatosEmailDTO;
+import ar.edu.unju.fi.dto.views.*;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
+import ar.edu.unju.fi.mapper.ClienteMapper;
 import ar.edu.unju.fi.mapper.viewsMapper.EnvioViewDestinatarioMapper;
 import ar.edu.unju.fi.mapper.viewsMapper.EnvioViewEstadoMapper;
 import ar.edu.unju.fi.mapper.viewsMapper.EnvioViewMapper;
 import ar.edu.unju.fi.mapper.viewsMapper.EnvioViewRemitenteMapper;
-import ar.edu.unju.fi.repository.ClienteRepository;
 import ar.edu.unju.fi.repository.EnvioRepository;
 import ar.edu.unju.fi.repository.HistorialEstadoEnvioRepository;
 import ar.edu.unju.fi.dto.EnvioDTO;
 import ar.edu.unju.fi.mapper.EnvioMapper;
 import ar.edu.unju.fi.model.*;
-import ar.edu.unju.fi.repository.PaqueteRepository;
 import ar.edu.unju.fi.state.EstadoEnvioFactory;
 import ar.edu.unju.fi.state.EstadoEnvioState;
 import jakarta.validation.Valid;
@@ -25,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -32,16 +31,19 @@ import java.util.List;
 public class EnvioService {
     private final EnvioRepository envioRepository;
     private final HistorialEstadoEnvioRepository historialEstadoEnvioRepository;
-    private final ClienteRepository clienteRepository;
-    private final PaqueteRepository paqueteRepository;
+    private final ClienteService clienteService;
+    private final PaqueteService paqueteService;
+    private final EmailService emailService;
 
     public EnvioService(EnvioRepository envioRepository,
                         HistorialEstadoEnvioRepository historialEstadoEnvioRepository,
-                        ClienteRepository clienteRepository,PaqueteRepository paqueteRepository) {
+                        ClienteService clienteService,PaqueteService paqueteService,
+                        EmailService emailService) {
         this.envioRepository = envioRepository;
         this.historialEstadoEnvioRepository = historialEstadoEnvioRepository;
-        this.clienteRepository = clienteRepository;
-        this.paqueteRepository = paqueteRepository;
+        this.emailService = emailService;
+        this.clienteService = clienteService;
+        this.paqueteService = paqueteService;
     }
 
     /* =====================
@@ -50,25 +52,36 @@ public class EnvioService {
     @Transactional
     public EnvioDTO crearEnvio(@Valid EnvioViewDTO viewDTO) {
         log.info("Iniciando creación de envío desde ViewDTO...");
-        // 1. Ensamblaje y Validaciones PRE-PERSISTENCIA
-        Envio envio = ensamblarEnvio(viewDTO); // Ya llama a inicializarEnvio internamente
-        envio.setCodigoUnico("TEMP-001");
+        Envio envio = ensamblarEnvio(viewDTO);
+        inicializarEnvio(envio);
         validarPaquetes(envio);
         detectarRefrigerado(envio);
 
-        // 2. Persistir el Envío (aquí se genera el ID)
-        Envio guardado = envioRepository.save(envio);
+        envioRepository.save(envio);
 
-        // 3. Generar el código único (usando el ID) y guardar de nuevo
-        String codigo = generarCodigoUnico(guardado);
-        guardado.setCodigoUnico(codigo);
-        guardado = envioRepository.save(guardado); // Guardamos el código único
+        registrarHistorialInicial(envio);
 
-        // 4. Registrar Historial y Mapear a DTO
-        registrarHistorialInicial(guardado); // HACER ESTO DESPUÉS DE OBTENER EL ID
+        // ========= MAIL: ENVIO REGISTRADO ==========
 
-        log.info("Envío creado exitosamente con código: {}", codigo);
-        return EnvioMapper.toDTO(guardado);
+        DatosEmailDTO emailDTO = DatosEmailDTO.builder()
+                .codigo(envio.getCodigoUnico())
+                .remitente(envio.getRemitente().getNombreRazonSocial())
+                .destinatario(envio.getDestinatario().getNombreRazonSocial())
+                .build();
+
+        // 6. Enviar email al REMITENTE
+        if (envio.getRemitente().getEmail() != null) {
+            emailDTO.setEmailPara(envio.getRemitente().getEmail());
+            emailService.enviarEmailEnvioRegistrado(emailDTO);
+        }
+
+        // 7. Enviar email al DESTINATARIO
+        if (envio.getDestinatario().getEmail() != null) {
+            emailDTO.setEmailPara(envio.getDestinatario().getEmail());
+            emailService.enviarEmailEnvioRegistrado(emailDTO);
+        }
+        log.info("Envío creado exitosamente con código: {}", envio.getCodigoUnico());
+        return EnvioMapper.toDTO(envio);
     }
     /* =====================
        BÚSQUEDAS
@@ -152,7 +165,7 @@ public class EnvioService {
 
         Envio envio = envioRepository.findByCodigoUnico(codigoUnico)
                 .orElseThrow(() -> {
-                    log.error("No se encontro un envio con el codigo: {}", codigoUnico);
+                    log.error("En el Envio No se encontro un envio con el codigo: {}", codigoUnico);
                     return new IllegalArgumentException("No se encontró un envío con el código: " + codigoUnico);
                 });
 
@@ -166,7 +179,37 @@ public class EnvioService {
 
         return historial;
     }
+    public List<Envio> buscarEnviosValidados(List<String> codigos) {
+        if (codigos == null || codigos.isEmpty()) {
+            throw new IllegalArgumentException("La ruta debe contener al menos un código de envío.");
+        }
 
+        List<Envio> envios = envioRepository.findByCodigoUnicoIn(codigos);
+
+        if (envios.size() != codigos.size()) {
+            throw new ResourceNotFoundException("No se encontraron todos los envíos solicitados. Verifique los códigos.");
+        }
+
+        for (Envio envio : envios) {
+            if (envio.getEstado() != EstadoEnvio.EN_ALMACEN) {
+                throw new IllegalArgumentException("El envío " + envio.getCodigoUnico() +
+                        " no puede ser asignado a una ruta. Estado actual: " + envio.getEstado());
+            }
+        }
+        return envios;
+    }
+    public PDFcomprobanteDTO obtenerCodigo(String codigo) {
+        Envio envio = envioRepository.findByCodigoUnico(codigo)
+                .orElseThrow(() -> new ResourceNotFoundException(codigo));
+        PDFcomprobanteDTO pdf = new PDFcomprobanteDTO();
+        pdf.setRemitente(envio.getRemitente().getNombreRazonSocial());
+        pdf.setDestinatario(envio.getDestinatario().getNombreRazonSocial());
+        pdf.setCodigo(envio.getCodigoUnico());
+        pdf.setEstado(envio.getEstado().toString());
+        pdf.setFechaHora(LocalDateTime.now());
+        pdf.setObservaciones("Envio generado exitosamente");
+        return pdf;
+    }
     /* =====================
        CAMBIO DE ESTADO (Patrón STATE)
        ===================== */
@@ -179,6 +222,19 @@ public class EnvioService {
         estado.avanzar(envio, historialEstadoEnvioRepository, observacion);
         envioRepository.save(envio);
         log.info("Envío {} avanzó correctamente al estado {}", envio.getCodigoUnico(), envio.getEstado());
+        if (envio.getEstado() == EstadoEnvio.ENTREGADO) {
+
+            log.info("Enviando email de 'Envío Entregado' a {}", envio.getDestinatario().getEmail());
+
+            DatosEmailDTO emailDTO = DatosEmailDTO.builder()
+                    .emailPara(envio.getDestinatario().getEmail())
+                    .codigo(envio.getCodigoUnico())
+                    .destinatario(envio.getDestinatario().getNombreRazonSocial())
+                    .direccion(envio.getDireccionEntrega())
+                    .build();
+
+            emailService.enviarEmailEnvioEntregado(emailDTO);
+        }
     }
 
     @Transactional
@@ -202,18 +258,14 @@ public class EnvioService {
     }
 
     @Transactional
-    public void adjuntarComprobante(Long envioId, String comprobante) {
+    public void adjuntarComprobante(Long envioId, ComprobanteDTO comprobateDTO) {
         Envio envio = obtenerEnvioPorId(envioId);
-
-        if (comprobante == null || comprobante.isBlank()) {
-            throw new IllegalArgumentException("El comprobante no puede estar vacío.");
-        }
 
         if (envio.getEstado() == EstadoEnvio.ENTREGADO || envio.getEstado() == EstadoEnvio.CANCELADO) {
             throw new IllegalStateException("No se puede adjuntar comprobante a un envío entregado o cancelado.");
         }
 
-        envio.setComprobanteEntrega(comprobante);
+        envio.setComprobanteEntrega(comprobateDTO.getComprobante());
         envioRepository.save(envio);
 
         log.info("Comprobante adjuntado correctamente al envío {}", envio.getCodigoUnico());
@@ -246,7 +298,7 @@ public class EnvioService {
 
     private void inicializarEnvio(Envio envio) {
         envio.setEstado(EstadoEnvio.GENERADO);
-        log.debug("Inicializando estado del envío...");
+        log.debug("Inicializando estado del envío a GENERADO.");
     }
 
     private void registrarHistorialInicial(Envio envio) {
@@ -259,75 +311,45 @@ public class EnvioService {
                 .build());
 
     }
-    private Cliente buscarCliente(String documentoOCuit, String rol) {
-        return clienteRepository.findByDocumentoOCuitIgnoreCase(documentoOCuit) // ⬅️ CORREGIDO
-                .orElseThrow(() -> new IllegalArgumentException(
-                        rol + " no encontrado con documento o CUIT: " + documentoOCuit));
-    }
-
-    private List<Paquete> buscarPaquetes(List<String> codigos) {
-        List<Paquete> paquetesEncontrados = paqueteRepository.findByCodigoIn(codigos);
-        if (paquetesEncontrados.size() != codigos.size()) {
-
-            // (Mejora opcional para un mensaje de error más claro)
-            // Buscamos cuáles son los códigos que sí encontramos
-            List<String> codigosEncontrados = paquetesEncontrados.stream().map(Paquete::getCodigo).toList();
-
-            // Comparamos con la lista original para ver cuáles faltan
-            List<String> codigosFaltantes = codigos.stream()
-                    .filter(c -> !codigosEncontrados.contains(c))
-                    .toList();
-
-            throw new IllegalArgumentException("Los siguientes códigos de paquete no se encontraron: " + String.join(", ", codigosFaltantes));
-        }
-
-        // --- Verificación 2: Que los paquetes no estén ya asignados (¡La corrección!) ---
-        for (Paquete p : paquetesEncontrados) {
-
-            // Usamos el método que acabamos de agregar al EnvioRepository
-            if (envioRepository.existsByPaquetes(p)) {
-
-                // Si 'exists' es true, el paquete ya está en la tabla envios_paquetes
-                throw new IllegalArgumentException("El paquete con código '" + p.getCodigo() + "' ya se encuentra asignado a otro envío.");
-            }
-        }
-
-        // Si pasa ambas verificaciones, la lista es válida
-        return paquetesEncontrados;
-    }
     private Envio ensamblarEnvio(EnvioViewDTO dto) {
         Envio envio = EnvioViewMapper.toEntity(dto);
 
-        // 2. Buscar y asignar Remitente y Destinatario
-        Cliente remitente = buscarCliente(dto.getCuilRemitente(), "Remitente");
-        Cliente destinatario = buscarCliente(dto.getCuilDestinatario(), "Destinatario");
+        //Verificar Cliente
+        ClienteDTO remitente = clienteService.buscarPorDocumentoOCuit(dto.getCuilRemitente());
+        ClienteDTO destinatario = clienteService.buscarPorDocumentoOCuit(dto.getCuilDestinatario());
+        envio.setRemitente(ClienteMapper.toEntity(remitente));
+        envio.setDestinatario(ClienteMapper.toEntity(destinatario));
 
-        envio.setRemitente(remitente);
-        envio.setDestinatario(destinatario);
-
-        // 3. Buscar y asignar Paquetes
-        if (dto.getPaquetes() == null || dto.getPaquetes().isEmpty()) {
-            throw new IllegalArgumentException("El envío debe contener al menos un paquete.");
+        List<Paquete> paquetes = paqueteService.buscarPaquetesPorCodigos(dto.getPaquetes());
+        if (paquetes.size() != dto.getPaquetes().size()) {
+            throw new IllegalArgumentException("Uno o más códigos de paquete no se encontraron.");
         }
-        List<Paquete> paquetes = buscarPaquetes(dto.getPaquetes());
-        envio.setPaquetes(paquetes);
 
-        // 4. Lógica de inicialización (como la que tenías antes)
-        inicializarEnvio(envio);
+        // 3. Valida si ya están en otro envío
+        for (Paquete paqueteEntity : paquetes) {
+            if (envioRepository.existsByPaquetes(paqueteEntity)) {
+                throw new IllegalArgumentException("El paquete con código '" + paqueteEntity.getCodigo() + "' ya se encuentra asignado a otro envío.");
+            }
+        }
+        envio.setPaquetes(paquetes);
+        String codigo = generarCodigoUnico(dto.getCuilRemitente(),dto.getCuilDestinatario());
+        envio.setCodigoUnico(codigo);
 
         return envio;
     }
-    private String generarCodigoUnico(Envio envio) {
-        Long id = envio.getId();
-        int cantidadPaquetes = envio.getPaquetes().size();
-        String anioActual = String.valueOf(java.time.Year.now().getValue());
+    private String generarCodigoUnico(String doc1,String doc2) {//fecha hora num dni remitente destinatario
+        String doc1Limpio = doc1.replaceAll("\\D", "");//Deja solo los digitos
+        String doc2Limpio = doc2.replaceAll("\\D", "");//en cada string
+        String parte1 = doc1Limpio.substring(0, 3); //obtiene los 3 primero digiros de doc1
+        String parte3 = doc2Limpio.substring(doc2Limpio.length() - 3);//obtiene los ultimo 3 dig
 
-        String paquetesFormateados = String.format("%04d", cantidadPaquetes);
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formatoMedio = DateTimeFormatter.ofPattern("yyyyHHmm");
+        String parte2 = ahora.format(formatoMedio);
 
-        String codigoUnico = String.format("%d-%s-%s", id, paquetesFormateados, anioActual);
+        String codigoUnico = String.format("%s-%s-%s", parte1, parte2, parte3);
 
         log.debug("Código Único generado: {}", codigoUnico);
-
         return codigoUnico;
     }
 }

@@ -22,6 +22,7 @@ public class Cliente {
     private String nombreRazonSocial;
 
     @NotBlank
+    @Column(name = "documento_cuit")
     private String documentoOCuit;
 
     @NotBlank

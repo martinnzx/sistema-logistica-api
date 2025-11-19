@@ -49,6 +49,6 @@ public class Envio {
     private String comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Paquete> paquetes = new ArrayList<>();;
+    private List<Paquete> paquetes = new ArrayList<>();
 
 }

@@ -1,5 +1,6 @@
 package ar.edu.unju.fi.service;
 
+import ar.edu.unju.fi.exceptions.ResourceNotFoundException;
 import ar.edu.unju.fi.repository.VehiculoRepository;
 import ar.edu.unju.fi.dto.VehiculoDTO;
 import ar.edu.unju.fi.mapper.VehiculoMapper;
@@ -62,6 +63,32 @@ public class VehiculoService {
                 .stream()
                 .map(VehiculoMapper::toDTO)
                 .toList();
+    }
+    public VehiculoDTO buscarVehiculoPorPatente(String patente) {
+        Vehiculo vehiculo = vehiculoRepository.findByPatenteIgnoreCase(patente)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "patente", patente));
+
+        VehiculoDTO dto = new VehiculoDTO();
+        dto.setPatente(patente);
+        dto.setCapacidadMaxPesoKg(vehiculo.getCapacidadMaxPesoKg());
+        dto.setCapacidadMaxVolDm3(vehiculo.getCapacidadMaxVolDm3());
+        dto.setRefrigerado(vehiculo.getRefrigerado());
+
+        dto.setRangoTemperaturaMin(vehiculo.getRangoTemperaturaMin());
+        dto.setRangoTemperaturaMax(vehiculo.getRangoTemperaturaMax());
+
+        return dto;
+    }
+    public List<VehiculoDTO>  listarVehiculos(){
+        log.info("Listando todos los vehiculos");
+        List<Vehiculo> vehiculos = vehiculoRepository.findAll();
+        return vehiculos.stream()
+                .map(VehiculoMapper::toDTO)
+                .toList();
+    }
+    public Vehiculo buscarVehiculoPatente(String patente){
+        return vehiculoRepository.findByPatenteIgnoreCase(patente)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "patente", patente));
     }
 
 }
