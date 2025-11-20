@@ -9,6 +9,9 @@ public class PaqueteMapper {
     private static final String TIPO_REFRIGERADO = "Refrigerado";
     private static final String TIPO_FRAGIL = "Fragil";
 
+    private PaqueteMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static Paquete toEntity(PaqueteDTO dto){
         if (TIPO_REFRIGERADO.equalsIgnoreCase(dto.getTipo())){
             PaqueteRefrigerado paquete = new PaqueteRefrigerado();

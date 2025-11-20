@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RutaMapper {
+    private RutaMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static Ruta toEntity(RutaDTO dto) {
         if (dto == null) {
             return null;

@@ -116,7 +116,7 @@ public class RutaController {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(resultado.getFirst());
+        return ResponseEntity.ok(resultado.get(0));
     }
     // ===========================================================
     //                LISTAR TODAS LAS RUTAS

@@ -5,6 +5,9 @@ import ar.edu.unju.fi.model.Vehiculo;
 
 public class VehiculoMapper {
 
+    private VehiculoMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static VehiculoDTO toDTO(Vehiculo vehiculo) {
         if (vehiculo == null) {
             return null;

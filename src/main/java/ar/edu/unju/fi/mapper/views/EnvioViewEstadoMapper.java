@@ -1,21 +1,23 @@
-package ar.edu.unju.fi.mapper.viewsMapper;
+package ar.edu.unju.fi.mapper.views;
 
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
+import ar.edu.unju.fi.dto.views.EnvioViewEstadoDTO;
 import ar.edu.unju.fi.model.Envio;
 import ar.edu.unju.fi.model.Paquete;
 
 import java.util.ArrayList;
 
-public class EnvioViewRemitenteMapper {
-    public static EnvioViewRemitenteDTO toDTO(Envio envio){
-        EnvioViewRemitenteDTO eV = new EnvioViewRemitenteDTO();
+public class EnvioViewEstadoMapper {
+    private EnvioViewEstadoMapper(){
+        throw new IllegalStateException("Utility class");
+    }
+    public static EnvioViewEstadoDTO toDTO(Envio envio){
+        EnvioViewEstadoDTO eV = new EnvioViewEstadoDTO();
 
         eV.setCodigoUnico(envio.getCodigoUnico());
         eV.setRemitenteNombre(envio.getRemitente().getNombreRazonSocial());
         eV.setDireccionEntrega(envio.getDireccionEntrega());
         eV.setCodigoPostal(envio.getCodigoPostal());
         eV.setEstado(envio.getEstado());
-        eV.setCorreoRemitente(envio.getRemitente().getEmail());
         eV.setDestinatarioNombre(envio.getDestinatario().getNombreRazonSocial());
 
         eV.setCodigoPaquetes(new ArrayList<>());

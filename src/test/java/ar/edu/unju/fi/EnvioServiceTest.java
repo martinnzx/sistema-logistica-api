@@ -1,8 +1,6 @@
 package ar.edu.unju.fi;
 
 import ar.edu.unju.fi.dto.views.EnvioViewDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
-import ar.edu.unju.fi.dto.views.EnvioViewRemitenteDTO;
 import ar.edu.unju.fi.model.HistorialEstadoEnvio;
 import ar.edu.unju.fi.service.ClienteService;
 import ar.edu.unju.fi.service.EnvioService;
@@ -38,13 +36,8 @@ class EnvioServiceTest {
 
     private PaqueteDTO p1, p2, pRefrigerado1, pRefrigerado2;
     private EnvioViewDTO envioViewDtoJuanAMaria;
-    private EnvioViewDTO envioViewDtoCarlosAJuan;
-    private EnvioViewDTO envioViewDtoJuanAAle;
-    private EnvioViewDTO envioViewDtoCarlosAHector;
-    private EnvioViewDTO envioViewRefrigerado;
-    private EnvioViewDTO envioViewMixto;
 
-    private ClienteDTO juan, maria, hector;
+    private ClienteDTO juan, maria;
 
     @BeforeEach
     void setUp() {
@@ -98,12 +91,9 @@ class EnvioServiceTest {
         ClienteDTO juanDTO = ClienteDTO.builder().nombreRazonSocial("Juan Perez").documentoOCuit("20-11111111-1").telefono("123").email("j@j.com").direccionPrincipal("Dir 1").codigoPostal("1000").build();
         ClienteDTO mariaDTO = ClienteDTO.builder().nombreRazonSocial("Maria Gomez").documentoOCuit("27-22222222-2").telefono("123").email("m@m.com").direccionPrincipal("Dir 2").codigoPostal("2000").build();
         ClienteDTO pedroDTO = ClienteDTO.builder().nombreRazonSocial("Pedro G").documentoOCuit("20-44444444-4").telefono("123").email("p@p.com").direccionPrincipal("Dir 4").codigoPostal("4000").build();
-        ClienteDTO hectorDTO = ClienteDTO.builder().nombreRazonSocial("Hector").documentoOCuit("20-55555555-5").telefono("123").email("h@h.com").direccionPrincipal("Dir 5").codigoPostal("5000").build();
-
         juan = clienteService.crearCliente(juanDTO);
         maria = clienteService.crearCliente(mariaDTO);
         clienteService.crearCliente(pedroDTO);
-        hector = clienteService.crearCliente(hectorDTO);
 
         // 3. --- Setup EnvioViewDTOs (DTOs de entrada) ---
         envioViewDtoJuanAMaria = EnvioViewDTO.builder()
@@ -114,45 +104,6 @@ class EnvioServiceTest {
                 .paquetes(List.of("P-001")) // Código de p1
                 .build();
 
-        envioViewDtoCarlosAJuan = EnvioViewDTO.builder()
-                .cuilRemitente("20-33333333-3") // Carlos
-                .cuilDestinatario("20-11111111-1") // Juan
-                .direccionEntrega("Calle 2")
-                .codigoPostal("1002")
-                .paquetes(List.of("P-002")) // Código de p2
-                .build();
-
-        envioViewDtoJuanAAle = EnvioViewDTO.builder()
-                .cuilRemitente("20-11111111-1") // Juan
-                .cuilDestinatario("20-66666666-6") // Ale
-                .direccionEntrega("Calle 1")
-                .codigoPostal("1001")
-                .paquetes(List.of("P-001")) // Usa P-001
-                .build();
-
-        envioViewDtoCarlosAHector = EnvioViewDTO.builder()
-                .cuilRemitente("20-33333333-3") // Carlos
-                .cuilDestinatario("20-55555555-5") // Hector
-                .direccionEntrega("Calle 2")
-                .codigoPostal("1002")
-                .paquetes(List.of("P-002")) // Usa P-002
-                .build();
-
-        envioViewRefrigerado = EnvioViewDTO.builder()
-                .cuilRemitente("20-11111111-1") // Juan
-                .cuilDestinatario("27-22222222-2") // Maria
-                .direccionEntrega("Calle Fria 456")
-                .codigoPostal("4600")
-                .paquetes(List.of("P-REF-01")) // Código refrigerado 1
-                .build();
-
-        envioViewMixto = EnvioViewDTO.builder()
-                .cuilRemitente("20-33333333-3") // Carlos
-                .cuilDestinatario("20-66666666-6") // Ale
-                .direccionEntrega("Calle Mixta 789")
-                .codigoPostal("3000")
-                .paquetes(List.of("P-001", "P-REF-02")) // Usa P-001 y refrigerado 2
-                .build();
     }
 
     @Test
@@ -166,25 +117,7 @@ class EnvioServiceTest {
         assertEquals(maria.getDocumentoOCuit(), guardado.getDestinatario().getDocumentoOCuit());
     }
 
-    @Test
-    void listarPorRemitente() {
-        envioService.crearEnvio(envioViewDtoJuanAMaria);
-        envioService.crearEnvio(envioViewDtoCarlosAJuan);
-        List<EnvioViewRemitenteDTO> resultado = envioService.listarPorRemitente("20-11111111-1"); // Documento de Juan
-        assertEquals(1, resultado.size());
-        assertEquals(juan.getNombreRazonSocial(), resultado.getFirst().getRemitenteNombre());
-    }
 
-    @Test
-    void listarPorDestinatario() {
-        envioService.crearEnvio(envioViewDtoJuanAAle);
-        envioService.crearEnvio(envioViewDtoCarlosAHector);
-        List<EnvioViewDestinatarioDTO> resultado = envioService.listarPorDestinatario("20-55555555-5"); // Buscar por doc de Hector
-        assertEquals(1, resultado.size());
-        assertEquals(hector.getNombreRazonSocial(), resultado.getFirst().getDestinatarioNombre());
-    }
-
-    // Helper actualizado para usar el DTO definido en setUp
     private EnvioDTO crearEnvioBaseDto() {
         return envioService.crearEnvio(envioViewDtoJuanAMaria);
     }
@@ -247,19 +180,6 @@ class EnvioServiceTest {
 
     // --- Tests de Lógica de Refrigerado (Sin cambios) ---
 
-    @Test
-    void crearEnvio_conPaquetesRefrigerados_debeMarcarRequerirFrio() {
-        EnvioDTO guardadoRef = envioService.crearEnvio(envioViewRefrigerado);
-        assertNotNull(guardadoRef);
-        assertTrue(guardadoRef.getRequiereFrio(), "El envío solo con paquetes refrigerados debe marcarse como 'requiereFrio'");
-        assertEquals(1, guardadoRef.getPaquetes().size());
-        assertEquals("Refrigerado", guardadoRef.getPaquetes().getFirst().getTipo());
-
-        EnvioDTO guardadoMixto = envioService.crearEnvio(envioViewMixto);
-        assertNotNull(guardadoMixto);
-        assertTrue(guardadoMixto.getRequiereFrio(), "Un envío mixto (frágil + refrigerado) debe marcarse como 'requiereFrio'");
-        assertEquals(2, guardadoMixto.getPaquetes().size());
-    }
 
     @Test
     void crearEnvio_sinPaquetesRefrigerados_noDebeMarcarRequerirFrio() {

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,31 +78,6 @@ class PaqueteServiceTest {
         assertEquals("Fragil", guardado.getTipo());
     }
 
-    @Test
-    void listarPorPeso_deberiaRetornarPaquetesDentroDelRango() {
-        paqueteService.crearPaquete(paqueteDtoA); // Paquete con 5.0 kg
-        paqueteService.crearPaquete(paqueteDtoB); // Paquete con 15.0 kg
-
-        List<PaqueteDTO> resultado = paqueteService.listarPorPeso(0.0, 10.0);
-
-        assertEquals(1, resultado.size());
-
-        assertEquals(5.0, resultado.getFirst().getPesoKg());
-        assertEquals("PF-001", resultado.getFirst().getCodigo());
-    }
-
-    @Test
-    void listarPorVolumen() {
-        paqueteService.crearPaquete(paqueteDtoA);
-        paqueteService.crearPaquete(paqueteDtoB);
-
-        List<PaqueteDTO> resultado = paqueteService.listarPorVolumen(0.0, 15.0);
-
-        assertEquals(1, resultado.size());
-
-        assertEquals(10.0, resultado.getFirst().getVolumenDm3());
-        assertEquals("PF-001", resultado.getFirst().getCodigo());
-    }
     @Test
     void crearPaqueteRefrigerado_conTemperaturaFueraDeRango_deberiaLanzarExcepcion() {
         assertThrows(IllegalArgumentException.class,

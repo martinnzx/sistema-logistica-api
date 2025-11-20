@@ -1,4 +1,4 @@
-package ar.edu.unju.fi.mapper.viewsMapper;
+package ar.edu.unju.fi.mapper.views;
 
 import ar.edu.unju.fi.dto.views.EnvioViewDestinatarioDTO;
 import ar.edu.unju.fi.model.Envio;
@@ -7,6 +7,7 @@ import ar.edu.unju.fi.model.Paquete;
 import java.util.ArrayList;
 
 public class EnvioViewDestinatarioMapper {
+    EnvioViewDestinatarioMapper(){throw new IllegalStateException("Utility class");}
     public static EnvioViewDestinatarioDTO toDTO(Envio envio){
         EnvioViewDestinatarioDTO eV = new EnvioViewDestinatarioDTO();
 

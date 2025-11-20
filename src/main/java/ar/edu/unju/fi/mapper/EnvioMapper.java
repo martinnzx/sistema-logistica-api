@@ -5,10 +5,13 @@ import ar.edu.unju.fi.dto.PaqueteDTO;
 import ar.edu.unju.fi.model.Envio;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class EnvioMapper {
 
+    private EnvioMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static EnvioDTO toDTO(Envio envio) {
         if (envio == null) {
             return null;
@@ -22,7 +25,7 @@ public class EnvioMapper {
         }
 
         return EnvioDTO.builder()
-                .id(envio.getId()) //
+                .id(envio.getId())
                 .remitente(ClienteMapper.toDTO(envio.getRemitente()))
                 .destinatario(ClienteMapper.toDTO(envio.getDestinatario()))
                 .direccionEntrega(envio.getDireccionEntrega())
@@ -42,19 +45,14 @@ public class EnvioMapper {
 
         Envio envio = new Envio();
 
-        // Mapea el ID (importante para actualizaciones, será null para creaciones)
         envio.setId(dto.getId());
 
         envio.setRemitente(ClienteMapper.toEntity(dto.getRemitente()));
         envio.setDestinatario(ClienteMapper.toEntity(dto.getDestinatario()));
         envio.setDireccionEntrega(dto.getDireccionEntrega());
-        envio.setCodigoPostal(dto.getCodigoPostal()); // <-- Crítico que esté
-        envio.setRequiereFrio(dto.getRequiereFrio()); // <-- Crítico que esté
+        envio.setCodigoPostal(dto.getCodigoPostal());
+        envio.setRequiereFrio(dto.getRequiereFrio());
         envio.setComprobanteEntrega(dto.getComprobanteEntrega());
-
-        // NO MAPEAR:
-        // envio.setEstado(dto.getEstado()); // <-- BORRAR ESTO
-        // envio.setCodigoUnico(dto.getCodigoUnico()); // <-- BORRAR ESTO
 
         if (dto.getPaquetes() != null) {
             envio.setPaquetes(

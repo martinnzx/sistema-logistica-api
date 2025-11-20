@@ -32,19 +32,19 @@ public class RutaService {
     public RutaDTO crearRuta(@Valid RutaViewDTO viewDTO) {
         log.info("Iniciando creación de ruta para vehículo: {}", viewDTO.getPatenteVehiculo());
 
-        // 1. Ensambla la entidad Ruta buscando las relaciones en la BD
+        //  Ensambla la entidad Ruta buscando las relaciones en la BD
         Ruta ruta = ensamblarRuta(viewDTO);
 
-        // 2. Ejecuta validaciones de negocio (Capacidad, Refrigeración, etc.)
+        //  Ejecuta validaciones de negocio (Capacidad, Refrigeración, etc.)
         ejecutarValidacionesDeRuta(ruta.getVehiculo(), ruta.getEnvios());
 
-        // 3. Guarda la nueva ruta (esto le asigna un ID)
+        //  Guarda la nueva ruta (esto le asigna un ID)
         Ruta rutaGuardada = rutaRepository.save(ruta);
 
 
         log.info("Ruta creada exitosamente con ID: {}", rutaGuardada.getId());
 
-        // 5. Devuelve el DTO de respuesta completo (usando un mapper)
+        //  Devuelve el DTO de respuesta completo (usando un mapper)
         return RutaMapper.toDto(rutaGuardada);
     }
 

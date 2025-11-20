@@ -4,7 +4,9 @@ import ar.edu.unju.fi.dto.ClienteDTO;
 import ar.edu.unju.fi.model.Cliente;
 
 public class ClienteMapper {
-
+    private ClienteMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static ClienteDTO toDTO(Cliente cliente) {
         return ClienteDTO.builder()
                 .id(cliente.getId())

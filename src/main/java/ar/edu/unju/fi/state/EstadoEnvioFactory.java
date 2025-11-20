@@ -3,7 +3,9 @@ package ar.edu.unju.fi.state;
 import ar.edu.unju.fi.enums.EstadoEnvio;
 
 public class EstadoEnvioFactory {
-
+    private EstadoEnvioFactory(){
+        throw new IllegalStateException("estado envio factory");
+    }
     public static EstadoEnvioState getEstado(EstadoEnvio estado) {
         return switch (estado) {
             case GENERADO -> new GeneradoState();
