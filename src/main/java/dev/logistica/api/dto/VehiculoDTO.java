@@ -30,4 +30,3 @@ public class VehiculoDTO {
 
         private Double rangoTemperaturaMax;
 }
-
