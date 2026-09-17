@@ -1,5 +1,7 @@
 package dev.logistica.api.controller;
 
+import dev.logistica.api.controller.doc.VehiculoApi;
+
 import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.dto.VehiculoDTO;
 import dev.logistica.api.service.VehiculoService;
@@ -14,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/vehiculos")
-public class VehiculoController {
+public class VehiculoController implements VehiculoApi {
     private final VehiculoService vehiculoService;
     public VehiculoController(VehiculoService vehiculoService) {
         this.vehiculoService = vehiculoService;

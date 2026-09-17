@@ -1,5 +1,7 @@
 package dev.logistica.api.controller;
 
+import dev.logistica.api.controller.doc.PaqueteApi;
+
 import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.PaqueteDTO;
@@ -21,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/paquetes")
 @RequiredArgsConstructor
-public class PaqueteController {
+public class PaqueteController implements PaqueteApi {
 
     private final PaqueteService paqueteService;
 

@@ -1,5 +1,7 @@
 package dev.logistica.api.controller;
 
+import dev.logistica.api.controller.doc.RutaApi;
+
 import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.RutaDTO;
@@ -20,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rutas")
 @RequiredArgsConstructor
-public class RutaController {
+public class RutaController implements RutaApi {
 
     private final RutaService rutaService;
 

@@ -1,15 +1,30 @@
 {
     "info": {
-        "name": "Sistema de LogÃ­stica API",
-        "description": "ColecciÃ³n de pruebas para la API del Sistema de LogÃ­stica.",
+        "name": "Sistema de Logística API",
+        "description": "Colección de pruebas para la API del Sistema de Logística.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "AutenticaciÃ³n",
+            "name": "Autenticación",
             "item": [
                 {
                     "name": "Registrar Usuario",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.token) {",
+                                    "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                                    "    console.log(\"Token guardado automáticamente\");",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "request": {
                         "method": "POST",
                         "header": [
@@ -31,6 +46,21 @@
                 },
                 {
                     "name": "Login (Obtener Token)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.token) {",
+                                    "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                                    "    console.log(\"Token actualizado automáticamente\");",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "request": {
                         "method": "POST",
                         "header": [
@@ -53,10 +83,10 @@
             ]
         },
         {
-            "name": "EnvÃ­os",
+            "name": "Envíos",
             "item": [
                 {
-                    "name": "Obtener EnvÃ­os Generados",
+                    "name": "Obtener Envíos Generados",
                     "request": {
                         "method": "GET",
                         "header": [

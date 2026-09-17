@@ -1,5 +1,7 @@
 package dev.logistica.api.controller;
 
+import dev.logistica.api.controller.doc.EnvioApi;
+
 import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.EnvioDTO;
@@ -20,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/envios")
 @RequiredArgsConstructor
-public class EnvioController {
+public class EnvioController implements EnvioApi {
 
     private final EnvioService envioService;
 

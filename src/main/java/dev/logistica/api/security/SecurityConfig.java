@@ -53,7 +53,14 @@ public class SecurityConfig {
             // 3. Indicamos que no guarde sesiones (STATELESS) porque cada petición tendrá su propio JWT
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            // 4. Conectamos nuestro proveedor de autenticación y nuestro filtro JWT
+            // 4. Configurar manejo de excepciones para retornar 401 Unauthorized en peticiones sin autenticación
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) ->
+                    response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, "No autorizado")
+                )
+            )
+
+            // 5. Conectamos nuestro proveedor de autenticación y nuestro filtro JWT
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

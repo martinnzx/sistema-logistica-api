@@ -1,5 +1,7 @@
 package dev.logistica.api.controller;
 
+import dev.logistica.api.controller.doc.ReporteEnviosApi;
+
 import dev.logistica.api.dto.views.PDFcomprobanteDTO;
 import dev.logistica.api.enums.EstadoEnvio;
 import dev.logistica.api.service.EnvioService;
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/reportes/envios")
 @RequiredArgsConstructor
-public class ReporteEnviosController {
+public class ReporteEnviosController implements ReporteEnviosApi {
 
     private final ReporteEnviosService reporteService;
     private final EnvioService envioService;
