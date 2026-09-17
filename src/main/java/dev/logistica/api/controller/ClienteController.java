@@ -4,7 +4,6 @@ import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.ClienteDTO;
 import dev.logistica.api.service.ClienteService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class ClienteController {
     //                     CREAR CLIENTE
     // ===========================================================
 
-    @PostMapping
+        @PostMapping
     public ResponseEntity<ClienteDTO> crearCliente(@Valid @RequestBody ClienteDTO clienteDTO) {
         log.info("Petición para crear cliente: {}", clienteDTO.getNombreRazonSocial());
         ClienteDTO nuevoCliente = clienteService.crearCliente(clienteDTO);
@@ -41,7 +40,7 @@ public class ClienteController {
     //             BUSCAR CLIENTE POR DOCUMENTO/CUIT
     // ===========================================================
 
-    @GetMapping("/{documentoOCuit}")
+        @GetMapping("/{documentoOCuit}")
     public ResponseEntity<ClienteDTO> buscarPorDocumentoOCuit(@PathVariable String documentoOCuit) {
         log.info("Buscando cliente con documento/CUIT: {}", documentoOCuit);
         ClienteDTO cliente = clienteService.buscarPorDocumentoOCuit(documentoOCuit);
@@ -52,7 +51,7 @@ public class ClienteController {
     //                    ACTUALIZAR CLIENTE
     // ===========================================================
 
-    @PutMapping("/{documentoOCuit}")
+        @PutMapping("/{documentoOCuit}")
     public ResponseEntity<ClienteDTO> actualizarCliente(
             @PathVariable String documentoOCuit,
             @Valid @RequestBody ClienteDTO clienteDTO) {
@@ -66,7 +65,7 @@ public class ClienteController {
     //                    LISTAR CLIENTES
     // ===========================================================
 
-    @GetMapping
+        @GetMapping
     public ResponseEntity<List<ClienteDTO>> listar() {
         log.info("Listando clientes...");
         List<ClienteDTO> lista = clienteService.listarClientes();

@@ -5,7 +5,6 @@ import dev.logistica.api.dto.JwtResponse;
 import dev.logistica.api.dto.LoginRequest;
 import dev.logistica.api.dto.RegistroRequest;
 import dev.logistica.api.service.AuthService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

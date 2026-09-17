@@ -4,7 +4,6 @@ import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.PaqueteDTO;
 import dev.logistica.api.service.PaqueteService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/paquetes")
 @RequiredArgsConstructor
-")
 public class PaqueteController {
 
     private final PaqueteService paqueteService;
@@ -31,7 +29,7 @@ public class PaqueteController {
     //                       CREAR PAQUETE
     // ===========================================================
 
-    @PostMapping
+        @PostMapping
     public ResponseEntity<PaqueteDTO> crearPaquete(@Valid @RequestBody PaqueteDTO paqueteDTO) {
         log.info("Creando paquete tipo: {}", paqueteDTO.getTipo());
         PaqueteDTO nuevo = paqueteService.crearPaquete(paqueteDTO);
@@ -42,7 +40,7 @@ public class PaqueteController {
     //                 LISTAR POR RANGO DE PESO
     // ===========================================================
 
-    @GetMapping("/por-peso")
+        @GetMapping("/por-peso")
     public ResponseEntity<List<PaqueteDTO>> listarPorPeso(
             @RequestParam Double min,
             @RequestParam Double max) {
@@ -56,7 +54,7 @@ public class PaqueteController {
     //                 LISTAR POR RANGO DE VOLUMEN
     // ===========================================================
 
-    @GetMapping("/por-volumen")
+        @GetMapping("/por-volumen")
     public ResponseEntity<List<PaqueteDTO>> listarPorVolumen(
             @RequestParam Double min,
             @RequestParam Double max) {
@@ -70,7 +68,7 @@ public class PaqueteController {
     //                      BUSCAR POR CÓDIGO
     // ===========================================================
 
-    @GetMapping("/codigo/{codigo}")
+        @GetMapping("/codigo/{codigo}")
     public ResponseEntity<PaqueteDTO> buscarPaquetePorCodigo(@PathVariable String codigo) {
         log.info("Buscando paquete con código: {}", codigo);
         PaqueteDTO dto = paqueteService.buscarPaquetePorCodigo(codigo);
@@ -81,7 +79,7 @@ public class PaqueteController {
     //                  LISTAR TODOS LOS PAQUETES
     // ===========================================================
 
-    @GetMapping
+        @GetMapping
     public ResponseEntity<List<PaqueteDTO>> listarPaquetes() {
         log.info("Solicitando listado completo de paquetes");
         List<PaqueteDTO> paquetes = paqueteService.listarPaquetes();

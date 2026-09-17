@@ -4,7 +4,6 @@ import dev.logistica.api.dto.views.PDFcomprobanteDTO;
 import dev.logistica.api.enums.EstadoEnvio;
 import dev.logistica.api.service.EnvioService;
 import dev.logistica.api.service.ReporteEnviosService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
@@ -20,17 +19,13 @@ public class ReporteEnviosController {
     private final ReporteEnviosService reporteService;
     private final EnvioService envioService;
 
-    @GetMapping("/pdf")
+        @GetMapping("/pdf")
     public ResponseEntity<byte[]> pdf(
-            @RequestParam EstadoEnvio estado,
+                        @RequestParam EstadoEnvio estado,
 
-            ", required = true,
-                    schema = )
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
 
-            ", required = true,
-                    schema = )
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
     ) {
         byte[] archivo = reporteService.generarPdf(estado, desde, hasta);
 
@@ -45,17 +40,13 @@ public class ReporteEnviosController {
         return new ResponseEntity<>(archivo, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/excel")
+        @GetMapping("/excel")
     public ResponseEntity<byte[]> excel(
-            @RequestParam EstadoEnvio estado,
+                        @RequestParam EstadoEnvio estado,
 
-            ", required = true,
-                    schema = )
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
 
-            ", required = true,
-                    schema = )
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
     ) {
         byte[] archivo = reporteService.generarExcel(estado, desde, hasta);
 
@@ -70,9 +61,9 @@ public class ReporteEnviosController {
 
         return new ResponseEntity<>(archivo, headers, HttpStatus.OK);
     }
-    @GetMapping("/comprobante/{codigo}")
+        @GetMapping("/comprobante/{codigo}")
     public ResponseEntity<byte[]> generarComprobante(
-            @PathVariable String codigo
+                        @PathVariable String codigo
     ) {
         PDFcomprobanteDTO pdfDetails = envioService.obtenerCodigo(codigo);
 

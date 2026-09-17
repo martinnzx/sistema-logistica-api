@@ -7,7 +7,6 @@ import dev.logistica.api.dto.views.*;
 import dev.logistica.api.enums.EstadoEnvio;
 import dev.logistica.api.model.HistorialEstadoEnvio;
 import dev.logistica.api.service.EnvioService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class EnvioController {
     //                      1. CREAR ENVÍO
     // ===========================================================
 
-    @PostMapping
+        @PostMapping
     public ResponseEntity<EnvioDTO> crearEnvio(@RequestBody EnvioViewDTO dto) {
         log.info("Solicitud para crear un nuevo envío recibida");
         EnvioDTO nuevo = envioService.crearEnvio(dto);
@@ -40,7 +39,7 @@ public class EnvioController {
     //                2. LISTAR POR REMITENTE
     // ===========================================================
 
-    @GetMapping("/remitente/{documento}")
+        @GetMapping("/remitente/{documento}")
     public ResponseEntity<List<EnvioViewRemitenteDTO>> listarPorRemitente(@PathVariable String documento) {
         log.info("Listando envíos del remitente con documento: {}", documento);
         List<EnvioViewRemitenteDTO> envios = envioService.listarPorRemitente(documento);
@@ -51,7 +50,7 @@ public class EnvioController {
     //               3. LISTAR POR DESTINATARIO
     // ===========================================================
 
-    @GetMapping("/destinatario/{documento}")
+        @GetMapping("/destinatario/{documento}")
     public ResponseEntity<List<EnvioViewDestinatarioDTO>> listarPorDestinatario(@PathVariable String documento) {
         log.info("Listando envíos del destinatario con documento: {}", documento);
         List<EnvioViewDestinatarioDTO> envios = envioService.listarPorDestinatario(documento);
@@ -62,7 +61,7 @@ public class EnvioController {
     //                    4. LISTAR POR ESTADO
     // ===========================================================
 
-    @GetMapping("/estado/{estado}")
+        @GetMapping("/estado/{estado}")
     public ResponseEntity<List<EnvioViewEstadoDTO>> listarPorEstado(@PathVariable EstadoEnvio estado) {
         log.info("Listando envíos por estado: {}", estado);
         List<EnvioViewEstadoDTO> envios = envioService.listarPorEstado(estado);
@@ -73,7 +72,7 @@ public class EnvioController {
     //                   5. AVANZAR ESTADO
     // ===========================================================
 
-    @PutMapping("/{codigo}/avanzar")
+        @PutMapping("/{codigo}/avanzar")
     public ResponseEntity<MensajeError> avanzarEstado(
             @PathVariable String codigo,
             @RequestBody(required = false) EstadoEnvioDTO requestBody) {
@@ -89,7 +88,7 @@ public class EnvioController {
     //                    6. CANCELAR ENVÍO
     // ===========================================================
 
-    @PutMapping("/{codigo}/cancelar")
+        @PutMapping("/{codigo}/cancelar")
     public ResponseEntity<MensajeError> cancelarEnvio(
             @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
@@ -105,7 +104,7 @@ public class EnvioController {
     //                    7. DEVOLVER ENVÍO
     // ===========================================================
 
-    @PutMapping("/{codigo}/devolver")
+        @PutMapping("/{codigo}/devolver")
     public ResponseEntity<MensajeError> devolverEnvio(
             @PathVariable String codigo,
             @RequestBody(required = false) Map<String, String> body) {
@@ -121,7 +120,7 @@ public class EnvioController {
     //                8. ADJUNTAR COMPROBANTE
     // ===========================================================
 
-    @PutMapping("/{codigo}/comprobante")
+        @PutMapping("/{codigo}/comprobante")
     public ResponseEntity<MensajeError> adjuntarComprobante(
             @PathVariable String codigo,
             @RequestBody ComprobanteDTO request) {
@@ -135,7 +134,7 @@ public class EnvioController {
     //                9. OBTENER ENVÍO POR CÓDIGO
     // ===========================================================
 
-    @GetMapping("/codigo/{codigoUnico}")
+        @GetMapping("/codigo/{codigoUnico}")
     public ResponseEntity<EnvioDTO> obtenerEnvioPorCodigo(@PathVariable String codigoUnico) {
         EnvioDTO envio = envioService.obtenerEnvioPorCodigo(codigoUnico);
         return ResponseEntity.ok(envio);
@@ -145,7 +144,7 @@ public class EnvioController {
     //              10. OBTENER HISTORIAL POR CÓDIGO
     // ===========================================================
 
-    @GetMapping("/codigo/{codigoUnico}/historial")
+        @GetMapping("/codigo/{codigoUnico}/historial")
     public ResponseEntity<List<HistorialEstadoEnvio>> obtenerHistorialPorCodigo(@PathVariable String codigoUnico) {
         List<HistorialEstadoEnvio> historial = envioService.obtenerHistorialPorCodigo(codigoUnico);
         return ResponseEntity.ok(historial);

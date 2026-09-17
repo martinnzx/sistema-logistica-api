@@ -10,33 +10,24 @@ import lombok.*;
 @Builder
 @Data
 public class VehiculoDTO {
-    @NotBlank(message = "La patente no puede estar vacía")
+        @NotBlank(message = "La patente no puede estar vacía")
     @Size(min = 6, max = 7, message = "La patente debe tener entre 6 y 7 caracteres")
     @Pattern(regexp = "^[A-Z0-9]+$", message = "La patente solo puede contener letras mayúsculas y números")
     private String patente;
 
-    @NotNull(message = "La capacidad de peso es obligatoria")
+        @NotNull(message = "La capacidad de peso es obligatoria")
     @Positive(message = "La capacidad de peso debe ser mayor a cero")
     private Double capacidadMaxPesoKg;
 
-    .",
-            example = "3000.0"
-    )
-    @NotNull(message = "La capacidad de volumen es obligatoria")
+        @NotNull(message = "La capacidad de volumen es obligatoria")
     @Positive(message = "La capacidad de volumen debe ser mayor a cero")
     private Double capacidadMaxVolDm3;
 
-    @NotNull(message = "Debe especificar si es refrigerado")
+        @NotNull(message = "Debe especificar si es refrigerado")
     private Boolean refrigerado;
 
-    .",
-            example = "-10.0"
-    )
-    private Double rangoTemperaturaMin;
+        private Double rangoTemperaturaMin;
 
-    .",
-            example = "5.0"
-    )
-    private Double rangoTemperaturaMax;
+        private Double rangoTemperaturaMax;
 }
 

@@ -2929,3 +2929,93 @@ Caused by: org.postgresql.util.PSQLException: FATAL: la autentificaci�n passwo
 2026-09-17T10:26:47.434-03:00  INFO 15900 --- [sistema-logistica-api] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-09-17T10:26:47.436-03:00  INFO 15900 --- [sistema-logistica-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2026-09-17T10:26:47.438-03:00  INFO 15900 --- [sistema-logistica-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-09-17T10:36:09.528-03:00  INFO 10388 --- [sistema-logistica-api] [main] dev.logistica.api.EnvioServiceTest       : Starting EnvioServiceTest using Java 21.0.12.1 with PID 10388 (started by marti in D:\IDescargas\Sistema de Logistica de Envios\sistema-logistica-api)
+2026-09-17T10:36:09.530-03:00  INFO 10388 --- [sistema-logistica-api] [main] dev.logistica.api.EnvioServiceTest       : No active profile set, falling back to 1 default profile: "default"
+2026-09-17T10:36:10.605-03:00  INFO 10388 --- [sistema-logistica-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-17T10:36:10.701-03:00  INFO 10388 --- [sistema-logistica-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 83 ms. Found 7 JPA repository interfaces.
+2026-09-17T10:36:11.441-03:00  INFO 10388 --- [sistema-logistica-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-17T10:36:11.670-03:00  INFO 10388 --- [sistema-logistica-api] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1c72189f
+2026-09-17T10:36:11.672-03:00  INFO 10388 --- [sistema-logistica-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-17T10:36:11.707-03:00  INFO 10388 --- [sistema-logistica-api] [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/logistica_envios (PostgreSQL 18.4)
+2026-09-17T10:36:11.718-03:00  WARN 10388 --- [sistema-logistica-api] [main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 18.4 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.
+2026-09-17T10:36:11.783-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.053s)
+2026-09-17T10:36:11.847-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-09-17T10:36:11.851-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-09-17T10:36:11.964-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-17T10:36:12.034-03:00  INFO 10388 --- [sistema-logistica-api] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-09-17T10:36:12.084-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-17T10:36:12.388-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-17T10:36:12.444-03:00  WARN 10388 --- [sistema-logistica-api] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-17T10:36:12.458-03:00  INFO 10388 --- [sistema-logistica-api] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-17T10:36:13.515-03:00  INFO 10388 --- [sistema-logistica-api] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-17T10:36:13.548-03:00  INFO 10388 --- [sistema-logistica-api] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-17T10:36:13.849-03:00  INFO 10388 --- [sistema-logistica-api] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-09-17T10:36:13.849-03:00  WARN 10388 --- [sistema-logistica-api] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-09-17T10:36:14.200-03:00  WARN 10388 --- [sistema-logistica-api] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-17T10:36:14.948-03:00  INFO 10388 --- [sistema-logistica-api] [main] dev.logistica.api.EnvioServiceTest       : Started EnvioServiceTest in 5.862 seconds (process running for 6.941)
+2026-09-17T10:36:15.329-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Creando paquete de tipo Fragil con peso 5.0 kg y volumen 10.0 dm3
+2026-09-17T10:36:15.388-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Paquete creado exitosamente con ID: 1
+2026-09-17T10:36:15.388-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Creando paquete de tipo Fragil con peso 2.0 kg y volumen 4.0 dm3
+2026-09-17T10:36:15.391-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Paquete creado exitosamente con ID: 2
+2026-09-17T10:36:15.391-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Creando paquete de tipo Refrigerado con peso 3.0 kg y volumen 5.0 dm3
+2026-09-17T10:36:15.391-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Temperatura del paquete refrigerado validada correctamente (5.0) dentro del rango [2.0 - 8.0]
+2026-09-17T10:36:15.394-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Paquete creado exitosamente con ID: 3
+2026-09-17T10:36:15.394-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Creando paquete de tipo Refrigerado con peso 4.0 kg y volumen 6.0 dm3
+2026-09-17T10:36:15.394-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Temperatura del paquete refrigerado validada correctamente (4.0) dentro del rango [1.0 - 5.0]
+2026-09-17T10:36:15.395-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.PaqueteService   : Paquete creado exitosamente con ID: 4
+2026-09-17T10:36:15.396-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Creando nuevo cliente: Juan Perez
+2026-09-17T10:36:15.410-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Cliente guardado exitosamente con ID: 1
+2026-09-17T10:36:15.410-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Creando nuevo cliente: Maria Gomez
+2026-09-17T10:36:15.412-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Cliente guardado exitosamente con ID: 2
+2026-09-17T10:36:15.412-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Creando nuevo cliente: Pedro G
+2026-09-17T10:36:15.414-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Cliente guardado exitosamente con ID: 3
+2026-09-17T10:36:15.415-03:00  INFO 10388 --- [sistema-logistica-api] [main] dev.logistica.api.service.EnvioService   : Iniciando creación de envío desde ViewDTO...
+2026-09-17T10:36:15.416-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Buscando cliente con documento/CUIT: 20-11111111-1
+2026-09-17T10:36:15.510-03:00  INFO 10388 --- [sistema-logistica-api] [main] d.logistica.api.service.ClienteService   : Buscando cliente con documento/CUIT: 27-22222222-2
+2026-09-17T10:36:44.082-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] d.l.api.SistemaLogisticaApiApplication   : Starting SistemaLogisticaApiApplication using Java 21.0.12.1 with PID 1828 (D:\IDescargas\Sistema de Logistica de Envios\sistema-logistica-api\target\classes started by marti in D:\IDescargas\Sistema de Logistica de Envios\sistema-logistica-api)
+2026-09-17T10:36:44.086-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] d.l.api.SistemaLogisticaApiApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-09-17T10:36:44.137-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-09-17T10:36:44.137-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-09-17T10:36:45.154-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-17T10:36:45.246-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 7 JPA repository interfaces.
+2026-09-17T10:36:45.872-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-09-17T10:36:45.888-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-17T10:36:45.889-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-09-17T10:36:45.948-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-17T10:36:45.948-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1810 ms
+2026-09-17T10:36:46.214-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-17T10:36:46.409-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5e0150da
+2026-09-17T10:36:46.411-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-17T10:36:46.443-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/logistica_envios (PostgreSQL 18.4)
+2026-09-17T10:36:46.453-03:00  WARN 1828 --- [sistema-logistica-api] [restartedMain] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 18.4 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.
+2026-09-17T10:36:46.495-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.029s)
+2026-09-17T10:36:46.555-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-09-17T10:36:46.558-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-09-17T10:36:46.653-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-17T10:36:46.714-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-09-17T10:36:46.753-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-17T10:36:47.047-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-17T10:36:47.110-03:00  WARN 1828 --- [sistema-logistica-api] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-17T10:36:47.125-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-17T10:36:48.217-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-17T10:36:48.256-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-17T10:36:48.575-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-09-17T10:36:48.576-03:00  WARN 1828 --- [sistema-logistica-api] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-09-17T10:36:48.921-03:00  WARN 1828 --- [sistema-logistica-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-17T10:36:49.554-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-09-17T10:36:49.590-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-09-17T10:36:49.601-03:00  INFO 1828 --- [sistema-logistica-api] [restartedMain] d.l.api.SistemaLogisticaApiApplication   : Started SistemaLogisticaApiApplication in 6.051 seconds (process running for 6.558)

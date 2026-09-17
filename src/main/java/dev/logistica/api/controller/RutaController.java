@@ -5,7 +5,6 @@ import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.RutaDTO;
 import dev.logistica.api.dto.views.RutaViewDTO;
 import dev.logistica.api.service.RutaService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,7 @@ public class RutaController {
     //                     CREAR RUTA NUEVA
     // ===========================================================
 
-    @PostMapping
+        @PostMapping
     public ResponseEntity<RutaDTO> crearRuta(@Valid @RequestBody RutaViewDTO viewDTO) {
 
         log.info("Solicitud para crear ruta recibida. Patente del vehículo: {}", viewDTO.getPatenteVehiculo());
@@ -42,7 +41,7 @@ public class RutaController {
     //           CONSULTAR ENVÍOS DE UNA RUTA EN UNA FECHA
     // ===========================================================
 
-    @GetMapping("/{id}/envios")
+        @GetMapping("/{id}/envios")
     public ResponseEntity<RutaDTO> obtenerEnviosPorRutaYFecha(
             @PathVariable Long id,
             @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha
@@ -61,7 +60,7 @@ public class RutaController {
     //                LISTAR TODAS LAS RUTAS
     // ===========================================================
 
-    @GetMapping
+        @GetMapping
     public ResponseEntity<List<RutaDTO>> listarTodas() {
         log.info("Solicitud para listar todas las rutas");
 
@@ -78,7 +77,7 @@ public class RutaController {
     //                 CONSULTAR RUTA POR ID
     // ===========================================================
 
-    @GetMapping("/{id}")
+        @GetMapping("/{id}")
     public ResponseEntity<RutaDTO> obtenerPorId(@PathVariable Long id) {
         log.info("Solicitud para obtener la ruta con ID: {}", id);
 
@@ -87,4 +86,5 @@ public class RutaController {
         return ResponseEntity.ok(ruta);
     }
 }
+
 

@@ -3,7 +3,6 @@ package dev.logistica.api.controller;
 import dev.logistica.api.controller.dto.MensajeError;
 import dev.logistica.api.dto.VehiculoDTO;
 import dev.logistica.api.service.VehiculoService;
-
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class VehiculoController {
         this.vehiculoService = vehiculoService;
     }
 
-    @PostMapping
+        @PostMapping
     public ResponseEntity<VehiculoDTO> crearVehiculo(@Valid @RequestBody VehiculoDTO vehiculoDTO) {
         log.info("Iniciando creación de vehículo con patente: {}", vehiculoDTO.getPatente());
 
@@ -31,7 +30,7 @@ public class VehiculoController {
         return ResponseEntity.created(location).body(nuevo);
     }
 
-    @GetMapping("/buscar/refrigerados")
+        @GetMapping("/buscar/refrigerados")
     public ResponseEntity<List<VehiculoDTO>> buscarPorRefrigeracion(
             @RequestParam("refrigerado") Boolean refrigerado) {
 
@@ -39,7 +38,8 @@ public class VehiculoController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/buscar/por-peso")
+
+        @GetMapping("/buscar/por-peso")
     public ResponseEntity<List<VehiculoDTO>> buscarPorPeso(
             @RequestParam("pesoMinimo") Double pesoRequerido) {
 
@@ -47,7 +47,8 @@ public class VehiculoController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/buscar/por-volumen")
+
+        @GetMapping("/buscar/por-volumen")
     public ResponseEntity<List<VehiculoDTO>> buscarPorVolumen(
             @RequestParam("volumenMinimo") Double volumen) {
 
@@ -55,17 +56,16 @@ public class VehiculoController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping
+        @GetMapping
     public ResponseEntity<List<VehiculoDTO>> listar() {
         log.info("Solicitando listado completo de vehículos...");
         List<VehiculoDTO> lista = vehiculoService.listarVehiculos();
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/patente/{patente}")
+            @GetMapping("/patente/{patente}")
     public ResponseEntity<VehiculoDTO> buscarPorPatente(
-            ", example = "AA123BB")
-            @PathVariable("patente") String patente) {
+                        @PathVariable("patente") String patente) {
 
         VehiculoDTO vehiculoDTO = vehiculoService.buscarVehiculoPorPatente(patente);
         return ResponseEntity.ok(vehiculoDTO);

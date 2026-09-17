@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ComprobanteDTO {
-    @NotBlank(message = "El comprobante no puede estar vacío")
+        @NotBlank(message = "El comprobante no puede estar vacío")
     private String comprobante;
 }
 
