@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:17
+    container_name: logistica-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: logistica_envios
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d logistica_envios"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: logistica-api
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      # Sobreescribimos la URL para que apunte al contenedor 'db' en lugar de localhost
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/logistica_envios
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

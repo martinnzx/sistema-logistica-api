@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+.idea
+.vscode
+target/
+logs/
+*.log
+scratch/
+postman/
+docs/
+specs/
+mvnw
+mvnw.cmd
+.mvn/
+README.md
