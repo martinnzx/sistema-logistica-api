@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DevueltoState implements EstadoEnvioState {
 
-
     @Override
     public void avanzar(Envio envio, HistorialEstadoEnvioRepository historialRepo, String observacion) {
         throw new IllegalStateException("El envío DEVUELTO no puede avanzar más.");

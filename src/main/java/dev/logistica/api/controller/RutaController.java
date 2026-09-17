@@ -5,11 +5,7 @@ import dev.logistica.api.controller.dto.Error404;
 import dev.logistica.api.dto.RutaDTO;
 import dev.logistica.api.dto.views.RutaViewDTO;
 import dev.logistica.api.service.RutaService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rutas")
 @RequiredArgsConstructor
-@Tag(name = "Rutas", description = "Operaciones para gestionar rutas y sus envíos asociados")
 public class RutaController {
 
     private final RutaService rutaService;
@@ -34,28 +29,6 @@ public class RutaController {
     //                     CREAR RUTA NUEVA
     // ===========================================================
 
-    @Operation(
-            summary = "Crear una nueva ruta",
-            description = "Genera una ruta asignando un vehículo (por patente) y un conjunto de envíos (por sus códigos).",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Ruta creada exitosamente",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = RutaDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Datos inválidos o falló la validación",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)
-                            )
-                    )
-            }
-    )
     @PostMapping
     public ResponseEntity<RutaDTO> crearRuta(@Valid @RequestBody RutaViewDTO viewDTO) {
 
@@ -69,40 +42,6 @@ public class RutaController {
     //           CONSULTAR ENVÍOS DE UNA RUTA EN UNA FECHA
     // ===========================================================
 
-    @Operation(
-            summary = "Consultar envíos asignados a una ruta en una fecha",
-            description = "Busca la ruta por su ID y devuelve los envíos asociados a la fecha indicada.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Ruta encontrada y envíos devueltos correctamente",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = RutaDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "La ruta existe pero no tiene envíos en la fecha indicada"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Parámetros inválidos",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = MensajeError.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "La ruta no existe",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = Error404.class)
-                            )
-                    )
-            }
-    )
     @GetMapping("/{id}/envios")
     public ResponseEntity<RutaDTO> obtenerEnviosPorRutaYFecha(
             @PathVariable Long id,
@@ -122,24 +61,6 @@ public class RutaController {
     //                LISTAR TODAS LAS RUTAS
     // ===========================================================
 
-    @Operation(
-            summary = "Listar todas las rutas",
-            description = "Recupera el listado completo de todas las rutas registradas en el sistema.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Listado de rutas recuperado correctamente",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = RutaDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "No existen rutas registradas en el sistema"
-                    )
-            }
-    )
     @GetMapping
     public ResponseEntity<List<RutaDTO>> listarTodas() {
         log.info("Solicitud para listar todas las rutas");
@@ -157,28 +78,6 @@ public class RutaController {
     //                 CONSULTAR RUTA POR ID
     // ===========================================================
 
-    @Operation(
-            summary = "Obtener detalles de una ruta específica",
-            description = "Busca una ruta por su identificador único (ID) y devuelve su información detallada.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Ruta encontrada exitosamente",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = RutaDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "No se encontró ninguna ruta con el ID proporcionado",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = Error404.class) // O MensajeError.class
-                            )
-                    )
-            }
-    )
     @GetMapping("/{id}")
     public ResponseEntity<RutaDTO> obtenerPorId(@PathVariable Long id) {
         log.info("Solicitud para obtener la ruta con ID: {}", id);
@@ -188,5 +87,4 @@ public class RutaController {
         return ResponseEntity.ok(ruta);
     }
 }
-
 

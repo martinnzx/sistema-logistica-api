@@ -1,6 +1,5 @@
 package dev.logistica.api.repository;
 
-
 import dev.logistica.api.model.Envio;
 import dev.logistica.api.enums.EstadoEnvio;
 import dev.logistica.api.model.Paquete;

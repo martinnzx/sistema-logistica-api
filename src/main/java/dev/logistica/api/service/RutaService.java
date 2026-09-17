@@ -41,7 +41,6 @@ public class RutaService {
         //  Guarda la nueva ruta (esto le asigna un ID)
         Ruta rutaGuardada = rutaRepository.save(ruta);
 
-
         log.info("Ruta creada exitosamente con ID: {}", rutaGuardada.getId());
 
         //  Devuelve el DTO de respuesta completo (usando un mapper)
@@ -83,7 +82,6 @@ public class RutaService {
     }
 
     // --- MÉTODOS PRIVADOS DE ENSAMBLAJE Y VALIDACIÓN ---
-
 
     private Ruta ensamblarRuta(RutaViewDTO dto) {
         Ruta ruta = new Ruta();

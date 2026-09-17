@@ -6,7 +6,6 @@ import dev.logistica.api.model.Envio;
 
 import java.util.List;
 
-
 public class EnvioMapper {
 
     private EnvioMapper() {
