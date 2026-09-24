@@ -1,4 +1,16 @@
-# Sistema de Logística de Envíos API
+<div align="center">
+  <h1>🚚 Sistema de Logística de Envíos API</h1>
+  <p><strong>Plataforma integral para la gestión de paquetería, flotas y rutas de distribución.</strong></p>
+
+  <!-- Badges -->
+  <img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
+  <img src="https://img.shields.io/badge/Spring_Boot-3.5.6-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Security-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT Security" />
+</div>
+
+<br>
 
 API REST desarrollada con Java y Spring Boot para gestionar clientes, paquetes, vehículos, envíos y rutas de distribución.
 
